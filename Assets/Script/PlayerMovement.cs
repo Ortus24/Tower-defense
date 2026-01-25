@@ -3,8 +3,8 @@
 public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 5f;
-
-    Animator animator;
+    public Rigidbody2D rb;
+    public Animator animator;
     Vector2 input;
     Vector2 lastMoveDir = Vector2.down;
 
@@ -15,8 +15,9 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        input.x = Input.GetAxis("Horizontal");
-        input.y = Input.GetAxis("Vertical");
+        input.x = Input.GetAxisRaw("Horizontal");
+        input.y = Input.GetAxisRaw("Vertical");
+
 
         Vector2 moveDir = input.normalized;
 
@@ -24,21 +25,19 @@ public class PlayerMovement : MonoBehaviour
 
         animator.SetFloat("Speed", moveDir.magnitude);
 
-        // ✅ Chỉ cập nhật lastMoveDir khi đang di chuyển
         if (moveDir != Vector2.zero)
         {
             lastMoveDir = moveDir;
-            HandleRotation(moveDir); // 🔥 dùng hướng hiện tại
+            HandleRotation(moveDir);
         }
         else
         {
-            HandleRotation(lastMoveDir); // idle → quay theo hướng cuối
+            HandleRotation(lastMoveDir); 
         }
     }
 
     void HandleRotation(Vector2 dir)
     {
-        // Lật trái / phải
         if (Mathf.Abs(dir.x) > Mathf.Abs(dir.y))
         {
             transform.localScale = new Vector3(
