@@ -4,36 +4,48 @@ public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 5f;
 
-    Rigidbody2D rb;
     Animator animator;
-    Vector2 movement;
+    Vector2 input;
+    Vector2 lastMoveDir = Vector2.down;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
     }
 
     void Update()
     {
-        // Nhận input
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.y = Input.GetAxisRaw("Vertical");
+        input.x = Input.GetAxis("Horizontal");
+        input.y = Input.GetAxis("Vertical");
 
-        // Gửi Speed sang Animator
-        animator.SetFloat("Speed", movement.magnitude);
+        Vector2 moveDir = input.normalized;
 
-        // Lật sprite khi đi trái/phải
-        if (movement.x != 0)
+        transform.position += (Vector3)(moveDir * moveSpeed * Time.deltaTime);
+
+        animator.SetFloat("Speed", moveDir.magnitude);
+
+        // ✅ Chỉ cập nhật lastMoveDir khi đang di chuyển
+        if (moveDir != Vector2.zero)
+        {
+            lastMoveDir = moveDir;
+            HandleRotation(moveDir); // 🔥 dùng hướng hiện tại
+        }
+        else
+        {
+            HandleRotation(lastMoveDir); // idle → quay theo hướng cuối
+        }
+    }
+
+    void HandleRotation(Vector2 dir)
+    {
+        // Lật trái / phải
+        if (Mathf.Abs(dir.x) > Mathf.Abs(dir.y))
+        {
             transform.localScale = new Vector3(
-                Mathf.Sign(movement.x),
+                dir.x > 0 ? 1 : -1,
                 1,
                 1
             );
-    }
-
-    void FixedUpdate()
-    {
-        rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+        }
     }
 }
