@@ -683,11 +683,11 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: b149f6e8-016b-4b1c-8325-9b385f6eb367
+  cloudProjectId: d0370f70-2d27-49f4-b961-1231f02ef91c
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: Tower-defense
-  organizationId: nhatnguyen24
+  projectName: PRJ_TowerDefense
+  organizationId: tamnmxjkk
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}

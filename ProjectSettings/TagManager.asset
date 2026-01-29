@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Socket
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -11,7 +13,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Building
   - 
   - 
   - 
@@ -44,8 +46,14 @@ TagManager:
   - name: BackGrond
     uniqueID: 260808903
     locked: 0
+  - name: Building
+    uniqueID: 2057345703
+    locked: 0
   - name: Player
     uniqueID: 2603150957
+    locked: 0
+  - name: UI
+    uniqueID: 3833403249
     locked: 0
   m_RenderingLayers:
   - Default
