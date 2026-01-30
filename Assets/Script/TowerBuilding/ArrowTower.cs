@@ -1,33 +1,61 @@
-﻿using UnityEngine;
+﻿using Assets.Script.TowerBuilding;
+using UnityEngine;
 
 public class NewMonoBehaviourScript : BaseTower
 {
 
+    private Animator archerAnim;
     private float fireCountdown = 0f;
 
-    protected override void OnBuildComplete()
+    [Header("Cài đặt bắn")]
+    public GameObject arrowPrefab; // Kéo Prefab mũi tên vào đây
+    public Transform firePoint;   // Điểm bắn (vị trí tay cung thủ)
+
+    void Start()
     {
-        //throw new System.NotImplementedException();
-        { /* Hiệu ứng hoàn thành */ }
+        // Lấy Animator từ đối tượng con Archer_Blue_34
+        archerAnim = GetComponentInChildren<Animator>();
     }
+
+    protected override void OnBuildComplete() { }
+
     void Update()
     {
         if (!isBuilt) return;
 
         FindNearestTarget();
-        if (target == null) return;
 
-        if (fireCountdown <= 0f)
+        if (target != null)
         {
-            Shoot();
-            fireCountdown = 1f / data.attackSpeed;
+            // Cập nhật Animator
+            if (archerAnim != null) archerAnim.SetBool("isAttacking", true);
+
+            if (fireCountdown <= 0f)
+            {
+                Shoot();
+                fireCountdown = 1f / data.attackSpeed;
+            }
         }
-        fireCountdown -= Time.deltaTime;
+        else
+        {
+            if (archerAnim != null) archerAnim.SetBool("isAttacking", false);
+        }
+
+        if (fireCountdown > 0) fireCountdown -= Time.deltaTime;
     }
 
     void Shoot()
     {
-        // Instantiate Mũi tên và hướng về target
-        Debug.Log("Arrow Tower bắn " + target.name);
+        if (arrowPrefab != null && firePoint != null)
+        {
+            // Sinh ra mũi tên tại vị trí firePoint
+            GameObject arrowGO = Instantiate(arrowPrefab, firePoint.position, Quaternion.identity);
+            ArrowProjectile arrow = arrowGO.GetComponent<ArrowProjectile>();
+
+            if (arrow != null)
+            {
+                arrow.Seek(target); // Ra lệnh cho mũi tên đuổi theo quái
+            }
+        }
     }
 }
