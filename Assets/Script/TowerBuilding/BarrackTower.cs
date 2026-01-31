@@ -4,6 +4,7 @@ public class BarrackTower : BaseTower
 {
     public GameObject knightPrefab;
     public Transform[] spawnPoints;
+    [SerializeField] private int numberOfPlayer = 2;
     protected override void OnBuildComplete()
     {
         SpawnKnights();
@@ -11,10 +12,9 @@ public class BarrackTower : BaseTower
 
     void SpawnKnights()
     {
-        int count = Random.Range(2, 4); // Sinh ra 2-3 lính
-        for (int i = 0; i < count; i++)
-        {
-            Instantiate(knightPrefab, spawnPoints[i].position, Quaternion.identity);
-        }
+        //for (int i = 0; i < numberOfPlayer; i++)
+        //{
+        //    Instantiate(knightPrefab, spawnPoints[i].position, Quaternion.identity);
+        //}
     }
 }

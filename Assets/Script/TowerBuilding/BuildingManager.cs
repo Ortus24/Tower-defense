@@ -8,10 +8,13 @@ using UnityEngine.EventSystems;
 public class BuildingManager : MonoBehaviour
 {
     public static BuildingManager main;
+    public TowerData data; // Data này chứa towerSize (Vector2Int)
     [SerializeField] private GameObject[] buildingPrefabs; // Tháp thật
     [SerializeField] private GameObject[] ghostPrefabs;    // Tháp mờ
     [SerializeField] private float snapOffsetX = 0.7f;
     [SerializeField] private float snapOffsetY = 0.3f;
+    [SerializeField] private float snapOffsetXBarrack = 1f;
+    [SerializeField] private float snapOffsetYBarrack = 0.3f;
     private int selectedIndex = -1;
     private GameObject currentGhost;
 
@@ -29,15 +32,21 @@ public class BuildingManager : MonoBehaviour
     {
         if (currentGhost == null) return;
 
+        // A. Lấy kích thước tháp từ Ghost đang chọn
+        PlacementCheck ghostPlacement = currentGhost.GetComponent<PlacementCheck>();
+        Vector2Int size = ghostPlacement.data.towerSize;
+        // B. Tính toán Snapping tự động
+        // Nếu size là số chẵn (như 2), offset sẽ là 0.5 (hoặc snapOffset của bạn)
+        // Nếu size là số lẻ (như 3), tháp sẽ nằm chính xác tại Floor(mousePos)
+        float offsetX = (size.x % 2 == 0) ? snapOffsetX : snapOffsetXBarrack;
+        float offsetY = (size.y % 2 == 0) ? snapOffsetY : snapOffsetYBarrack;
+
         // 1. Lấy vị trí chuột và chuyển đổi sang tọa độ thế giới
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0;
-
-        // Logic Snapping cho tháp 2x2:
-        // Làm tròn về các mốc 0.5 để tâm tháp nằm đúng ngã tư của 4 ô 64x64
-        float snappedX = Mathf.Floor(mousePos.x) + snapOffsetX;
-        float snappedY = Mathf.Floor(mousePos.y) + snapOffsetY;
-
+        // Logic Snapping cho tháp
+        float snappedX = Mathf.Floor(mousePos.x) + offsetX;
+        float snappedY = Mathf.Floor(mousePos.y) + offsetY;
         currentGhost.transform.position = new Vector3(snappedX, snappedY, 0);
 
         // 3. Click chuột trái để xây tháp
@@ -46,13 +55,24 @@ public class BuildingManager : MonoBehaviour
             currentGhost.GetComponent<PlacementCheck>().CanPlace())
         {
             // A. Lấy script PlacementCheck từ Ghost để lấy dữ liệu TowerData
-            PlacementCheck ghostPlacement = currentGhost.GetComponent<PlacementCheck>();
+            //PlacementCheck ghostPlacement = currentGhost.GetComponent<PlacementCheck>();
 
             // B. Tạo tháp thật tại vị trí của Ghost
             GameObject newTower = Instantiate(buildingPrefabs[selectedIndex], currentGhost.transform.position, Quaternion.identity);
 
             // C. Cập nhật Grid: Đánh dấu các ô đất đã bị tháp này chiếm dụng (2x2 hoặc 2x3)
-            Vector2Int gridPos = new Vector2Int(Mathf.FloorToInt(currentGhost.transform.position.x), Mathf.FloorToInt(currentGhost.transform.position.y));
+            Vector2Int gridPos;
+            if (size.x % 2 == 0 && size.y % 2 == 0)
+            {
+                gridPos = new Vector2Int(Mathf.FloorToInt(currentGhost.transform.position.x), Mathf.FloorToInt(currentGhost.transform.position.y));
+            }
+            else
+            {
+                gridPos = new Vector2Int(
+                    Mathf.RoundToInt(currentGhost.transform.position.x - (size.x / 3f)),
+                    Mathf.RoundToInt(currentGhost.transform.position.y - (size.y / 2f))
+                );
+            }
             GridManager.main.OccupyArea(gridPos, ghostPlacement.data.towerSize);
 
             // D. Xử lý hiển thị: Tự động gán Sorting Order dựa trên tọa độ Y để tháp không đè lên nhau sai thứ tự

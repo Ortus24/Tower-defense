@@ -30,7 +30,25 @@ namespace Assets.Script.TowerBuilding
             }
 
             // 3. Thực hiện logic kiểm tra ô đất
-            Vector2Int gridPos = new Vector2Int(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y));
+            Vector2Int gridPos;
+            Vector2Int size = data.towerSize;
+
+            // Kiểm tra tháp chẵn (2x2) hay lẻ (3x3) để tính gridPos tương ứng
+            if (size.x % 2 == 0 && size.y % 2 == 0)
+            {
+                // Với tháp chẵn (2x2), dùng FloorToInt trực tiếp
+                gridPos = new Vector2Int(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y));
+            }
+            else
+            {
+                // Với tháp lẻ (3x3), dùng RoundToInt và trừ đi (size / 2)
+                // Lưu ý: size.x / 2f phải dùng số thực (f) để chia chính xác 1.5
+                gridPos = new Vector2Int(
+                    Mathf.RoundToInt(transform.position.x - (size.x / 3f)),
+                    Mathf.RoundToInt(transform.position.y - (size.y / 2f))
+                );
+            }
+
             return GridManager.main.IsAreaEmpty(gridPos, data.towerSize);
         }
         public SpriteRenderer visualArea;

@@ -24898,14 +24898,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1da40ec9a1632b64db0e1f22f6ca8a4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuildingManager
+  data: {fileID: 0}
   buildingPrefabs:
   - {fileID: 4841701128293273707, guid: 585da23c388aefd4d800619d265456fe, type: 3}
   - {fileID: 2116730894098892117, guid: 2b83f07071c051e4e99cfde26b20a573, type: 3}
   - {fileID: 4841701128293273707, guid: a8bd0e7b7e950c34fbcd7b8cc2c07d38, type: 3}
   ghostPrefabs:
   - {fileID: 4841701128293273707, guid: 0712b6aa9e6a8fe47ba2b79c40072daa, type: 3}
+  - {fileID: 2116730894098892117, guid: ec3f74460bd9a7846b2aa7c7d6176c39, type: 3}
   snapOffsetX: 0.7
   snapOffsetY: 0.3
+  snapOffsetXBarrack: 1
+  snapOffsetYBarrack: 0.3
 --- !u!4 &686331943
 Transform:
   m_ObjectHideFlags: 0
@@ -25215,12 +25219,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 686331942}
         m_TargetAssemblyTypeName: BuildingManager, Assembly-CSharp
-        m_MethodName: SelectTowerToBuild
-        m_Mode: 5
+        m_MethodName: SelectTower
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: Barracks
           m_BoolArgument: 0

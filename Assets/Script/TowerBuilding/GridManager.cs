@@ -62,5 +62,31 @@ namespace Assets.Script.TowerBuilding
                 }
             }
         }
+
+        private void OnDrawGizmos()
+        {
+            // 1. Vẽ tất cả các ô đã bị chiếm đóng (Màu đỏ)
+            if (occupiedNodes != null)
+            {
+                Gizmos.color = new Color(1f, 0f, 0f, 0.4f); // Màu đỏ trong suốt
+                foreach (var node in occupiedNodes)
+                {
+                    // Vẽ hình lập phương tại tâm ô (cộng 0.5f vì tọa độ Int nằm ở góc ô)
+                    Vector3 center = new Vector3(node.x + 0.5f, node.y + 0.5f, 0);
+                    Gizmos.DrawCube(center, new Vector3(0.9f, 0.9f, 0.1f));
+                }
+            }
+
+            // 2. Tùy chọn: Vẽ một lưới mờ để dễ căn chỉnh
+            Gizmos.color = new Color(1f, 1f, 1f, 0.1f);
+            for (int x = -20; x < 20; x++) // Bạn có thể thay đổi phạm vi tùy theo map
+            {
+                for (int y = -20; y < 20; y++)
+                {
+                    Vector3 pos = new Vector3(x + 0.5f, y + 0.5f, 0);
+                    Gizmos.DrawWireCube(pos, Vector3.one);
+                }
+            }
+        }
     }
 }
