@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4778975973829989943}
   - component: {fileID: 5734048818204616158}
+  - component: {fileID: 5849443992927750533}
   m_Layer: 0
   m_Name: Lancer_Idle_0
   m_TagString: Untagged
@@ -91,6 +92,28 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!95 &5849443992927750533
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6060912425914560502}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 90f06644ae9104f408ee1ec4dc19f59b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6363583676536184936
 GameObject:
   m_ObjectHideFlags: 0
@@ -100,6 +123,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3564115910297511560}
+  - component: {fileID: -6896580488805520061}
+  - component: {fileID: 4760658695824846779}
   m_Layer: 0
   m_Name: Knight
   m_TagString: Untagged
@@ -123,3 +148,55 @@ Transform:
   - {fileID: 4778975973829989943}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-6896580488805520061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6363583676536184936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52694c5aad998414a8010d49fbbb98c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KnightAI
+  parentBarrack: {fileID: 0}
+  moveSpeed: 2
+  attackRange: 1.2
+--- !u!70 &4760658695824846779
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6363583676536184936}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0.62993765, y: -1.6378375}
+  m_Size: {x: 0.58853173, y: 0.85698724}
+  m_Direction: 0

@@ -17,7 +17,7 @@ MonoBehaviour:
   goldCost: 0
   maxHP: 150
   damage: 8
-  range: 0
+  range: 4
   attackSpeed: 0
   buildTime: 4
   isAoE: 0

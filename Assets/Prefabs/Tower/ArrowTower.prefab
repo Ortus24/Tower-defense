@@ -49,6 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NewMonoBehaviourScript
   data: {fileID: 11400000, guid: bd118edf85f9fc942b98875feaa57a15, type: 2}
+  centerOffset: {x: 0, y: 0}
   arrowPrefab: {fileID: 8534650300951064589, guid: fc5a1a0de62dec44fbe6c21978aa5152, type: 3}
   firePoint: {fileID: 4546260841476109582}
 --- !u!61 &2403125074757281017
@@ -96,7 +97,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   m_Size: {x: 1.8183137, y: 1.2280964}
-  m_EdgeRadius: 5
+  m_EdgeRadius: 0
 --- !u!212 &2359245718179853560
 SpriteRenderer:
   serializedVersion: 2
@@ -235,7 +236,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 2057345703
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7316229441688303391, guid: 72a59f196aa659942b54ae6b29adbd95, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -292,11 +293,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: da6029ce338333244840c4999d542c55, type: 3}
       propertyPath: m_SortingLayer
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3626916397498700004, guid: da6029ce338333244840c4999d542c55, type: 3}
       propertyPath: m_SortingLayerID
-      value: -1691816339
+      value: 2057345703
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: da6029ce338333244840c4999d542c55, type: 3}
       propertyPath: m_LocalPosition.x
