@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e46c2d32b77c3a540a2a0dfa3f020983, type: 3}
+  m_Name: TorchGoblin_Data
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyData
+  enemyName: Torch Goblin
+  maxHP: 25
+  moveSpeed: 4
+  damage: 8
+  targetType: 1
+  enemyPrefab: {fileID: 4303634310394923981, guid: 43d13b18d96f1a0479d5a9e003d88f02, type: 3}
