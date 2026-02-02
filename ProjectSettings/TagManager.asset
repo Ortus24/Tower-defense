@@ -47,5 +47,14 @@ TagManager:
   - name: Player
     uniqueID: 2603150957
     locked: 0
+  - name: Skill
+    uniqueID: 3454034279
+    locked: 0
+  - name: Button
+    uniqueID: 3183575113
+    locked: 0
+  - name: Banner
+    uniqueID: 2538642795
+    locked: 0
   m_RenderingLayers:
   - Default
