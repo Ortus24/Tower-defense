@@ -5,11 +5,11 @@ public class KnightAI : MonoBehaviour
     [Header("Cài đặt chung")]
     public BarrackTower parentBarrack;
     public float moveSpeed = 2f;
-    public float attackRange = 0.5f; // Tầm đánh cận chiến nên nhỏ (0.5 - 0.8)
+    public float attackRange = 0.2f; 
 
     [Header("Cài đặt chiến đấu")]
-    public float damage = 10f;       // Sát thương mỗi nhát chém
-    public float attackRate = 1f;    // Tốc độ đánh (1 lần/giây)
+    public float damage = 10f;
+    public float attackRate = 1f;
     private float attackCountdown = 0f;
 
     private Transform target;
@@ -45,29 +45,53 @@ public class KnightAI : MonoBehaviour
             ReturnToSpawnPoint();
         }
 
-        // Xử lý hiển thị (đè lên nhau)
+        // Xử lý hiển thị (đè lên nhau dựa theo chiều cao Y)
         if (sr != null)
             sr.sortingOrder = Mathf.RoundToInt(transform.position.y * -100);
     }
 
     void MoveAndAttack()
     {
+        // 1. Tính khoảng cách thực tế (Đường chéo)
         float dist = Vector2.Distance(transform.position, target.position);
 
-        // Nếu chưa tới tầm đánh -> Di chuyển lại gần
-        if (dist > attackRange)
+        // 2. Tính độ lệch theo trục Y (Xem đang đứng lệch bao nhiêu)
+        float yDifference = Mathf.Abs(transform.position.y - target.position.y);
+
+        // 3. Tính hướng để gửi vào Animator
+        Vector2 direction = (target.position - transform.position).normalized;
+        UpdateAnimationDirection(direction);
+
+        // --- LOGIC MỚI: CƠ CHẾ "LANE MAGNET" (NAM CHÂM HÚT VÀO LÀN) ---
+
+        // Điều kiện đánh khắt khe hơn:
+        // - Phải đủ gần (dist <= attackRange)
+        // - VÀ Phải thẳng hàng (yDifference <= 0.1f)
+        bool isAlignedY = yDifference <= 0.1f;
+
+        if (dist > attackRange || !isAlignedY)
         {
-            MoveTowards(target.position);
+            // Nếu chưa thẳng hàng, ta sẽ "ép" lính đi về phía Y của quái trước
+            Vector3 moveTarget = target.position;
+
+            // Nếu đã đến khá gần (theo trục X) nhưng vẫn bị lệch Y -> Chỉ di chuyển Y
+            if (Mathf.Abs(transform.position.x - target.position.x) <= attackRange)
+            {
+                // Giữ nguyên X hiện tại, chỉ thay đổi Y để trượt lên/xuống cho thẳng
+                moveTarget = new Vector3(transform.position.x, target.position.y, transform.position.z);
+            }
+
+            transform.position = Vector2.MoveTowards(transform.position, moveTarget, moveSpeed * Time.deltaTime);
+
+            anim.SetBool("isMoving", true);
             anim.SetBool("isAttacking", false);
         }
-        // Nếu đã trong tầm đánh -> Đứng lại và Chém
         else
         {
+            // Đã thẳng hàng & Đủ gần -> TẤN CÔNG
             anim.SetBool("isMoving", false);
             anim.SetBool("isAttacking", true);
-            Flip(target.position.x);
 
-            // Logic gây sát thương (Giống ArrowTower bắn tên)
             if (attackCountdown <= 0f)
             {
                 DealDamage();
@@ -78,20 +102,10 @@ public class KnightAI : MonoBehaviour
 
     void DealDamage()
     {
-        // Kiểm tra lại nếu target vẫn còn tồn tại
         if (target != null)
         {
-            Debug.Log($"Knight chém {target.name} - {damage} sát thương!");
-
-            // Gửi sát thương sang script máu của Enemy (Ví dụ: EnemyHealth)
-            // Cách 1: Dùng SendMessage (Dễ nhưng chậm)
+            // Gửi sát thương sang script máu của Enemy
             target.SendMessage("TakeDamage", damage, SendMessageOptions.DontRequireReceiver);
-
-            // Cách 2: Gọi trực tiếp (Khuyên dùng nếu bạn có script Enemy)
-            /*
-            var enemyHealth = target.GetComponent<Enemy>();
-            if (enemyHealth != null) enemyHealth.TakeDamage(damage);
-            */
         }
     }
 
@@ -102,7 +116,12 @@ public class KnightAI : MonoBehaviour
         // Nếu chưa về đến nhà -> Đi tiếp
         if (distToSpawn > 0.1f)
         {
-            MoveTowards(spawnPosition);
+            // Tính hướng về nhà để quay mặt cho đúng
+            Vector2 direction = (spawnPosition - transform.position).normalized;
+            UpdateAnimationDirection(direction);
+
+            transform.position = Vector2.MoveTowards(transform.position, spawnPosition, moveSpeed * Time.deltaTime);
+            anim.SetBool("isMoving", true);
             anim.SetBool("isAttacking", false);
         }
         // Đã về đến nhà -> Đứng im (Idle)
@@ -113,21 +132,6 @@ public class KnightAI : MonoBehaviour
         }
     }
 
-    void MoveTowards(Vector3 destination)
-    {
-        transform.position = Vector2.MoveTowards(transform.position, destination, moveSpeed * Time.deltaTime);
-        anim.SetBool("isMoving", true);
-        Flip(destination.x);
-    }
-
-    void Flip(float targetX)
-    {
-        if (targetX > transform.position.x)
-            transform.localScale = new Vector3(1, 1, 1);
-        else if (targetX < transform.position.x)
-            transform.localScale = new Vector3(-1, 1, 1);
-    }
-
     void FindTargetInBarrackRange()
     {
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
@@ -136,8 +140,8 @@ public class KnightAI : MonoBehaviour
 
         foreach (GameObject enemy in enemies)
         {
-            // Kiểm tra khoảng cách từ ĐỊCH đến NHÀ LÍNH (Barrack)
-            float distToBarrack = Vector2.Distance(parentBarrack.transform.position, enemy.transform.position);
+            // QUAN TRỌNG: Dùng GetTowerCenter() để lấy tâm chuẩn (đã chỉnh Offset)
+            float distToBarrack = Vector2.Distance(parentBarrack.GetTowerCenter(), enemy.transform.position);
 
             // Chỉ đánh nếu địch nằm trong vùng bảo vệ của nhà lính
             if (distToBarrack <= parentBarrack.data.range)
@@ -151,5 +155,34 @@ public class KnightAI : MonoBehaviour
             }
         }
         target = (nearestEnemy != null) ? nearestEnemy.transform : null;
+    }
+
+    // Hàm này thay thế hoàn toàn hàm Flip cũ
+    void UpdateAnimationDirection(Vector2 dir)
+    {
+        // Chỉ cập nhật nếu có hướng di chuyển rõ ràng
+        if (dir.magnitude > 0.1f)
+        {
+            // Gửi thông số vào Blend Tree
+            // InputX dùng Abs vì ta tái sử dụng Animation bên Phải cho bên Trái
+            anim.SetFloat("InputX", Mathf.Abs(dir.x));
+            anim.SetFloat("InputY", dir.y);
+
+            // Xử lý lật mặt thủ công (Scale)
+            if (dir.x < 0) transform.localScale = new Vector3(-1, 1, 1); // Quay trái
+            else transform.localScale = new Vector3(1, 1, 1);  // Quay phải
+        }
+    }
+
+    // Vẽ Gizmos để debug
+    private void OnDrawGizmosSelected()
+    {
+        // Vòng tròn đỏ thể hiện tầm kiếm
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
+
+        // Đường nối về vị trí gác
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(transform.position, spawnPosition);
     }
 }

@@ -15,7 +15,7 @@ namespace Assets.Script.TowerBuilding
         private Transform target;
         public float speed = 15f;
         public float damage = 10f;
-
+        public float targetOffset = 0.5f;// Thêm biến này để dễ chỉnh độ lệch trong Inspector nếu cần
         // Hàm để Tháp truyền mục tiêu cho mũi tên
         public void Seek(Transform _target)
         {
@@ -31,7 +31,8 @@ namespace Assets.Script.TowerBuilding
             }
 
             // Tính toán hướng bay
-            Vector3 dir = target.position - transform.position;
+            Vector3 targetPos = target.position + Vector3.up * targetOffset;
+            Vector3 dir = targetPos - transform.position;
             float distanceThisFrame = speed * Time.deltaTime;
 
             // Xoay mũi tên theo hướng bay

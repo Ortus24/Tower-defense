@@ -106,3 +106,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Script.TowerBuilding.ArrowProjectile
   speed: 15
   damage: 10
+  targetOffset: 0.6
