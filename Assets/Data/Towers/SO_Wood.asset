@@ -24,3 +24,7 @@ MonoBehaviour:
   splashRadius: 0
   towerSize: {x: 3, y: 3}
   resourceType: 2
+  goldPerSecond: 0
+  maxGoldCapacity: 0
+  woodPerSecond: 5
+  maxWoodCapacity: 50

@@ -24,4 +24,12 @@ public class TowerData : ScriptableObject
 
     [Header("Yêu cầu xây dựng")]
     public ResourceType resourceType = ResourceType.None; // Mặc định là None
+
+    [Header("Kinh tế Gold")]
+    public int goldPerSecond = 5;     // Mỗi giây sinh ra bao nhiêu
+    public int maxGoldCapacity = 50;  // Sức chứa tối đa (đầy thì ngừng sinh)
+
+    [Header("Kinh tế Wood")]
+    public int woodPerSecond = 5;      // Tốc độ sản xuất gỗ
+    public int maxWoodCapacity = 50;   // Sức chứa gỗ tối đa
 }
