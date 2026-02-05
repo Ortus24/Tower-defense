@@ -22,7 +22,7 @@ namespace Assets.Script.TowerBuilding
         private void Awake()
         {
             if (main == null) main = this;
-            else Destroy(gameObject);
+            
         }
 
         private void Start()

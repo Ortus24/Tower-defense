@@ -14,7 +14,7 @@ public class BuildingManager : MonoBehaviour
     private int selectedIndex = -1;
     private GameObject currentGhost;
 
-    private void Awake() { main = this; }
+    private void Awake() { main = this; Debug.Log("BuildingManager đã sẵn sàng!"); }
 
     public void SelectTower(int index)
     {
@@ -61,21 +61,39 @@ public class BuildingManager : MonoBehaviour
             // PlacementCheck bây giờ chỉ cần check dựa trên vị trí đã snap
             if (ghostPlacement.CanPlace())
             {
-                // Xây tháp thật
-                GameObject newTower = Instantiate(buildingPrefabs[selectedIndex], currentGhost.transform.position, Quaternion.identity);
+                // --- ĐOẠN CODE MỚI: KIỂM TRA VÀ TRỪ TIỀN ---
 
-                // Đánh dấu Grid đã bị chiếm (Dùng gridX, gridY chuẩn vừa tính được)
-                GridManager.main.OccupyArea(new Vector2Int(gridX, gridY), size);
+                // Lấy thông tin giá tiền từ Data
+                TowerData data = ghostPlacement.data;
 
-                // Sorting Order
-                SpriteRenderer towerSr = newTower.GetComponentInChildren<SpriteRenderer>();
-                if (towerSr != null) towerSr.sortingOrder = Mathf.RoundToInt(newTower.transform.position.y * -100);
+                // Kiểm tra xem có ResourceManager và có đủ tiền không
+                if (ResourceManager.main != null && ResourceManager.main.HasEnoughResources(data.goldCost, data.woodCost))
+                {
+                    // 1. Trừ tiền
+                    ResourceManager.main.SpendResources(data.goldCost, data.woodCost);
 
-                Destroy(currentGhost);
-                selectedIndex = -1;
+                    // 2. Xây tháp (Code cũ)
+                    GameObject newTower = Instantiate(buildingPrefabs[selectedIndex], currentGhost.transform.position, Quaternion.identity);
+
+                    // 3. Đánh dấu Grid (Code cũ)
+                    GridManager.main.OccupyArea(new Vector2Int(gridX, gridY), size);
+
+                    // 4. Sorting Order (Code cũ)
+                    SpriteRenderer towerSr = newTower.GetComponentInChildren<SpriteRenderer>();
+                    if (towerSr != null) towerSr.sortingOrder = Mathf.RoundToInt(newTower.transform.position.y * -100);
+
+                    Destroy(currentGhost);
+                    selectedIndex = -1;
+
+                    Debug.Log($"Đã xây tháp! Trừ {data.goldCost} Vàng, {data.woodCost} Gỗ.");
+                }
+                else
+                {
+                    Debug.Log("Không đủ tiền để xây!");
+                    // Ở đây bạn có thể thêm hiệu ứng nhấp nháy đỏ UI hoặc âm thanh báo lỗi
+                }
             }
         }
-
         // 6. Hủy
         if (Input.GetMouseButtonDown(1))
         {

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: SO_ArrowTower
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
   towerName: 
-  woodCost: 50
-  goldCost: 0
+  woodCost: 10
+  goldCost: 10
   maxHP: 100
   damage: 15
   range: 6
