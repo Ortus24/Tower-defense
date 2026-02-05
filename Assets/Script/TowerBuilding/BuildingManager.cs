@@ -9,8 +9,6 @@ public class BuildingManager : MonoBehaviour
     [SerializeField] private GameObject[] buildingPrefabs;
     [SerializeField] private GameObject[] ghostPrefabs;
 
-    // --- BỎ CÁC BIẾN SNAP OFFSET CŨ ---
-
     private int selectedIndex = -1;
     private GameObject currentGhost;
 
@@ -28,9 +26,10 @@ public class BuildingManager : MonoBehaviour
         if (currentGhost == null) return;
         if (GridManager.main == null || GridManager.main.GetLevelGrid() == null) return;
 
-        // 1. Lấy dữ liệu
+        // 1. Lấy dữ liệu và tham chiếu
         PlacementCheck ghostPlacement = currentGhost.GetComponent<PlacementCheck>();
-        Vector2Int size = ghostPlacement.data.towerSize;
+        TowerData data = ghostPlacement.data; // Lấy data để dùng nhiều lần cho gọn
+        Vector2Int size = data.towerSize;
         float cellSize = GridManager.main.cellSize;
 
         // 2. Lấy vị trí chuột -> Chuyển sang Grid Coordinate (x, y)
@@ -40,61 +39,70 @@ public class BuildingManager : MonoBehaviour
         int gridX, gridY;
         GridManager.main.GetLevelGrid().GetXY(mousePos, out gridX, out gridY);
 
-        // 3. Giới hạn không cho ghost chạy ra ngoài bản đồ (Optional)
-        // gridX = Mathf.Clamp(gridX, 0, GridManager.main.width - size.x);
-        // gridY = Mathf.Clamp(gridY, 0, GridManager.main.height - size.y);
-
-        // 4. TÍNH TOÁN VỊ TRÍ SNAP CHUẨN XÁC
-        // Lấy vị trí thế giới của góc dưới trái ô (gridX, gridY)
+        // 3. TÍNH TOÁN VỊ TRÍ SNAP
         Vector3 originPos = GridManager.main.GetLevelGrid().GetWorldPosition(gridX, gridY);
-
-        // Cộng thêm nửa kích thước tháp để căn tâm
         Vector3 centerOffset = new Vector3(size.x * cellSize * 0.5f, size.y * cellSize * 0.5f, 0);
-
         currentGhost.transform.position = originPos + centerOffset;
 
-        // 5. Click để xây
+        // 4. XỬ LÝ CLICK ĐỂ XÂY
         if (Input.GetMouseButtonDown(0))
         {
             if (EventSystem.current.IsPointerOverGameObject()) return;
 
-            // PlacementCheck bây giờ chỉ cần check dựa trên vị trí đã snap
+            // Kiểm tra xem có xây được không (PlacementCheck đã lo vụ check Tiền + check Mỏ/Đất)
             if (ghostPlacement.CanPlace())
             {
-                // --- ĐOẠN CODE MỚI: KIỂM TRA VÀ TRỪ TIỀN ---
-
-                // Lấy thông tin giá tiền từ Data
-                TowerData data = ghostPlacement.data;
-
-                // Kiểm tra xem có ResourceManager và có đủ tiền không
-                if (ResourceManager.main != null && ResourceManager.main.HasEnoughResources(data.goldCost, data.woodCost))
+                // A. TRỪ TIỀN
+                if (ResourceManager.main != null)
                 {
-                    // 1. Trừ tiền
                     ResourceManager.main.SpendResources(data.goldCost, data.woodCost);
+                }
 
-                    // 2. Xây tháp (Code cũ)
-                    GameObject newTower = Instantiate(buildingPrefabs[selectedIndex], currentGhost.transform.position, Quaternion.identity);
+                // B. TẠO THÁP THẬT
+                GameObject newTower = Instantiate(buildingPrefabs[selectedIndex], currentGhost.transform.position, Quaternion.identity);
 
-                    // 3. Đánh dấu Grid (Code cũ)
-                    GridManager.main.OccupyArea(new Vector2Int(gridX, gridY), size);
-
-                    // 4. Sorting Order (Code cũ)
-                    SpriteRenderer towerSr = newTower.GetComponentInChildren<SpriteRenderer>();
-                    if (towerSr != null) towerSr.sortingOrder = Mathf.RoundToInt(newTower.transform.position.y * -100);
-
-                    Destroy(currentGhost);
-                    selectedIndex = -1;
-
-                    Debug.Log($"Đã xây tháp! Trừ {data.goldCost} Vàng, {data.woodCost} Gỗ.");
+                // C. XỬ LÝ CHIẾM ĐẤT (Logic quan trọng mới thêm)
+                // Nếu đây là công trình khai thác (Mỏ/Gỗ) -> Xử lý cục quặng
+                if (data.resourceType != ResourceType.None)
+                {
+                    // Nếu tìm thấy cục quặng hợp lệ (đã được PlacementCheck tìm thấy)
+                    if (ghostPlacement.currentValidSpot != null)
+                    {
+                        ghostPlacement.currentValidSpot.Occupy(); // Làm cục quặng biến mất
+                        GridManager.main.OccupyArea(new Vector2Int(gridX, gridY), size);
+                    }
                 }
                 else
                 {
-                    Debug.Log("Không đủ tiền để xây!");
-                    // Ở đây bạn có thể thêm hiệu ứng nhấp nháy đỏ UI hoặc âm thanh báo lỗi
+                    // Nếu là tháp thường -> Đánh dấu ô đất trên Grid là "Đã bị chiếm"
+                    GridManager.main.OccupyArea(new Vector2Int(gridX, gridY), size);
+                }
+
+                // D. SẮP XẾP LAYER (Để tháp không bị đè lên nhau sai thứ tự)
+                SpriteRenderer towerSr = newTower.GetComponentInChildren<SpriteRenderer>();
+                if (towerSr != null) towerSr.sortingOrder = Mathf.RoundToInt(newTower.transform.position.y * -100);
+
+                // E. DỌN DẸP
+                Destroy(currentGhost);
+                selectedIndex = -1;
+
+                Debug.Log($"Đã xây {data.towerName}! Trừ {data.goldCost} Vàng, {data.woodCost} Gỗ.");
+            }
+            else
+            {
+                // In lỗi ra để debug
+                if (ResourceManager.main != null && !ResourceManager.main.HasEnoughResources(data.goldCost, data.woodCost))
+                {
+                    Debug.Log("Không đủ tiền!");
+                }
+                else
+                {
+                    Debug.Log("Vị trí không hợp lệ (Vướng vật cản hoặc sai loại mỏ)!");
                 }
             }
         }
-        // 6. Hủy
+
+        // 5. HỦY CHỌN (Chuột phải)
         if (Input.GetMouseButtonDown(1))
         {
             Destroy(currentGhost);
