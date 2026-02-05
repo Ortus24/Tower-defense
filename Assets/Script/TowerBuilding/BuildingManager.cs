@@ -1,9 +1,5 @@
 ﻿using Assets.Script.TowerBuilding;
-using Mono.Cecil.Cil;
-using NUnit.Framework;
-using Unity.AppUI.UI;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class BuildingManager : MonoBehaviour
 {
@@ -25,11 +21,13 @@ public class BuildingManager : MonoBehaviour
     {
         if (currentGhost != null) Destroy(currentGhost);
         selectedIndex = index;
+        Debug.Log("Selected Index: " + selectedIndex);
         currentGhost = Instantiate(ghostPrefabs[index]);
     }
 
     private void Update()
     {
+        
         if (currentGhost == null) return;
 
         // A. Lấy kích thước tháp từ Ghost đang chọn
@@ -74,7 +72,6 @@ public class BuildingManager : MonoBehaviour
                 );
             }
             GridManager.main.OccupyArea(gridPos, ghostPlacement.data.towerSize);
-
             // D. Xử lý hiển thị: Tự động gán Sorting Order dựa trên tọa độ Y để tháp không đè lên nhau sai thứ tự
             // Tháp càng thấp (Y nhỏ), Sorting Order càng cao -> hiện lên trên
             SpriteRenderer towerSr = newTower.GetComponentInChildren<SpriteRenderer>();
@@ -82,6 +79,7 @@ public class BuildingManager : MonoBehaviour
             {
                 towerSr.sortingOrder = Mathf.RoundToInt(newTower.transform.position.y * -100);
             }
+            
             // E. Dọn dẹp
             Destroy(currentGhost);
             selectedIndex = -1;

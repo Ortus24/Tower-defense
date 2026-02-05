@@ -10,35 +10,40 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
     }
+
 
     void Update()
     {
         input.x = Input.GetAxisRaw("Horizontal");
         input.y = Input.GetAxisRaw("Vertical");
 
+        animator.SetFloat("Speed", input.magnitude);
 
-        Vector2 moveDir = input.normalized;
-
-        transform.position += (Vector3)(moveDir * moveSpeed * Time.deltaTime);
-
-        animator.SetFloat("Speed", moveDir.magnitude);
-
-        if (moveDir != Vector2.zero)
+        if (input != Vector2.zero)
         {
-            lastMoveDir = moveDir;
-            HandleRotation(moveDir);
+            lastMoveDir = input;
+            HandleRotation(input);
         }
-        else
+
+        if (Input.GetMouseButtonDown(0))
         {
-            HandleRotation(lastMoveDir); 
+            animator.SetTrigger("Attack");
         }
     }
 
+
+    void FixedUpdate()
+    {
+        rb.linearVelocity = input.normalized * moveSpeed;
+    }
+
+
     void HandleRotation(Vector2 dir)
     {
-        if (Mathf.Abs(dir.x) > Mathf.Abs(dir.y))
+        if (dir.x != 0)
         {
             transform.localScale = new Vector3(
                 dir.x > 0 ? 1 : -1,
@@ -47,4 +52,5 @@ public class PlayerMovement : MonoBehaviour
             );
         }
     }
+
 }
