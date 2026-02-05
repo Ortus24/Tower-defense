@@ -11,63 +11,34 @@ namespace Assets.Script.TowerBuilding
     {
         public TowerData data;
         private SpriteRenderer sr;
+        public SpriteRenderer visualArea;
 
         void Start() { sr = GetComponentInChildren<SpriteRenderer>(); }
 
         public bool CanPlace()
         {
-            if (GridManager.main == null)
-            {
-                Debug.LogError("Chưa có GridManager trong Scene!");
-                return false;
-            }
+            if (GridManager.main == null) return false;
 
-            // 2. Kiểm tra TowerData đã được gán chưa
-            if (data == null)
-            {
-                Debug.LogError("Ghost " + gameObject.name + " chưa được gán TowerData!");
-                return false;
-            }
+            // 1. Từ vị trí hiện tại (Tâm tháp) -> Tính ngược lại ra góc dưới trái (Grid Origin)
+            // Công thức: Tâm - (Size / 2)
+            float cellSize = GridManager.main.cellSize;
+            Vector3 centerPos = transform.position;
+            Vector3 originWorldPos = centerPos - new Vector3(data.towerSize.x * cellSize * 0.5f, data.towerSize.y * cellSize * 0.5f, 0);
 
-            // 3. Thực hiện logic kiểm tra ô đất
-            Vector2Int gridPos;
-            Vector2Int size = data.towerSize;
+            // 2. Chuyển sang tọa độ Grid
+            int gridX, gridY;
+            GridManager.main.GetLevelGrid().GetXY(originWorldPos + new Vector3(cellSize * 0.1f, cellSize * 0.1f), out gridX, out gridY);
+            // (Cộng thêm 0.1f để tránh lỗi làm tròn số ở mép)
 
-            // Kiểm tra tháp chẵn (2x2) hay lẻ (3x3) để tính gridPos tương ứng
-            if (size.x % 2 == 0 && size.y % 2 == 0)
-            {
-                // Với tháp chẵn (2x2), dùng FloorToInt trực tiếp
-                gridPos = new Vector2Int(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y));
-            }
-            else
-            {
-                // Với tháp lẻ (3x3), dùng RoundToInt và trừ đi (size / 2)
-                // Lưu ý: size.x / 2f phải dùng số thực (f) để chia chính xác 1.5
-                gridPos = new Vector2Int(
-                    Mathf.RoundToInt(transform.position.x - (size.x / 3f)),
-                    Mathf.RoundToInt(transform.position.y - (size.y / 2f))
-                );
-            }
-
-            return GridManager.main.IsAreaEmpty(gridPos, data.towerSize);
+            // 3. Kiểm tra vùng đất
+            return GridManager.main.IsAreaEmpty(new Vector2Int(gridX, gridY), data.towerSize);
         }
-        public SpriteRenderer visualArea;
+
         public void UpdateVisual()
         {
             bool canPlace = CanPlace();
-
-            // 1. Đổi màu chính tháp Ghost (Logic cũ của bạn)
-            if (sr != null)
-            {
-                sr.color = canPlace ? new Color(1, 1, 1, 0.5f) : new Color(1, 0, 0, 0.5f);
-            }
-
-            // 2. Đổi màu ô sáng dưới chân (Xanh nếu trống, Đỏ nếu bị chiếm)
-            if (visualArea != null)
-            {
-                // Màu xanh: canPlace đúng | Màu đỏ: canPlace sai
-                visualArea.color = canPlace ? new Color(0, 1, 0, 0.4f) : new Color(1, 0, 0, 0.4f);
-            }
+            if (sr != null) sr.color = canPlace ? new Color(1, 1, 1, 0.5f) : new Color(1, 0, 0, 0.5f);
+            if (visualArea != null) visualArea.color = canPlace ? new Color(0, 1, 0, 0.4f) : new Color(1, 0, 0, 0.4f);
         }
 
         void Update() { UpdateVisual(); }

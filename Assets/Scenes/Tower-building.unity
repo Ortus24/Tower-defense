@@ -339,7 +339,7 @@ Transform:
   m_GameObject: {fileID: 105191274}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 8.94, y: 6.41, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -24749,7 +24749,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1da40ec9a1632b64db0e1f22f6ca8a4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BuildingManager
-  data: {fileID: 0}
   buildingPrefabs:
   - {fileID: 4841701128293273707, guid: 585da23c388aefd4d800619d265456fe, type: 3}
   - {fileID: 2116730894098892117, guid: 2b83f07071c051e4e99cfde26b20a573, type: 3}
@@ -24757,10 +24756,6 @@ MonoBehaviour:
   ghostPrefabs:
   - {fileID: 4841701128293273707, guid: 0712b6aa9e6a8fe47ba2b79c40072daa, type: 3}
   - {fileID: 2116730894098892117, guid: ec3f74460bd9a7846b2aa7c7d6176c39, type: 3}
-  snapOffsetX: 0.7
-  snapOffsetY: 0.3
-  snapOffsetXBarrack: 1
-  snapOffsetYBarrack: 0.3
 --- !u!4 &686331943
 Transform:
   m_ObjectHideFlags: 0
@@ -24847,7 +24842,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed4284d6d3363e649b0443d83f776d0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  gridSystem: {fileID: 0}
+  width: 20
+  height: 15
+  cellSize: 1
+  originPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &1039312489
 GameObject:
   m_ObjectHideFlags: 0
