@@ -23,8 +23,12 @@ namespace Assets.Script.TowerBuilding
                               // Nếu dùng TextMeshPro thì sửa thành: public TextMeshProUGUI goldText;
 
         // Biến lưu trữ tiền hiện tại (Private để bảo mật, chỉ chỉnh sửa qua hàm)
-        private int currentGold;
-        private int currentWood;
+        protected int currentGold;
+        protected int currentWood;
+
+        // "Cổng phụ" chỉ cho xem (get), không cho sửa
+        public int CurrentGold => currentGold;
+        public int CurrentWood => currentWood;
 
         private void Awake()
         {

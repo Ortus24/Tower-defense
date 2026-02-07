@@ -23,3 +23,11 @@ MonoBehaviour:
   isAoE: 0
   splashRadius: 0
   towerSize: {x: 2, y: 2}
+  resourceType: 0
+  goldPerSecond: 0
+  maxGoldCapacity: 0
+  woodPerSecond: 0
+  maxWoodCapacity: 0
+  description: 
+  nextLevelData: {fileID: 0}
+  nextLevelPrefab: {fileID: 0}

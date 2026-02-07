@@ -4,17 +4,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Assets.Script.TowerBuilding.EconomyTower
 {
     public class WoodMine : MonoBehaviour
     {
         [Header("Dữ liệu")]
-        public TowerData data; // Kéo file SO_Wood vào đây
+        public TowerData data;
 
         [Header("Hiển thị")]
-        public GameObject woodIcon;      // Kéo icon Khúc Gỗ vào đây
-        public GameObject popupPrefab;   // Kéo Prefab "TextPopup" vào đây
+        public GameObject woodIcon;      // Icon Khúc Gỗ (Thay cho CoinIcon)
+        public GameObject popupPrefab;
+
+        [Header("UI Context (Banner)")]
+        public BuildingBanner bannerScript;
+
+        [Header("Cài đặt Timer")]
+        public float productionInterval = 5f; // Thời gian chờ sản xuất (Giống GoldMine)
 
         private int currentStoredWood = 0;
         private float timer = 0f;
@@ -22,17 +29,24 @@ namespace Assets.Script.TowerBuilding.EconomyTower
         private void Start()
         {
             if (woodIcon != null) woodIcon.SetActive(false);
+
+            if (bannerScript != null)
+            {
+                bannerScript.Setup(gameObject, data);
+                bannerScript.gameObject.SetActive(false);
+            }
         }
 
         private void Update()
         {
             if (data == null) return;
 
-            // Kiểm tra kho chứa
+            // Nếu kho chưa đầy -> Bắt đầu đếm giờ
             if (currentStoredWood < data.maxWoodCapacity)
             {
                 timer += Time.deltaTime;
-                if (timer >= 1f)
+
+                if (timer >= productionInterval)
                 {
                     timer = 0f;
                     ProduceWood();
@@ -42,8 +56,11 @@ namespace Assets.Script.TowerBuilding.EconomyTower
 
         void ProduceWood()
         {
-            // Cộng gỗ (Lấy chỉ số woodPerSecond)
-            currentStoredWood += data.woodPerSecond;
+            // Tính lượng gỗ sinh ra sau khoảng thời gian interval
+            // Ví dụ: 5 gỗ/s * 5s = 25 gỗ
+            int woodToAdd = data.woodPerSecond * (int)productionInterval;
+
+            currentStoredWood += woodToAdd;
 
             if (currentStoredWood > data.maxWoodCapacity)
                 currentStoredWood = data.maxWoodCapacity;
@@ -55,31 +72,42 @@ namespace Assets.Script.TowerBuilding.EconomyTower
         {
             if (woodIcon != null)
             {
-                // Hiện icon Khúc Gỗ khi có tài nguyên
                 woodIcon.SetActive(currentStoredWood > 0);
             }
         }
 
+        // --- XỬ LÝ CLICK CHUỘT ---
         private void OnMouseDown()
         {
-            if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return;
+            // Chặn click xuyên qua UI
+            if (EventSystem.current.IsPointerOverGameObject()) return;
 
+            // 1. Ưu tiên Thu hoạch
             if (currentStoredWood > 0)
             {
                 CollectWood();
+                if (bannerScript != null) bannerScript.gameObject.SetActive(false);
+                return;
+            }
+
+            // 2. Nếu rỗng -> Bật/Tắt Banner nâng cấp
+            if (bannerScript != null)
+            {
+                bool isActive = bannerScript.gameObject.activeSelf;
+                bannerScript.gameObject.SetActive(!isActive);
             }
         }
 
         void CollectWood()
         {
-            // 1. Gửi về ResourceManager (Số thứ 2 là Gỗ)
+            // CỘNG TÀI NGUYÊN
+            // Lưu ý: AddResources(Gold, Wood) -> Nên để 0 ở vị trí Gold, và amount ở vị trí Wood
             if (ResourceManager.main != null)
             {
                 ResourceManager.main.AddResources(0, currentStoredWood);
-                Debug.Log($"Thu hoạch được {currentStoredWood} gỗ!");
             }
 
-            // 2. Tạo Popup bay lên
+            // HIỆN POPUP
             if (popupPrefab != null)
             {
                 GameObject popup = Instantiate(popupPrefab, transform.position, Quaternion.identity);
@@ -87,15 +115,14 @@ namespace Assets.Script.TowerBuilding.EconomyTower
 
                 if (damagePopup != null)
                 {
-                    // Setup số lượng và màu sắc (Ví dụ màu Nâu cho gỗ)
                     damagePopup.Setup(currentStoredWood);
 
-                    // (Nâng cao) Nếu bạn muốn đổi màu chữ thành màu Nâu cho khác màu Vàng:
+                    // (Tùy chọn) Nếu bạn muốn popup gỗ có màu khác (ví dụ màu nâu)
                     // damagePopup.SetColor(new Color(0.6f, 0.4f, 0.2f)); 
                 }
             }
 
-            // 3. Reset
+            // RESET
             currentStoredWood = 0;
             timer = 0f;
             UpdateVisual();

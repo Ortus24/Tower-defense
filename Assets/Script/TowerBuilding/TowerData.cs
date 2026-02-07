@@ -22,6 +22,10 @@ public class TowerData : ScriptableObject
     public float splashRadius;
     public Vector2Int towerSize; // Kích thước chiếm dụng trên lưới
 
+
+    // ========================================================================
+    // HỆ THỐNG Xây DỰNG ECONOMY TOWER
+    // ========================================================================
     [Header("Yêu cầu xây dựng")]
     public ResourceType resourceType = ResourceType.None; // Mặc định là None
 
@@ -32,4 +36,22 @@ public class TowerData : ScriptableObject
     [Header("Kinh tế Wood")]
     public int woodPerSecond = 5;      // Tốc độ sản xuất gỗ
     public int maxWoodCapacity = 50;   // Sức chứa gỗ tối đa
+
+    // ========================================================================
+    // HỆ THỐNG NÂNG CẤP
+    // ========================================================================
+    [Header("Chỉ số hiển thị")]
+    [TextArea(3, 5)]
+    public string description;
+
+    [Header("Hệ thống Nâng Cấp")]
+    // 1. Dữ liệu của cấp tiếp theo (Để biết tốn bao nhiêu tiền, mạnh thế nào)
+    public TowerData nextLevelData;
+
+    // 2. Hình ảnh/Prefab của cấp tiếp theo (Để thay thế cái nhà cũ)
+    public GameObject nextLevelPrefab;
+
+    [Header("Cost Nâng cấp This Level")]
+    public int goldCostUpgrade; // <--- Số vàng cần để xây hoặc nâng lên cấp này
+    public int woodCostUpgrade; // <--- Số gỗ cần để xây hoặc nâng lên cấp này
 }

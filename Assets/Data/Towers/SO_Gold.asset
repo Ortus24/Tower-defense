@@ -24,3 +24,12 @@ MonoBehaviour:
   splashRadius: 0
   towerSize: {x: 3, y: 3}
   resourceType: 1
+  goldPerSecond: 3
+  maxGoldCapacity: 50
+  woodPerSecond: 0
+  maxWoodCapacity: 0
+  description: 
+  nextLevelData: {fileID: 11400000, guid: a42e69bb72bd9cb469e8c773237386c7, type: 2}
+  nextLevelPrefab: {fileID: 2116730894098892117, guid: 50c17fa8e0bcefa4d89488219a770847, type: 3}
+  goldCostUpgrade: 0
+  woodCostUpgrade: 0
