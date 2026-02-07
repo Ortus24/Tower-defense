@@ -21,7 +21,7 @@ public class TowerData : ScriptableObject
     public bool isAoE;
     public float splashRadius;
     public Vector2Int towerSize; // Kích thước chiếm dụng trên lưới
-
+    public Sprite towerIcon;
 
     // ========================================================================
     // HỆ THỐNG Xây DỰNG ECONOMY TOWER

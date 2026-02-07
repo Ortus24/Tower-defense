@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96a17322f09f67643bf7cc3ffb80b917, type: 3}
   m_Name: SO_GoldLv2
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
-  towerName: 
+  towerName: GoldMine lv2
   woodCost: 0
   goldCost: 0
   maxHP: 200
@@ -23,6 +23,7 @@ MonoBehaviour:
   isAoE: 0
   splashRadius: 0
   towerSize: {x: 0, y: 0}
+  towerIcon: {fileID: 7427445707187218192, guid: daabd4c14e8bbbb48867210f26146c9b, type: 3}
   resourceType: 1
   goldPerSecond: 10
   maxGoldCapacity: 100

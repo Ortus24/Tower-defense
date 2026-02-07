@@ -209,6 +209,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Script.TowerBuilding.EconomyTower.BuildingBanner
   btnUpgrade: {fileID: 552695172160243993}
+  btnInfo: {fileID: 394315434130694410}
 --- !u!1 &2116730894098892117
 GameObject:
   m_ObjectHideFlags: 0
@@ -367,6 +368,7 @@ MonoBehaviour:
   coinIcon: {fileID: 4702024685478696125}
   popupPrefab: {fileID: 6568632771950848837, guid: 7fdbfba47f559694f8a6fbe54b550d16, type: 3}
   bannerScript: {fileID: 4473417089381165196}
+  productionInterval: 5
 --- !u!1 &3544847297419863297
 GameObject:
   m_ObjectHideFlags: 0
@@ -484,7 +486,7 @@ GameObject:
   - component: {fileID: 1556944242533326680}
   - component: {fileID: 394315434130694410}
   m_Layer: 5
-  m_Name: Button
+  m_Name: btnInfo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

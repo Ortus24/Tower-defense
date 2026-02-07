@@ -804,6 +804,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Script.TowerBuilding.EconomyTower.BuildingBanner
   btnUpgrade: {fileID: 6751694794753768332}
+  btnInfo: {fileID: 1999203947690780669}
 --- !u!1 &7748183261198500929
 GameObject:
   m_ObjectHideFlags: 0

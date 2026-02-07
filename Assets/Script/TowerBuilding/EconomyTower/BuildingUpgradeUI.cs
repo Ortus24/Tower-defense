@@ -145,7 +145,7 @@ namespace Assets.Script.TowerBuilding.EconomyTower
                 }
 
                 if (nameText != null)
-                    nameText.text = $"{currentData.towerName} ➤ {_nextLevelData.towerName}";
+                    nameText.text = $"{currentData.towerName}";
 
                 // --- [QUAN TRỌNG] SỬA Ở ĐÂY ---
                 // Hiển thị giá NÂNG CẤP (Cost Upgrade) chứ không phải giá xây dựng (Cost)
