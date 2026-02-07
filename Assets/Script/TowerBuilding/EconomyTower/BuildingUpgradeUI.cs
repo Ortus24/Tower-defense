@@ -61,6 +61,13 @@ namespace Assets.Script.TowerBuilding.EconomyTower
             if (data.range > 0) sb.AppendLine($"Range: {data.range}");
             if (data.attackSpeed > 0) sb.AppendLine($"Spd: {data.attackSpeed}/s");
 
+            // --- THÊM MỚI: SỐ MŨI TÊN (Chỉ hiện nếu bắn > 1 tên) ---
+            if (data.projectilesPerShot >= 1)
+            {
+                // Màu Cyan (#00FFFF) để nổi bật chỉ số đặc biệt
+                sb.AppendLine($"Arrows:</color> {data.projectilesPerShot}");
+            }
+
             // Kinh tế Vàng
             if (data.goldPerSecond > 0) sb.AppendLine($"Gold: {data.goldPerSecond}/s");
             if (data.maxGoldCapacity > 0) sb.AppendLine($"G.Cap: {data.maxGoldCapacity}");
@@ -105,6 +112,13 @@ namespace Assets.Script.TowerBuilding.EconomyTower
             CompareLine("DMG", current.damage, next.damage);
             CompareLine("Range", current.range, next.range);
             CompareLine("Spd", current.attackSpeed, next.attackSpeed, "/s");
+
+            // --- THÊM MỚI: SO SÁNH SỐ MŨI TÊN ---
+            // Chỉ so sánh nếu một trong 2 cấp có Multishot
+            if (current.projectilesPerShot > 1 || next.projectilesPerShot > 1)
+            {
+                CompareLine("Arrows", current.projectilesPerShot, next.projectilesPerShot);
+            }
 
             CompareLine("Gold", current.goldPerSecond, next.goldPerSecond, "/s");
             CompareLine("G.Cap", current.maxGoldCapacity, next.maxGoldCapacity);

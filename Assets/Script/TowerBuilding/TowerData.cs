@@ -18,10 +18,18 @@ public class TowerData : ScriptableObject
     public float range;
     public float attackSpeed; // Phát bắn mỗi giây
     public float buildTime; // 3-5s
-    public bool isAoE;
     public float splashRadius;
     public Vector2Int towerSize; // Kích thước chiếm dụng trên lưới
     public Sprite towerIcon;
+
+    [Header("Hệ thống Nhà Lính (Barracks)")]
+    public int soldierCount;        // Số lượng lính tối đa (VD: 3 con)
+    public float respawnTime;       // Thời gian hồi sinh lính sau khi chết (VD: 10s)
+    public GameObject soldierPrefab;// Prefab con lính (Kéo vào đây)
+
+    [Header("Hệ thống Tháp Cung (Arrow)")]
+    public int projectilesPerShot = 1; // Số lượng tên bắn ra mỗi lần (Mặc định là 1)
+    public float burstDelay = 0.1f;    // Thời gian trễ giữa các phát bắn (nếu bắn nhiều tên)
 
     // ========================================================================
     // HỆ THỐNG Xây DỰNG ECONOMY TOWER

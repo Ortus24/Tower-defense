@@ -10,27 +10,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 96a17322f09f67643bf7cc3ffb80b917, type: 3}
-  m_Name: SO_WoodLv2
+  m_Name: SO_ArrowTowerLv2
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
-  towerName: WoodMine lv2
+  towerName: Arrow Tower Lv2
   woodCost: 0
   goldCost: 0
-  maxHP: 200
-  damage: 0
-  range: 0
-  attackSpeed: 0
+  maxHP: 150
+  damage: 20
+  range: 6
+  attackSpeed: 1.4
   buildTime: 0
-  isAoE: 0
   splashRadius: 0
-  towerSize: {x: 3, y: 3}
-  towerIcon: {fileID: 21300000, guid: f64d3993d34d4410e83e766d40059c1b, type: 3}
-  resourceType: 2
+  towerSize: {x: 2, y: 2}
+  towerIcon: {fileID: 21300000, guid: 9150ff9a3f88646ddaf1ed327afa1315, type: 3}
+  soldierCount: 0
+  respawnTime: 0
+  soldierPrefab: {fileID: 0}
+  projectilesPerShot: 2
+  burstDelay: 0.1
+  resourceType: 0
   goldPerSecond: 0
   maxGoldCapacity: 0
-  woodPerSecond: 10
-  maxWoodCapacity: 150
+  woodPerSecond: 0
+  maxWoodCapacity: 0
   description: 
   nextLevelData: {fileID: 0}
   nextLevelPrefab: {fileID: 0}
-  goldCostUpgrade: 50
+  goldCostUpgrade: 100
   woodCostUpgrade: 100
