@@ -62,11 +62,18 @@ namespace Assets.Script.TowerBuilding.EconomyTower
             if (data.attackSpeed > 0) sb.AppendLine($"Spd: {data.attackSpeed}/s");
 
             // --- THÊM MỚI: SỐ MŨI TÊN (Chỉ hiện nếu bắn > 1 tên) ---
-            if (data.projectilesPerShot >= 1)
+            if (data.projectilesPerShot > 0)
             {
                 // Màu Cyan (#00FFFF) để nổi bật chỉ số đặc biệt
                 sb.AppendLine($"Arrows:</color> {data.projectilesPerShot}");
             }
+            if (data.soldierCount > 0)
+            {
+                // Màu Cyan (#00FFFF) để nổi bật
+                sb.AppendLine($"Soldiers:</color> {data.soldierCount}");
+                sb.AppendLine($"Respawn: {data.respawnTime}s");
+            }
+
 
             // Kinh tế Vàng
             if (data.goldPerSecond > 0) sb.AppendLine($"Gold: {data.goldPerSecond}/s");
@@ -118,6 +125,29 @@ namespace Assets.Script.TowerBuilding.EconomyTower
             if (current.projectilesPerShot > 1 || next.projectilesPerShot > 1)
             {
                 CompareLine("Arrows", current.projectilesPerShot, next.projectilesPerShot);
+            }
+            if (current.soldierCount > 0 || next.soldierCount > 0)
+            {
+                CompareLine("Soldiers", current.soldierCount, next.soldierCount);
+
+                // Riêng Respawn Time: GIẢM đi là TỐT -> Logic màu ngược lại
+                float curR = current.respawnTime;
+                float nxtR = next.respawnTime;
+
+                // Chỉ hiện dòng Respawn nếu một trong 2 cấp có dữ liệu
+                if (curR > 0 || nxtR > 0)
+                {
+                    float diff = curR - nxtR; // Thời gian giảm đi bao nhiêu
+
+                    if (nxtR < curR) // Giảm thời gian -> Tốt (Màu xanh)
+                        sb.AppendLine($"Respawn: {nxtR}s <color=#00FF00>(-{diff}s)</color>");
+
+                    else if (nxtR > curR) // Tăng thời gian -> Xấu (Màu đỏ)
+                        sb.AppendLine($"Respawn: {nxtR}s <color=#FF0000>(+{nxtR - curR}s)</color>");
+
+                    else // Bằng nhau -> Màu trắng
+                        sb.AppendLine($"Respawn: {nxtR}s");
+                }
             }
 
             CompareLine("Gold", current.goldPerSecond, next.goldPerSecond, "/s");

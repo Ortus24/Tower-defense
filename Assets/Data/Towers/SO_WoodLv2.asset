@@ -20,10 +20,14 @@ MonoBehaviour:
   range: 0
   attackSpeed: 0
   buildTime: 0
-  isAoE: 0
   splashRadius: 0
   towerSize: {x: 3, y: 3}
   towerIcon: {fileID: 21300000, guid: f64d3993d34d4410e83e766d40059c1b, type: 3}
+  soldierCount: 0
+  respawnTime: 0
+  soldierPrefab: {fileID: 0}
+  projectilesPerShot: 0
+  burstDelay: 0
   resourceType: 2
   goldPerSecond: 0
   maxGoldCapacity: 0

@@ -90,8 +90,14 @@ namespace Assets.Script.TowerBuilding.EconomyTower
             if (data.damage > 0) sb.AppendLine($"DMG: {data.damage}");
             if (data.range > 0) sb.AppendLine($"Range: {data.range}");
             if (data.attackSpeed > 0) sb.AppendLine($"Spd: {data.attackSpeed}/s");
+            if (data.soldierCount > 0)
+            {
+                // Màu Cyan (#00FFFF) để nổi bật
+                sb.AppendLine($"Soldiers:</color> {data.soldierCount}");
+                sb.AppendLine($"Respawn: {data.respawnTime}s");
+            }
             // --- THÊM MỚI: SỐ MŨI TÊN (Chỉ hiện nếu bắn > 1 tên) ---
-            if (data.projectilesPerShot >= 1)
+            if (data.projectilesPerShot > 0)
             {
                 sb.AppendLine($"Arrows:</color> {data.projectilesPerShot}");
             }

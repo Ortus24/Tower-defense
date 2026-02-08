@@ -3,186 +3,198 @@
 public class KnightAI : MonoBehaviour
 {
     [Header("Cài đặt chung")]
-    public BarrackTower parentBarrack;
     public float moveSpeed = 2f;
-    public float attackRange = 0.2f; 
+    public float attackRange = 0.5f; // Tầm đánh cận chiến
+    public float attackRate = 1f;    // Tốc độ đánh (giây/phát)
 
-    [Header("Cài đặt chiến đấu")]
-    public float damage = 10f;
-    public float attackRate = 1f;
-    private float attackCountdown = 0f;
+    // Các biến này sẽ được ghi đè bởi Data từ Tháp
+    private float damage;
+    private float maxHP;
+    private float currentHP;
 
+    private BarrackTower parentBarrack;
+    private Vector3 rallyPoint; // Điểm gác
     private Transform target;
-    private Vector3 spawnPosition;
+
+    private float attackCountdown = 0f;
     private Animator anim;
     private SpriteRenderer sr;
 
+    // --- HÀM KHỞI TẠO (GỌI TỪ BARRACK TOWER) ---
+    public void SetupSoldier(BarrackTower barrack, float dmg, float hp, Vector3 spawnPos)
+    {
+        this.parentBarrack = barrack;
+        this.damage = dmg;
+        this.maxHP = hp;
+        this.currentHP = hp;
+        this.rallyPoint = spawnPos;
+
+        // Đặt vị trí ban đầu
+        transform.position = spawnPos;
+    }
+    // -------------------------------------------
+
     void Start()
     {
-        spawnPosition = transform.position;
         anim = GetComponentInChildren<Animator>();
         sr = GetComponentInChildren<SpriteRenderer>();
     }
 
     void Update()
     {
-        // Giảm thời gian hồi chiêu
-        if (attackCountdown > 0)
-            attackCountdown -= Time.deltaTime;
+        if (attackCountdown > 0) attackCountdown -= Time.deltaTime;
 
-        if (parentBarrack == null) return;
+        if (parentBarrack == null) return; // Nếu nhà lính bị phá, lính dừng hoạt động
 
-        FindTargetInBarrackRange();
+        // 1. Tìm mục tiêu
+        FindTarget();
 
+        // 2. Hành động
         if (target != null)
         {
-            // --- CÓ ĐỊCH: TẤN CÔNG ---
-            MoveAndAttack();
+            // Có địch -> Chiến đấu
+            MoveAndAttack(target.position);
         }
         else
         {
-            // --- HẾT ĐỊCH: VỀ NHÀ ---
-            ReturnToSpawnPoint();
+            // Hết địch -> Về nhà gác
+            ReturnToRallyPoint();
         }
 
-        // Xử lý hiển thị (đè lên nhau dựa theo chiều cao Y)
-        if (sr != null)
-            sr.sortingOrder = Mathf.RoundToInt(transform.position.y * -100);
+        // 3. Xử lý hiển thị (Sorting Order theo chiều cao Y)
+        if (sr != null) sr.sortingOrder = Mathf.RoundToInt(transform.position.y * -100);
     }
 
-    void MoveAndAttack()
+    void FindTarget()
     {
-        // 1. Tính khoảng cách thực tế (Đường chéo)
-        float dist = Vector2.Distance(transform.position, target.position);
+        // Nếu đang đánh 1 con mà con đó chạy ra khỏi vùng bảo vệ của tháp -> Bỏ qua, quay về
+        if (target != null)
+        {
+            if (!target.gameObject.activeSelf) target = null; // Quái chết
+            else
+            {
+                // Kiểm tra khoảng cách từ QUÁI đến THÁP
+                float distEnemyToTower = Vector2.Distance(target.position, parentBarrack.transform.position);
+                if (distEnemyToTower > parentBarrack.data.range) target = null; // Quái chạy xa quá thì bỏ
+            }
+        }
 
-        // 2. Tính độ lệch theo trục Y (Xem đang đứng lệch bao nhiêu)
-        float yDifference = Mathf.Abs(transform.position.y - target.position.y);
+        // Nếu chưa có mục tiêu, tìm con mới
+        if (target == null)
+        {
+            GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+            float shortestDist = Mathf.Infinity;
+            GameObject nearest = null;
 
-        // 3. Tính hướng để gửi vào Animator
-        Vector2 direction = (target.position - transform.position).normalized;
-        UpdateAnimationDirection(direction);
+            foreach (GameObject enemy in enemies)
+            {
+                // Chỉ quan tâm quái nằm trong tầm bảo vệ của THÁP
+                float distToTower = Vector2.Distance(enemy.transform.position, parentBarrack.transform.position);
+                if (distToTower <= parentBarrack.data.range)
+                {
+                    // Chọn con gần LÍNH nhất trong số đó
+                    float distToKnight = Vector2.Distance(transform.position, enemy.transform.position);
+                    if (distToKnight < shortestDist)
+                    {
+                        shortestDist = distToKnight;
+                        nearest = enemy;
+                    }
+                }
+            }
+            target = (nearest != null) ? nearest.transform : null;
+        }
+    }
 
-        // --- LOGIC MỚI: CƠ CHẾ "LANE MAGNET" (NAM CHÂM HÚT VÀO LÀN) ---
+    void MoveAndAttack(Vector3 desPos)
+    {
+        float dist = Vector2.Distance(transform.position, desPos);
+        float yDiff = Mathf.Abs(transform.position.y - desPos.y);
 
-        // Điều kiện đánh khắt khe hơn:
-        // - Phải đủ gần (dist <= attackRange)
-        // - VÀ Phải thẳng hàng (yDifference <= 0.1f)
-        bool isAlignedY = yDifference <= 0.1f;
+        // Điều kiện đánh: Đủ gần VÀ Thẳng hàng Y (Lane Magnet)
+        bool isAlignedY = yDiff <= 0.2f;
 
         if (dist > attackRange || !isAlignedY)
         {
-            // Nếu chưa thẳng hàng, ta sẽ "ép" lính đi về phía Y của quái trước
-            Vector3 moveTarget = target.position;
+            // DI CHUYỂN
+            Vector3 moveTarget = desPos;
 
-            // Nếu đã đến khá gần (theo trục X) nhưng vẫn bị lệch Y -> Chỉ di chuyển Y
-            if (Mathf.Abs(transform.position.x - target.position.x) <= attackRange)
+            // Kỹ thuật Lane Magnet: Nếu X đã gần, chỉ di chuyển Y để trượt vào hàng
+            if (Mathf.Abs(transform.position.x - desPos.x) <= attackRange)
             {
-                // Giữ nguyên X hiện tại, chỉ thay đổi Y để trượt lên/xuống cho thẳng
-                moveTarget = new Vector3(transform.position.x, target.position.y, transform.position.z);
+                moveTarget = new Vector3(transform.position.x, desPos.y, transform.position.z);
             }
 
             transform.position = Vector2.MoveTowards(transform.position, moveTarget, moveSpeed * Time.deltaTime);
-
-            anim.SetBool("isMoving", true);
-            anim.SetBool("isAttacking", false);
+            SetAnim(true, false, (moveTarget - transform.position).normalized);
         }
         else
         {
-            // Đã thẳng hàng & Đủ gần -> TẤN CÔNG
-            anim.SetBool("isMoving", false);
-            anim.SetBool("isAttacking", true);
+            // TẤN CÔNG
+            SetAnim(false, true, (desPos - transform.position).normalized);
 
             if (attackCountdown <= 0f)
             {
-                DealDamage();
+                // Gửi sát thương
+                if (target != null) target.SendMessage("TakeDamage", damage, SendMessageOptions.DontRequireReceiver);
                 attackCountdown = 1f / attackRate;
             }
         }
     }
 
-    void DealDamage()
+    void ReturnToRallyPoint()
     {
-        if (target != null)
+        float dist = Vector2.Distance(transform.position, rallyPoint);
+
+        if (dist > 0.1f)
         {
-            // Gửi sát thương sang script máu của Enemy
-            target.SendMessage("TakeDamage", damage, SendMessageOptions.DontRequireReceiver);
+            // Đi về điểm gác
+            transform.position = Vector2.MoveTowards(transform.position, rallyPoint, moveSpeed * Time.deltaTime);
+            SetAnim(true, false, (rallyPoint - transform.position).normalized);
         }
-    }
-
-    void ReturnToSpawnPoint()
-    {
-        float distToSpawn = Vector2.Distance(transform.position, spawnPosition);
-
-        // Nếu chưa về đến nhà -> Đi tiếp
-        if (distToSpawn > 0.1f)
-        {
-            // Tính hướng về nhà để quay mặt cho đúng
-            Vector2 direction = (spawnPosition - transform.position).normalized;
-            UpdateAnimationDirection(direction);
-
-            transform.position = Vector2.MoveTowards(transform.position, spawnPosition, moveSpeed * Time.deltaTime);
-            anim.SetBool("isMoving", true);
-            anim.SetBool("isAttacking", false);
-        }
-        // Đã về đến nhà -> Đứng im (Idle)
         else
         {
-            anim.SetBool("isMoving", false);
-            anim.SetBool("isAttacking", false);
+            // Đứng yên (Idle)
+            SetAnim(false, false, Vector2.zero);
         }
     }
 
-    void FindTargetInBarrackRange()
+    void SetAnim(bool isMoving, bool isAttacking, Vector2 dir)
     {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        float shortestDistance = Mathf.Infinity;
-        GameObject nearestEnemy = null;
+        if (anim == null) return;
 
-        foreach (GameObject enemy in enemies)
-        {
-            // QUAN TRỌNG: Dùng GetTowerCenter() để lấy tâm chuẩn (đã chỉnh Offset)
-            float distToBarrack = Vector2.Distance(parentBarrack.GetTowerCenter(), enemy.transform.position);
+        anim.SetBool("isMoving", isMoving);
+        anim.SetBool("isAttacking", isAttacking);
 
-            // Chỉ đánh nếu địch nằm trong vùng bảo vệ của nhà lính
-            if (distToBarrack <= parentBarrack.data.range)
-            {
-                float distToKnight = Vector2.Distance(transform.position, enemy.transform.position);
-                if (distToKnight < shortestDistance)
-                {
-                    shortestDistance = distToKnight;
-                    nearestEnemy = enemy;
-                }
-            }
-        }
-        target = (nearestEnemy != null) ? nearestEnemy.transform : null;
-    }
-
-    // Hàm này thay thế hoàn toàn hàm Flip cũ
-    void UpdateAnimationDirection(Vector2 dir)
-    {
-        // Chỉ cập nhật nếu có hướng di chuyển rõ ràng
         if (dir.magnitude > 0.1f)
         {
-            // Gửi thông số vào Blend Tree
-            // InputX dùng Abs vì ta tái sử dụng Animation bên Phải cho bên Trái
             anim.SetFloat("InputX", Mathf.Abs(dir.x));
             anim.SetFloat("InputY", dir.y);
 
-            // Xử lý lật mặt thủ công (Scale)
-            if (dir.x < 0) transform.localScale = new Vector3(-1, 1, 1); // Quay trái
-            else transform.localScale = new Vector3(1, 1, 1);  // Quay phải
+            // Lật mặt Sprite
+            if (dir.x < 0) transform.localScale = new Vector3(-1, 1, 1);
+            else transform.localScale = new Vector3(1, 1, 1);
         }
     }
 
-    // Vẽ Gizmos để debug
+    // Hàm nhận sát thương (nếu quái đánh lại lính)
+    public void TakeDamage(float dmg)
+    {
+        currentHP -= dmg;
+        if (currentHP <= 0)
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        // Có thể thêm hiệu ứng nổ hoặc animation chết ở đây
+        Destroy(gameObject);
+    }
+
     private void OnDrawGizmosSelected()
     {
-        // Vòng tròn đỏ thể hiện tầm kiếm
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
-
-        // Đường nối về vị trí gác
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawLine(transform.position, spawnPosition);
     }
 }

@@ -266,7 +266,7 @@ Transform:
   m_GameObject: {fileID: 1812178522026320016}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.1, y: -1.2, z: 0}
+  m_LocalPosition: {x: -0.04, y: -1.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -285,7 +285,7 @@ GameObject:
   - component: {fileID: 2613971504881953172}
   - component: {fileID: -844663091066810370}
   m_Layer: 0
-  m_Name: BarrackTower
+  m_Name: BarrackTowerLv2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -307,6 +307,7 @@ Transform:
   - {fileID: 1557522208715241802}
   - {fileID: 7972672398378408465}
   - {fileID: 8713347550762218224}
+  - {fileID: 3002443627635082572}
   - {fileID: 3291089882686756974}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -322,11 +323,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5733aa9dbe331f4448ae1ad85ff76615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BarrackTower
-  data: {fileID: 11400000, guid: ddaed82685d1b0640b4dc9da9dea695e, type: 2}
+  data: {fileID: 11400000, guid: 4e323608f3697274692c56ee878fa258, type: 2}
   centerOffset: {x: 0, y: 0}
   spawnPoints:
   - {fileID: 7972672398378408465}
   - {fileID: 8713347550762218224}
+  - {fileID: 3002443627635082572}
   bannerScript: {fileID: 1346770881494508194}
   rangeVisual: {fileID: 0}
 --- !u!61 &2613971504881953172
@@ -629,6 +631,37 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &5502169009757187408
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3002443627635082572}
+  m_Layer: 0
+  m_Name: SpawnPoint3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3002443627635082572
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5502169009757187408}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.8, y: -1.2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6855003282139420209}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7752087977280609083
 GameObject:
   m_ObjectHideFlags: 0
