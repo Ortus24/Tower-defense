@@ -58,6 +58,24 @@ namespace Assets.Script.TowerBuilding
             }
         }
 
+        // --- THÊM HÀM NÀY VÀO ĐỂ GIẢI PHÓNG Ô ĐẤT ---
+        public void FreeArea(Vector2Int startPos, Vector2Int size)
+        {
+            // Duyệt qua tất cả các ô lưới mà tháp này đang chiếm dụng
+            for (int x = 0; x < size.x; x++)
+            {
+                for (int y = 0; y < size.y; y++)
+                {
+                    int checkX = startPos.x + x;
+                    int checkY = startPos.y + y;
+
+                    // Vì ở hàm OccupyArea bạn dùng SetValue là 1 (đã chiếm)
+                    // Nên ở đây giải phóng đất, ta chỉ cần SetValue về 0 (đất trống)
+                    levelGrid.SetValue(checkX, checkY, 0);
+                }
+            }
+        }
+
         // --- ĐOẠN CODE MỚI ĐỂ HIỂN THỊ Ô ĐÃ CHIẾM ---
         private void OnDrawGizmos()
         {

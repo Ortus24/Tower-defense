@@ -324,6 +324,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BarrackTower
   data: {fileID: 11400000, guid: 4e323608f3697274692c56ee878fa258, type: 2}
+  healthBarScript: {fileID: 1331263593945501816, guid: 8521259bc0755af4fbf55c1114a28b73, type: 3}
   centerOffset: {x: 0, y: 0}
   spawnPoints:
   - {fileID: 7972672398378408465}

@@ -275,6 +275,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NewMonoBehaviourScript
   data: {fileID: 11400000, guid: 527b44f6be7aa8e4281cc747ead11f8c, type: 2}
+  healthBarScript: {fileID: 1331263593945501816, guid: 8521259bc0755af4fbf55c1114a28b73, type: 3}
   centerOffset: {x: 0, y: 0}
   arrowPrefab: {fileID: 8534650300951064589, guid: fc5a1a0de62dec44fbe6c21978aa5152, type: 3}
   firePoints:

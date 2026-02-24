@@ -2,6 +2,7 @@
 using Assets.Script.TowerBuilding.EconomyTower;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.LowLevel;
 
 public class NewMonoBehaviourScript : BaseTower
 {
@@ -18,8 +19,9 @@ public class NewMonoBehaviourScript : BaseTower
     private Animator archerAnim;
     private float fireCountdown = 0f;
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         // 1. Setup Animator
         archerAnim = GetComponentInChildren<Animator>();
 
@@ -70,7 +72,7 @@ public class NewMonoBehaviourScript : BaseTower
     {
         // 1. Chặn nếu đang click vào nút UI (để không bị click xuyên)
         if (EventSystem.current.IsPointerOverGameObject()) return;
-
+        bool newState = true;
         // 2. Bật / Tắt Banner
         if (bannerScript != null)
         {
@@ -79,22 +81,20 @@ public class NewMonoBehaviourScript : BaseTower
             bool isActive = bannerScript.gameObject.activeSelf;
             bannerScript.gameObject.SetActive(!isActive);
         }
-    }
-
-    void Shoot()
-    {
-        if (arrowPrefab != null && firePoints[0] != null)
+        // 3. ĐỒNG BỘ THANH MÁU (Bật/Tắt cùng lúc với Banner)
+        // Biến healthBarScript và currentHP được kế thừa sẵn từ BaseTower
+        if (healthBarScript != null)
         {
-            GameObject arrowGO = Instantiate(arrowPrefab, firePoints[0].position, Quaternion.identity);
-            ArrowProjectile arrow = arrowGO.GetComponent<ArrowProjectile>();
+            healthBarScript.Toggle(newState);
 
-            if (arrow != null)
+            // Nếu đang bật lên thì cập nhật lại giao diện máu cho chắc chắn
+            if (newState == true)
             {
-                arrow.Seek(target);
+                healthBarScript.UpdateHealthUI(currentHP, data.maxHP);
             }
         }
+        TakeDamage(10);
     }
-
     void ShootMulti()
     {
         // Duyệt qua tất cả các điểm bắn đang có trong mảng
