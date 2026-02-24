@@ -17,5 +17,9 @@ namespace Assets.Script.TowerBuilding.EconomyTower
             gameObject.SetActive(false); // Hoặc đổi sprite thành sprite đã khai thác
         }
 
+        public void Restore()
+        {
+            gameObject.SetActive(true);
+        }
     }
 }

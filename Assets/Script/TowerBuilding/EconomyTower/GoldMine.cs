@@ -8,13 +8,14 @@ using TMPro;
 using Unity.AppUI.Redux;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.LowLevel;
 
 namespace Assets.Script.TowerBuilding.EconomyTower
 {
-    public class GoldMine : MonoBehaviour
+    public class GoldMine : BaseTower
     {
-        [Header("Dữ liệu")]
-        public TowerData data;
+        //[Header("Dữ liệu")]
+        //public TowerData data;
 
         [Header("Hiển thị")]
         public GameObject coinIcon;
@@ -31,8 +32,9 @@ namespace Assets.Script.TowerBuilding.EconomyTower
         private int currentStoredGold = 0;
         private float timer = 0f;
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             if (coinIcon != null) coinIcon.SetActive(false);
 
             if (bannerScript != null)
@@ -86,7 +88,7 @@ namespace Assets.Script.TowerBuilding.EconomyTower
         private void OnMouseDown()
         {
             if (EventSystem.current.IsPointerOverGameObject()) return;
-
+            bool newState = true;
             if (currentStoredGold > 0)
             {
                 CollectGold();
@@ -99,6 +101,18 @@ namespace Assets.Script.TowerBuilding.EconomyTower
                 bool isActive = bannerScript.gameObject.activeSelf;
                 bannerScript.gameObject.SetActive(!isActive);
             }
+            // 3. ĐỒNG BỘ THANH MÁU
+            if (healthBarScript != null)
+            {
+                healthBarScript.Toggle(newState);
+                if (newState == true)
+                {
+                    healthBarScript.UpdateHealthUI(currentHP, data.maxHP);
+                }
+            }
+
+            //Test
+            TakeDamage(10);
         }
 
         void CollectGold()

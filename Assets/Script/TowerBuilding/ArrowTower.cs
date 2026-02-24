@@ -36,8 +36,6 @@ public class NewMonoBehaviourScript : BaseTower
         }
     }
 
-    protected override void OnBuildComplete() { }
-
     void Update()
     {
         if (!isBuilt) return; // Nếu chưa xây xong thì không làm gì

@@ -1,4 +1,5 @@
 ﻿using Assets.Script.TowerBuilding;
+using Assets.Script.TowerBuilding.EconomyTower;
 using Assets.Script.TowerBuilding.UIBuildMenu;
 using System.Collections;
 using UnityEngine;
@@ -15,6 +16,9 @@ public abstract class BaseTower : MonoBehaviour
     [Header("Căn chỉnh tâm")]
     // Biến này để chỉnh tâm vòng tròn cho khớp với hình ảnh tòa nhà
     [SerializeField] protected Vector2 centerOffset;
+
+    // --- THÊM DÒNG NÀY ĐỂ NHỚ CÁI MỎ ---
+    [HideInInspector] public ResourceSpot occupiedSpot;
 
     protected bool isBuilt = true;
     protected Transform target;
@@ -43,18 +47,7 @@ public abstract class BaseTower : MonoBehaviour
         {
             healthBarScript.Setup(currentHP, data.maxHP);
         }
-        StartCoroutine(BuildRoutine());
     }
-
-    IEnumerator BuildRoutine()
-    {
-        // Chỗ này có thể thêm hiệu ứng bụi bay
-        if (data != null) yield return new WaitForSeconds(data.buildTime);
-        isBuilt = true;
-        OnBuildComplete();
-    }
-
-    protected abstract void OnBuildComplete();
 
     protected void FindNearestTarget()
     {
@@ -141,6 +134,12 @@ public abstract class BaseTower : MonoBehaviour
             GridManager.main.FreeArea(new Vector2Int(gridX, gridY), data.towerSize);
 
             Debug.Log($"Đã giải phóng đất {data.towerSize.x}x{data.towerSize.y} tại ({gridX}, {gridY})");
+        }
+
+        if (occupiedSpot != null)
+        {
+            occupiedSpot.Restore();
+            Debug.Log("Đã trả lại mỏ tài nguyên!");
         }
 
         Destroy(gameObject);

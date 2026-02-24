@@ -60,6 +60,8 @@ public class BuildingManager : MonoBehaviour
 
                 // B. TẠO THÁP THẬT
                 GameObject newTower = Instantiate(buildingPrefabs[selectedIndex], currentGhost.transform.position, Quaternion.identity);
+                // Lấy script BaseTower của tháp vừa tạo ra
+                BaseTower towerComponent = newTower.GetComponent<BaseTower>();
 
                 // C. XỬ LÝ CHIẾM ĐẤT (Logic quan trọng mới thêm)
                 // Nếu đây là công trình khai thác (Mỏ/Gỗ) -> Xử lý cục quặng
@@ -70,6 +72,12 @@ public class BuildingManager : MonoBehaviour
                     {
                         ghostPlacement.currentValidSpot.Occupy(); // Làm cục quặng biến mất
                         GridManager.main.OccupyArea(new Vector2Int(gridX, gridY), size);
+
+                        // --- TRUYỀN THAM CHIẾU MỎ CHO THÁP GIỮ ---
+                        if (towerComponent != null)
+                        {
+                            towerComponent.occupiedSpot = ghostPlacement.currentValidSpot;
+                        }
                     }
                 }
                 else

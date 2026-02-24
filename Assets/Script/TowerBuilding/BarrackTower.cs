@@ -32,12 +32,6 @@ public class BarrackTower : BaseTower
         }
     }
 
-    protected override void OnBuildComplete()
-    {
-        // Xây xong -> Sinh toàn bộ đội hình ngay lập tức
-        SpawnFullSquad();
-    }
-
     void Update()
     {
         if (!isBuilt) return;

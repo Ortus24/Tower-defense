@@ -5,13 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.LowLevel;
 
 namespace Assets.Script.TowerBuilding.EconomyTower
 {
-    public class WoodMine : MonoBehaviour
+    public class WoodMine : BaseTower
     {
-        [Header("Dữ liệu")]
-        public TowerData data;
+        //[Header("Dữ liệu")]
+        //public TowerData data;
 
         [Header("Hiển thị")]
         public GameObject woodIcon;      // Icon Khúc Gỗ (Thay cho CoinIcon)
@@ -26,8 +27,9 @@ namespace Assets.Script.TowerBuilding.EconomyTower
         private int currentStoredWood = 0;
         private float timer = 0f;
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             if (woodIcon != null) woodIcon.SetActive(false);
 
             if (bannerScript != null)
@@ -82,6 +84,7 @@ namespace Assets.Script.TowerBuilding.EconomyTower
             // Chặn click xuyên qua UI
             if (EventSystem.current.IsPointerOverGameObject()) return;
 
+            bool newState = true;
             // 1. Ưu tiên Thu hoạch
             if (currentStoredWood > 0)
             {
@@ -96,6 +99,19 @@ namespace Assets.Script.TowerBuilding.EconomyTower
                 bool isActive = bannerScript.gameObject.activeSelf;
                 bannerScript.gameObject.SetActive(!isActive);
             }
+
+            // 3. ĐỒNG BỘ THANH MÁU
+            if (healthBarScript != null)
+            {
+                healthBarScript.Toggle(newState);
+                if (newState == true)
+                {
+                    healthBarScript.UpdateHealthUI(currentHP, data.maxHP);
+                }
+            }
+
+            //Test
+            TakeDamage(10);
         }
 
         void CollectWood()
