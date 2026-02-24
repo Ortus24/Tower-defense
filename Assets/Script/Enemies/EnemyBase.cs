@@ -1,39 +1,220 @@
+﻿using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(Collider2D))]
+[RequireComponent(typeof(Collider2D), typeof(Rigidbody2D))]
 public class EnemyBase : MonoBehaviour
 {
     [Header("Data")]
     public EnemyData data;
     public System.Action OnDeath;
-    private float currentHP;
+
+    [Header("Movement")]
+    [SerializeField] private float stopDistance = 4.5f;
+    [SerializeField] private float stopBuffer = 0.2f;
+
+    [Header("Separation")]
+    [SerializeField] private float separationRadius = 0.6f;
+    [SerializeField] private float separationForce = 2f;
+    [SerializeField] private LayerMask enemyLayer;
+
+    [Header("Attack")]
+    [SerializeField] private float waitBeforeAttack = 2f;
+    [SerializeField] private float attackCooldown = 1f;
+
+    [Header("TNT")]
+    [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private Transform firePoint;
+    [SerializeField] private float projectileSpeed = 6f;
+
     private Transform target;
+    private Rigidbody2D rb;
+    private Animator animator;
+    private SpriteRenderer sprite;
+    private EnemyHealth health;
+
+    private bool isMoving;
+
+    private float waitTimer = 0f;
+    private float attackTimer = 0f;
+    private bool hasStartedAttack = false;
+
+    private EnemyState currentState = EnemyState.Moving;
+    [SerializeField] private float stunDuration = 0.4f;
+
+    private enum EnemyState
+    {
+        Moving,
+        PreparingAttack,
+        Attacking,
+        Stunned
+    }
+
+    void Awake()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
+        sprite = GetComponentInChildren<SpriteRenderer>();
+        health = GetComponent<EnemyHealth>();
+    }
 
     void Start()
     {
-        currentHP = data.maxHP;
         FindTarget();
-        
-        // Debug logging
-        if (target != null)
-        {
-            Debug.Log($"{data.enemyName} spawned! Target: {target.name} at {target.position}");
-        }
-        else
-        {
-            Debug.LogError($"{data.enemyName} spawned but NO TARGET FOUND for type: {data.targetType}!");
-        }
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (target == null)
         {
-            // Try to find target again if lost
-            FindTarget();
+            SetMoving(false);
             return;
         }
-        MoveToTarget();
+
+        Vector2 targetPos = GetTargetPosition();
+        Vector2 toTarget = targetPos - rb.position;
+        float distance = toTarget.magnitude;
+
+        FaceTarget(toTarget);
+
+        if (distance <= stopDistance + stopBuffer)
+        {
+            SetMoving(false);
+
+            // Chưa đủ 2 giây → đếm thời gian chờ
+            if (!hasStartedAttack)
+            {
+                waitTimer += Time.fixedDeltaTime;
+
+                if (waitTimer >= waitBeforeAttack)
+                {
+                    hasStartedAttack = true;
+                    attackTimer = 0f; // để đánh ngay sau khi chờ xong
+                }
+            }
+            else
+            {
+                attackTimer -= Time.fixedDeltaTime;
+
+                if (attackTimer <= 0f)
+                {
+                    AnimatorStateInfo state = animator.GetCurrentAnimatorStateInfo(0);
+
+                    if (!state.IsName("Attack"))
+                    {
+                        animator.SetTrigger("Attack");
+                        attackTimer = attackCooldown; // 🔥 QUAN TRỌNG
+                    }
+                }
+            }
+
+            return;
+        }
+        else
+        {
+            // Nếu ra khỏi vùng → reset lại
+            waitTimer = 0f;
+            hasStartedAttack = false;
+        }
+
+        Vector2 moveDir = toTarget.normalized;
+
+        // Kiểm tra bị chặn phía trước
+        bool blocked = IsBlocked(moveDir);
+
+        // Lấy lực tách nếu quá gần
+        Vector2 separation = GetSeparationForce();
+
+        Vector2 finalDir = Vector2.zero;
+
+        if (!blocked)
+            finalDir += moveDir;
+
+        finalDir += separation;
+
+        if (finalDir.sqrMagnitude < 0.001f)
+        {
+            SetMoving(false);
+            return;
+        }
+
+        finalDir.Normalize();
+
+        SetMoving(true);
+
+        Vector2 newPos = rb.position + finalDir * data.moveSpeed * Time.fixedDeltaTime;
+        rb.MovePosition(newPos);
+    }
+
+    bool IsBlocked(Vector2 moveDir)
+    {
+        RaycastHit2D hit = Physics2D.CircleCast(
+            rb.position,
+            0.25f,              // bán kính kiểm tra phía trước
+            moveDir,
+            0.4f,               // khoảng kiểm tra phía trước
+            enemyLayer
+        );
+
+        if (hit.collider != null && hit.rigidbody != rb)
+            return true;
+
+        return false;
+    }
+
+    Vector2 GetSeparationForce()
+    {
+        Collider2D[] hits = Physics2D.OverlapCircleAll(
+            transform.position,
+            separationRadius,
+            enemyLayer
+        );
+
+        Vector2 force = Vector2.zero;
+        int count = 0;
+
+        foreach (var hit in hits)
+        {
+            if (hit.attachedRigidbody == rb) continue;
+
+            Vector2 diff = (Vector2)transform.position - (Vector2)hit.transform.position;
+            float dist = diff.magnitude;
+
+            if (dist > 0.01f)
+            {
+                force += diff.normalized / dist;
+                count++;
+            }
+        }
+
+        if (count > 0)
+            force /= count;
+
+        return force * separationForce;
+    }
+
+    void SetMoving(bool value)
+    {
+        if (isMoving == value) return;
+
+        isMoving = value;
+        animator.SetBool("isMoving", value);
+    }
+
+    Vector2 GetTargetPosition()
+    {
+        if (target == null) return rb.position;
+
+        TagetPoint player = target.GetComponent<TagetPoint>();
+        if (player != null && player.targetPoint != null)
+            return player.targetPoint.position;
+
+        return target.position;
+    }
+
+    void FaceTarget(Vector2 direction)
+    {
+        if (Mathf.Abs(direction.x) > 0.05f)
+            sprite.flipX = direction.x < 0;
     }
 
     void FindTarget()
@@ -42,50 +223,27 @@ public class EnemyBase : MonoBehaviour
         {
             case EnemyTargetType.TheKeep:
                 target = GameObject.FindWithTag("TheKeep")?.transform;
-                if (target == null) Debug.LogWarning($"{data.enemyName}: No GameObject with tag 'TheKeep' found!");
                 break;
 
             case EnemyTargetType.Mines:
-                target = FindClosestWithTag("Mine");
-                if (target == null)
-                {
-                    Debug.LogWarning($"{data.enemyName}: No Mine found, targeting TheKeep instead!");
-                    target = GameObject.FindWithTag("TheKeep")?.transform;
-                }
+                target = FindClosestWithTag("Mine")
+                         ?? GameObject.FindWithTag("TheKeep")?.transform;
                 break;
 
             case EnemyTargetType.Towers:
-                target = FindClosestWithTag("Tower");
-                if (target == null)
-                {
-                    Debug.LogWarning($"{data.enemyName}: No Tower found, targeting Player instead!");
-                    target = GameObject.FindWithTag("Player")?.transform;
-                }
+                target = FindClosestWithTag("Tower")
+                         ?? GameObject.FindWithTag("Player")?.transform;
                 break;
 
             case EnemyTargetType.Hero:
                 target = GameObject.FindWithTag("Player")?.transform;
-                if (target == null) Debug.LogWarning($"{data.enemyName}: No GameObject with tag 'Player' found!");
                 break;
 
             case EnemyTargetType.Sweep:
-                target = FindClosestWithTag("EnemyTarget");
-                if (target == null)
-                {
-                    Debug.LogWarning($"{data.enemyName}: No EnemyTarget found, targeting Player instead!");
-                    target = GameObject.FindWithTag("Player")?.transform;
-                }
+                target = FindClosestWithTag("EnemyTarget")
+                         ?? GameObject.FindWithTag("Player")?.transform;
                 break;
         }
-    }
-
-    void MoveToTarget()
-    {
-        transform.position = Vector3.MoveTowards(
-            transform.position,
-            target.position,
-            data.moveSpeed * Time.deltaTime
-        );
     }
 
     Transform FindClosestWithTag(string tag)
@@ -96,29 +254,44 @@ public class EnemyBase : MonoBehaviour
 
         foreach (var obj in objs)
         {
-            float dist = Vector3.Distance(transform.position, obj.transform.position);
+            float dist = Vector2.Distance(rb.position, obj.transform.position);
             if (dist < minDist)
             {
                 minDist = dist;
                 closest = obj.transform;
             }
         }
+
         return closest;
     }
 
     public void TakeDamage(float amount)
     {
-        currentHP -= amount;
-        if (currentHP <= 0)
-        {
-            Die();
-        }
+        ResetAttackState();
+        health?.TakeDamage(amount);
     }
 
-    void Die()
+    // Debug vẽ bán kính separation
+    void OnDrawGizmosSelected()
     {
-        Debug.Log($"{data.enemyName} died!");
-        OnDeath?.Invoke();  // Trigger event
-        Destroy(gameObject);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, separationRadius);
+    }
+
+    private void ResetAttackState()
+    {
+        waitTimer = 0f;
+        hasStartedAttack = false;
+        attackTimer = 0f;
+    }
+
+    public void SpawnProjectile()
+    {
+        if (target == null) return;
+
+        GameObject proj = Instantiate(projectilePrefab, firePoint.position, Quaternion.identity);
+
+        Throw_Taget projectile = proj.GetComponent<Throw_Taget>();
+        projectile.Init(target, projectileSpeed);
     }
 }

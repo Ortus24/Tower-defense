@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: TNTGoblin_Data
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   enemyName: TNT Goblin
-  maxHP: 30
+  maxHP: 200
   moveSpeed: 3
   damage: 10
   targetType: 0
-  enemyPrefab: {fileID: 5373278442133323581, guid: edb6aef74fe06314da54aa243241a4ee, type: 3}
+  enemyPrefab: {fileID: 4593477570353505074, guid: f247cd2bf5235ee48bf928c3f7ad9bfe, type: 3}

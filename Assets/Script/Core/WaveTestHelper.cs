@@ -66,7 +66,7 @@ public class WaveTestHelper : MonoBehaviour
 
     int KillAllEnemies()
     {
-        EnemyBase[] enemies = FindObjectsOfType<EnemyBase>();
+        EnemyBase[] enemies = FindObjectsByType<EnemyBase>(FindObjectsSortMode.None);
         int count = enemies.Length;
         
         foreach (var enemy in enemies)
@@ -75,7 +75,7 @@ public class WaveTestHelper : MonoBehaviour
         }
 
         // Also kill bosses
-        BossEnemy[] bosses = FindObjectsOfType<BossEnemy>();
+        BossEnemy[] bosses = FindObjectsByType<BossEnemy>(FindObjectsSortMode.None);
         count += bosses.Length;
         
         foreach (var boss in bosses)

@@ -27,7 +27,16 @@ public class WaveManager : MonoBehaviour
     public int bossWaveInterval = 10; // Spawn boss mỗi 10 waves
     void Start()
     {
-        StartNextWave();
+        //StartNextWave();
+
+
+        Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
+
+        GameObject enemy = Instantiate(
+            tntGoblin.enemyPrefab,
+            spawnPoint.position,
+            Quaternion.identity
+        );
     }
     void Update()
     {
@@ -60,7 +69,7 @@ public class WaveManager : MonoBehaviour
         {
             // Chọn random enemy từ list available
             EnemyData randomEnemy = enemiesToSpawn[Random.Range(0, enemiesToSpawn.Count)];
-            SpawnEnemy(randomEnemy);
+            SpawnEnemy(tntGoblin); ///tesst
 
             yield return new WaitForSeconds(spawnDelay);
         }
