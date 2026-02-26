@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 235032146b7f7034a8697422a15535be, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: Assembly-CSharp::PlayerData
-  playerName: 
+  playerName: Warrior
   maxHP: 0
   moveSpeed: 0
   damage: 0
