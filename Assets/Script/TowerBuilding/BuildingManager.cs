@@ -1,91 +1,116 @@
 ﻿using Assets.Script.TowerBuilding;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class BuildingManager : MonoBehaviour
 {
     public static BuildingManager main;
-    public TowerData data; // Data này chứa towerSize (Vector2Int)
-    [SerializeField] private GameObject[] buildingPrefabs; // Tháp thật
-    [SerializeField] private GameObject[] ghostPrefabs;    // Tháp mờ
-    [SerializeField] private float snapOffsetX = 0.7f;
-    [SerializeField] private float snapOffsetY = 0.3f;
-    [SerializeField] private float snapOffsetXBarrack = 1f;
-    [SerializeField] private float snapOffsetYBarrack = 0.3f;
+
+    [SerializeField] private GameObject[] buildingPrefabs;
+    [SerializeField] private GameObject[] ghostPrefabs;
+
     private int selectedIndex = -1;
     private GameObject currentGhost;
 
-
-    private void Awake() { main = this; }
+    private void Awake() { main = this; Debug.Log("BuildingManager đã sẵn sàng!"); }
 
     public void SelectTower(int index)
     {
         if (currentGhost != null) Destroy(currentGhost);
         selectedIndex = index;
-        Debug.Log("Selected Index: " + selectedIndex);
         currentGhost = Instantiate(ghostPrefabs[index]);
     }
 
     private void Update()
     {
-        
         if (currentGhost == null) return;
+        if (GridManager.main == null || GridManager.main.GetLevelGrid() == null) return;
 
-        // A. Lấy kích thước tháp từ Ghost đang chọn
+        // 1. Lấy dữ liệu và tham chiếu
         PlacementCheck ghostPlacement = currentGhost.GetComponent<PlacementCheck>();
-        Vector2Int size = ghostPlacement.data.towerSize;
-        // B. Tính toán Snapping tự động
-        // Nếu size là số chẵn (như 2), offset sẽ là 0.5 (hoặc snapOffset của bạn)
-        // Nếu size là số lẻ (như 3), tháp sẽ nằm chính xác tại Floor(mousePos)
-        float offsetX = (size.x % 2 == 0) ? snapOffsetX : snapOffsetXBarrack;
-        float offsetY = (size.y % 2 == 0) ? snapOffsetY : snapOffsetYBarrack;
+        TowerData data = ghostPlacement.data; // Lấy data để dùng nhiều lần cho gọn
+        Vector2Int size = data.towerSize;
+        float cellSize = GridManager.main.cellSize;
 
-        // 1. Lấy vị trí chuột và chuyển đổi sang tọa độ thế giới
+        // 2. Lấy vị trí chuột -> Chuyển sang Grid Coordinate (x, y)
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0;
-        // Logic Snapping cho tháp
-        float snappedX = Mathf.Floor(mousePos.x) + offsetX;
-        float snappedY = Mathf.Floor(mousePos.y) + offsetY;
-        currentGhost.transform.position = new Vector3(snappedX, snappedY, 0);
 
-        // 3. Click chuột trái để xây tháp
-        if (Input.GetMouseButtonDown(0) &&
-            !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject() && // Ngăn xây tháp khi bấm vào Button UI
-            currentGhost.GetComponent<PlacementCheck>().CanPlace())
+        int gridX, gridY;
+        GridManager.main.GetLevelGrid().GetXY(mousePos, out gridX, out gridY);
+
+        // 3. TÍNH TOÁN VỊ TRÍ SNAP
+        Vector3 originPos = GridManager.main.GetLevelGrid().GetWorldPosition(gridX, gridY);
+        Vector3 centerOffset = new Vector3(size.x * cellSize * 0.5f, size.y * cellSize * 0.5f, 0);
+        currentGhost.transform.position = originPos + centerOffset;
+
+        // 4. XỬ LÝ CLICK ĐỂ XÂY
+        if (Input.GetMouseButtonDown(0))
         {
-            // A. Lấy script PlacementCheck từ Ghost để lấy dữ liệu TowerData
-            //PlacementCheck ghostPlacement = currentGhost.GetComponent<PlacementCheck>();
+            if (EventSystem.current.IsPointerOverGameObject()) return;
 
-            // B. Tạo tháp thật tại vị trí của Ghost
-            GameObject newTower = Instantiate(buildingPrefabs[selectedIndex], currentGhost.transform.position, Quaternion.identity);
-
-            // C. Cập nhật Grid: Đánh dấu các ô đất đã bị tháp này chiếm dụng (2x2 hoặc 2x3)
-            Vector2Int gridPos;
-            if (size.x % 2 == 0 && size.y % 2 == 0)
+            // Kiểm tra xem có xây được không (PlacementCheck đã lo vụ check Tiền + check Mỏ/Đất)
+            if (ghostPlacement.CanPlace())
             {
-                gridPos = new Vector2Int(Mathf.FloorToInt(currentGhost.transform.position.x), Mathf.FloorToInt(currentGhost.transform.position.y));
+                // A. TRỪ TIỀN
+                if (ResourceManager.main != null)
+                {
+                    ResourceManager.main.SpendResources(data.goldCost, data.woodCost);
+                }
+
+                // B. TẠO THÁP THẬT
+                GameObject newTower = Instantiate(buildingPrefabs[selectedIndex], currentGhost.transform.position, Quaternion.identity);
+                // Lấy script BaseTower của tháp vừa tạo ra
+                BaseTower towerComponent = newTower.GetComponent<BaseTower>();
+
+                // C. XỬ LÝ CHIẾM ĐẤT (Logic quan trọng mới thêm)
+                // Nếu đây là công trình khai thác (Mỏ/Gỗ) -> Xử lý cục quặng
+                if (data.resourceType != ResourceType.None)
+                {
+                    // Nếu tìm thấy cục quặng hợp lệ (đã được PlacementCheck tìm thấy)
+                    if (ghostPlacement.currentValidSpot != null)
+                    {
+                        ghostPlacement.currentValidSpot.Occupy(); // Làm cục quặng biến mất
+                        GridManager.main.OccupyArea(new Vector2Int(gridX, gridY), size);
+
+                        // --- TRUYỀN THAM CHIẾU MỎ CHO THÁP GIỮ ---
+                        if (towerComponent != null)
+                        {
+                            towerComponent.occupiedSpot = ghostPlacement.currentValidSpot;
+                        }
+                    }
+                }
+                else
+                {
+                    // Nếu là tháp thường -> Đánh dấu ô đất trên Grid là "Đã bị chiếm"
+                    GridManager.main.OccupyArea(new Vector2Int(gridX, gridY), size);
+                }
+
+                // D. SẮP XẾP LAYER (Để tháp không bị đè lên nhau sai thứ tự)
+                SpriteRenderer towerSr = newTower.GetComponentInChildren<SpriteRenderer>();
+                if (towerSr != null) towerSr.sortingOrder = Mathf.RoundToInt(newTower.transform.position.y * -100);
+
+                // E. DỌN DẸP
+                Destroy(currentGhost);
+                selectedIndex = -1;
+
+                Debug.Log($"Đã xây {data.towerName}! Trừ {data.goldCost} Vàng, {data.woodCost} Gỗ.");
             }
             else
             {
-                gridPos = new Vector2Int(
-                    Mathf.RoundToInt(currentGhost.transform.position.x - (size.x / 3f)),
-                    Mathf.RoundToInt(currentGhost.transform.position.y - (size.y / 2f))
-                );
+                // In lỗi ra để debug
+                if (ResourceManager.main != null && !ResourceManager.main.HasEnoughResources(data.goldCost, data.woodCost))
+                {
+                    Debug.Log("Không đủ tiền!");
+                }
+                else
+                {
+                    Debug.Log("Vị trí không hợp lệ (Vướng vật cản hoặc sai loại mỏ)!");
+                }
             }
-            GridManager.main.OccupyArea(gridPos, ghostPlacement.data.towerSize);
-            // D. Xử lý hiển thị: Tự động gán Sorting Order dựa trên tọa độ Y để tháp không đè lên nhau sai thứ tự
-            // Tháp càng thấp (Y nhỏ), Sorting Order càng cao -> hiện lên trên
-            SpriteRenderer towerSr = newTower.GetComponentInChildren<SpriteRenderer>();
-            if (towerSr != null)
-            {
-                towerSr.sortingOrder = Mathf.RoundToInt(newTower.transform.position.y * -100);
-            }
-            
-            // E. Dọn dẹp
-            Destroy(currentGhost);
-            selectedIndex = -1;
         }
 
-        // 4. Click chuột phải để hủy chọn tháp (Nên thêm để trải nghiệm tốt hơn)
+        // 5. HỦY CHỌN (Chuột phải)
         if (Input.GetMouseButtonDown(1))
         {
             Destroy(currentGhost);

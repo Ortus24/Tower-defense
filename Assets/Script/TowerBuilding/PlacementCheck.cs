@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Script.TowerBuilding.EconomyTower;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,63 +12,95 @@ namespace Assets.Script.TowerBuilding
     {
         public TowerData data;
         private SpriteRenderer sr;
+        public SpriteRenderer visualArea;
+
+        // Biến lưu trữ mỏ quặng tìm thấy (nếu có)
+        [HideInInspector] public ResourceSpot currentValidSpot;
 
         void Start() { sr = GetComponentInChildren<SpriteRenderer>(); }
 
         public bool CanPlace()
         {
-            if (GridManager.main == null)
+            currentValidSpot = null; // Reset mỗi lần check
+
+            if (GridManager.main == null) return false;
+
+            // 1. Check Tiền
+            if (ResourceManager.main != null)
             {
-                Debug.LogError("Chưa có GridManager trong Scene!");
-                return false;
+                if (!ResourceManager.main.HasEnoughResources(data.goldCost, data.woodCost)) return false;
             }
 
-            // 2. Kiểm tra TowerData đã được gán chưa
-            if (data == null)
+            float cellSize = GridManager.main.cellSize;
+
+            // =================================================================
+            // TRƯỜNG HỢP 1: THÁP CHIẾN ĐẤU (NONE) - KHÔNG ĐƯỢC ĐÈ LÊN MỎ
+            // =================================================================
+            if (data.resourceType == ResourceType.None)
             {
-                Debug.LogError("Ghost " + gameObject.name + " chưa được gán TowerData!");
-                return false;
+                // Bước A: Check Grid xem có tháp nào xây chưa (Code cũ)
+                Vector3 originWorldPos = transform.position - new Vector3(data.towerSize.x * cellSize * 0.5f, data.towerSize.y * cellSize * 0.5f, 0);
+                int gridX, gridY;
+                GridManager.main.GetLevelGrid().GetXY(originWorldPos + new Vector3(0.1f, 0.1f), out gridX, out gridY);
+
+                if (!GridManager.main.IsAreaEmpty(new Vector2Int(gridX, gridY), data.towerSize))
+                {
+                    return false; // Grid đã bị chiếm -> Không xây được
+                }
+
+                // Bước B: Check Vật Lý (Code Mới) - Quét xem có vướng đá/cây không
+                // Tạo vùng quét đúng bằng kích thước tháp (nhỏ hơn 1 chút để không bị dính mép)
+                Vector2 boxSize = new Vector2(data.towerSize.x * cellSize * 0.9f, data.towerSize.y * cellSize * 0.9f);
+
+                Collider2D[] obstacles = Physics2D.OverlapBoxAll(transform.position, boxSize, 0f);
+
+                foreach (var col in obstacles)
+                {
+                    // Nếu va phải bất kỳ cái gì có gắn script ResourceSpot -> CẤM XÂY
+                    if (col.GetComponent<ResourceSpot>() != null)
+                    {
+                        return false;
+                    }
+                }
+
+                return true; // Grid trống và không vướng đá -> OK
             }
 
-            // 3. Thực hiện logic kiểm tra ô đất
-            Vector2Int gridPos;
-            Vector2Int size = data.towerSize;
-
-            // Kiểm tra tháp chẵn (2x2) hay lẻ (3x3) để tính gridPos tương ứng
-            if (size.x % 2 == 0 && size.y % 2 == 0)
-            {
-                // Với tháp chẵn (2x2), dùng FloorToInt trực tiếp
-                gridPos = new Vector2Int(Mathf.FloorToInt(transform.position.x), Mathf.FloorToInt(transform.position.y));
-            }
+            // =================================================================
+            // TRƯỜNG HỢP 2: XÂY MỎ (GOLD/TREE) - PHẢI ĐÈ LÊN ĐÚNG LOẠI
+            // =================================================================
             else
             {
-                // Với tháp lẻ (3x3), dùng RoundToInt và trừ đi (size / 2)
-                // Lưu ý: size.x / 2f phải dùng số thực (f) để chia chính xác 1.5
-                gridPos = new Vector2Int(
-                    Mathf.RoundToInt(transform.position.x - (size.x / 3f)),
-                    Mathf.RoundToInt(transform.position.y - (size.y / 2f))
-                );
-            }
+                // Quét vùng rộng 3x3 để tìm mỏ
+                Vector2 scanAreaSize = new Vector2(cellSize * 3f, cellSize * 3f);
+                Collider2D[] hits = Physics2D.OverlapBoxAll(transform.position, scanAreaSize, 0f);
 
-            return GridManager.main.IsAreaEmpty(gridPos, data.towerSize);
+                foreach (var hit in hits)
+                {
+                    ResourceSpot spot = hit.GetComponent<ResourceSpot>();
+
+                    if (spot != null && spot.myType == data.resourceType)
+                    {
+                        currentValidSpot = spot;
+                        return true;
+                    }
+                }
+
+                return false;
+            }
         }
-        public SpriteRenderer visualArea;
+
         public void UpdateVisual()
         {
+            // Hàm này gọi CanPlace(). 
+            // Nếu CanPlace() trả về false (do vướng đất HOẶC hết tiền), nó sẽ tô màu đỏ.
             bool canPlace = CanPlace();
 
-            // 1. Đổi màu chính tháp Ghost (Logic cũ của bạn)
             if (sr != null)
-            {
-                sr.color = canPlace ? new Color(1, 1, 1, 0.5f) : new Color(1, 0, 0, 0.5f);
-            }
+                sr.color = canPlace ? new Color(1, 1, 1, 0.5f) : new Color(1, 0, 0, 0.5f); // Trắng mờ hoặc Đỏ mờ
 
-            // 2. Đổi màu ô sáng dưới chân (Xanh nếu trống, Đỏ nếu bị chiếm)
             if (visualArea != null)
-            {
-                // Màu xanh: canPlace đúng | Màu đỏ: canPlace sai
-                visualArea.color = canPlace ? new Color(0, 1, 0, 0.4f) : new Color(1, 0, 0, 0.4f);
-            }
+                visualArea.color = canPlace ? new Color(0, 1, 0, 0.4f) : new Color(1, 0, 0, 0.4f); // Xanh lá hoặc Đỏ
         }
 
         void Update() { UpdateVisual(); }

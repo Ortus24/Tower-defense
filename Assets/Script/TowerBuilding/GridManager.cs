@@ -11,32 +11,34 @@ namespace Assets.Script.TowerBuilding
     {
         public static GridManager main;
 
-        // Sử dụng HashSet để lưu trữ tọa độ các ô đã bị chiếm (hiệu năng cao hơn List)
-        private HashSet<Vector2Int> occupiedNodes = new HashSet<Vector2Int>();
+        [Header("Cài đặt Lưới")]
+        public int width = 20;
+        public int height = 15;
+        public float cellSize = 1f;
+        public Vector3 originPosition = Vector3.zero;
 
-        // Nếu bạn muốn tháp tự khớp vào Tilemap, hãy gán Grid của Scene vào đây
-        public Grid gridSystem;
+        private LevelGrid levelGrid;
 
-        void Awake()
+        private void Awake()
         {
             if (main == null) main = this;
-            else Destroy(gameObject);
+            
         }
 
-        /// <summary>
-        /// Kiểm tra xem một vùng diện tích (size) bắt đầu từ vị trí (startPos) có trống không.
-        /// </summary>
-        public bool IsAreaEmpty(Vector2Int startPos, Vector2Int size)
+        private void Start()
         {
-            // Duyệt qua từng ô trong phạm vi kích thước của tháp (Ví dụ: 2x2 hoặc 2x3)
+            levelGrid = new LevelGrid(width, height, cellSize, originPosition);
+        }
+
+        public LevelGrid GetLevelGrid() { return levelGrid; }
+
+        public bool IsAreaEmpty(Vector2Int startGridPos, Vector2Int size)
+        {
             for (int x = 0; x < size.x; x++)
             {
                 for (int y = 0; y < size.y; y++)
                 {
-                    Vector2Int nodeToCheck = startPos + new Vector2Int(x, y);
-
-                    // Nếu bất kỳ ô nào trong vùng này đã bị chiếm, trả về false
-                    if (occupiedNodes.Contains(nodeToCheck))
+                    if (levelGrid.GetValue(startGridPos.x + x, startGridPos.y + y) != 0)
                     {
                         return false;
                     }
@@ -45,46 +47,56 @@ namespace Assets.Script.TowerBuilding
             return true;
         }
 
-        /// <summary>
-        /// Đánh dấu một vùng diện tích đã bị tháp chiếm đóng sau khi xây dựng thành công.
-        /// </summary>
-        public void OccupyArea(Vector2Int startPos, Vector2Int size)
+        public void OccupyArea(Vector2Int startGridPos, Vector2Int size)
         {
             for (int x = 0; x < size.x; x++)
             {
                 for (int y = 0; y < size.y; y++)
                 {
-                    Vector2Int nodeToOccupy = startPos + new Vector2Int(x, y);
-                    if (!occupiedNodes.Contains(nodeToOccupy))
-                    {
-                        occupiedNodes.Add(nodeToOccupy);
-                    }
+                    levelGrid.SetValue(startGridPos.x + x, startGridPos.y + y, 1);
                 }
             }
         }
 
-        private void OnDrawGizmos()
+        // --- THÊM HÀM NÀY VÀO ĐỂ GIẢI PHÓNG Ô ĐẤT ---
+        public void FreeArea(Vector2Int startPos, Vector2Int size)
         {
-            // 1. Vẽ tất cả các ô đã bị chiếm đóng (Màu đỏ)
-            if (occupiedNodes != null)
+            // Duyệt qua tất cả các ô lưới mà tháp này đang chiếm dụng
+            for (int x = 0; x < size.x; x++)
             {
-                Gizmos.color = new Color(1f, 0f, 0f, 0.4f); // Màu đỏ trong suốt
-                foreach (var node in occupiedNodes)
+                for (int y = 0; y < size.y; y++)
                 {
-                    // Vẽ hình lập phương tại tâm ô (cộng 0.5f vì tọa độ Int nằm ở góc ô)
-                    Vector3 center = new Vector3(node.x + 0.5f, node.y + 0.5f, 0);
-                    Gizmos.DrawCube(center, new Vector3(0.9f, 0.9f, 0.1f));
+                    int checkX = startPos.x + x;
+                    int checkY = startPos.y + y;
+
+                    // Vì ở hàm OccupyArea bạn dùng SetValue là 1 (đã chiếm)
+                    // Nên ở đây giải phóng đất, ta chỉ cần SetValue về 0 (đất trống)
+                    levelGrid.SetValue(checkX, checkY, 0);
                 }
             }
+        }
 
-            // 2. Tùy chọn: Vẽ một lưới mờ để dễ căn chỉnh
-            Gizmos.color = new Color(1f, 1f, 1f, 0.1f);
-            for (int x = -20; x < 20; x++) // Bạn có thể thay đổi phạm vi tùy theo map
+        // --- ĐOẠN CODE MỚI ĐỂ HIỂN THỊ Ô ĐÃ CHIẾM ---
+        private void OnDrawGizmos()
+        {
+            // Chỉ vẽ khi game đang chạy và Grid đã được tạo
+            if (levelGrid == null) return;
+
+            Gizmos.color = new Color(1, 0, 0, 0.3f); // Màu đỏ trong suốt (Alpha = 0.3)
+
+            for (int x = 0; x < levelGrid.GetWidth(); x++)
             {
-                for (int y = -20; y < 20; y++)
+                for (int y = 0; y < levelGrid.GetHeight(); y++)
                 {
-                    Vector3 pos = new Vector3(x + 0.5f, y + 0.5f, 0);
-                    Gizmos.DrawWireCube(pos, Vector3.one);
+                    // Nếu ô này có giá trị (tức là = 1) -> Vẽ ô vuông đỏ
+                    if (levelGrid.GetValue(x, y) == 1)
+                    {
+                        // Tính toán tâm của ô vuông để vẽ Gizmos cho chuẩn
+                        // GetWorldPosition trả về góc dưới trái, nên phải cộng thêm nửa ô
+                        Vector3 centerPos = levelGrid.GetWorldPosition(x, y) + new Vector3(cellSize * 0.5f, cellSize * 0.5f, 0);
+
+                        Gizmos.DrawCube(centerPos, new Vector3(cellSize, cellSize, 0.1f));
+                    }
                 }
             }
         }

@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96a17322f09f67643bf7cc3ffb80b917, type: 3}
+  m_Name: SO_GoldLv2
+  m_EditorClassIdentifier: Assembly-CSharp::TowerData
+  towerName: GoldMine lv2
+  woodCost: 0
+  goldCost: 0
+  maxHP: 200
+  damage: 0
+  range: 0
+  attackSpeed: 0
+  buildTime: 0
+  splashRadius: 0
+  towerSize: {x: 0, y: 0}
+  towerIcon: {fileID: 7427445707187218192, guid: daabd4c14e8bbbb48867210f26146c9b, type: 3}
+  soldierCount: 0
+  respawnTime: 0
+  soldierPrefab: {fileID: 0}
+  projectilesPerShot: 0
+  burstDelay: 0
+  resourceType: 1
+  goldPerSecond: 10
+  maxGoldCapacity: 100
+  woodPerSecond: 0
+  maxWoodCapacity: 0
+  description: 
+  nextLevelData: {fileID: 0}
+  nextLevelPrefab: {fileID: 0}
+  goldCostUpgrade: 100
+  woodCostUpgrade: 50

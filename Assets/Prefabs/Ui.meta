@@ -1,6 +1,10 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Prefabs/Ui.meta
 guid: e1202b8d5c998424ea2f2c7b6ca9947c
 folderAsset: yes
+========
+guid: 496aa34997e072f4c8ce45383cbd0658
+>>>>>>>> feature/build-system:Assets/_Recovery/0 (2).unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96a17322f09f67643bf7cc3ffb80b917, type: 3}
   m_Name: SO_Barracks
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
-  towerName: 
+  towerName: Barrack Tower Lv1
   woodCost: 80
   goldCost: 0
   maxHP: 150
@@ -20,6 +20,21 @@ MonoBehaviour:
   range: 4
   attackSpeed: 0
   buildTime: 4
-  isAoE: 0
   splashRadius: 0
   towerSize: {x: 3, y: 3}
+  towerIcon: {fileID: 21300000, guid: 4140465d2d71b4a6a83a1be32f0a9880, type: 3}
+  soldierCount: 2
+  respawnTime: 20
+  soldierPrefab: {fileID: 6363583676536184936, guid: c5cb6b06800b35d4a8f7635d1ccf0659, type: 3}
+  projectilesPerShot: 0
+  burstDelay: 0
+  resourceType: 0
+  goldPerSecond: 0
+  maxGoldCapacity: 0
+  woodPerSecond: 0
+  maxWoodCapacity: 0
+  description: 
+  nextLevelData: {fileID: 11400000, guid: 4e323608f3697274692c56ee878fa258, type: 2}
+  nextLevelPrefab: {fileID: 2116730894098892117, guid: 460b421b339879746814cea063bca9ce, type: 3}
+  goldCostUpgrade: 0
+  woodCostUpgrade: 0

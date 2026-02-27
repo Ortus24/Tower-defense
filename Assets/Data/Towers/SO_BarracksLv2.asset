@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96a17322f09f67643bf7cc3ffb80b917, type: 3}
+  m_Name: SO_BarracksLv2
+  m_EditorClassIdentifier: Assembly-CSharp::TowerData
+  towerName: Barrack Tower Lv2
+  woodCost: 0
+  goldCost: 0
+  maxHP: 300
+  damage: 8
+  range: 4
+  attackSpeed: 0
+  buildTime: 4
+  splashRadius: 0
+  towerSize: {x: 3, y: 3}
+  towerIcon: {fileID: 21300000, guid: 4140465d2d71b4a6a83a1be32f0a9880, type: 3}
+  soldierCount: 3
+  respawnTime: 15
+  soldierPrefab: {fileID: 6363583676536184936, guid: c5cb6b06800b35d4a8f7635d1ccf0659, type: 3}
+  projectilesPerShot: 0
+  burstDelay: 0
+  resourceType: 0
+  goldPerSecond: 0
+  maxGoldCapacity: 0
+  woodPerSecond: 0
+  maxWoodCapacity: 0
+  description: 
+  nextLevelData: {fileID: 0}
+  nextLevelPrefab: {fileID: 0}
+  goldCostUpgrade: 50
+  woodCostUpgrade: 100

@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Script/Menu.meta
+guid: e7e202f58a9eaf5429af849bee65e60c
+========
+guid: 4311eeb2bfc6f0c4e8c6399f69d1ce43
+>>>>>>>> feature/build-system:Assets/Script/TowerBuilding/EconomyTower.meta
+folderAsset: yes
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
