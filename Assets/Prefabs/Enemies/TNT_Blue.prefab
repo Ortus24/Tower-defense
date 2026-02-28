@@ -144,6 +144,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: -2253911629886400664, guid: a5db94273aa08894ca23132683cb7933, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     - target: {fileID: 1160356261127867848, guid: a5db94273aa08894ca23132683cb7933, type: 3}
       propertyPath: m_Controller
       value: 
@@ -330,6 +334,7 @@ MonoBehaviour:
   projectilePrefab: {fileID: 6841314104178330219, guid: 083cba148be90724aa08152d3d2f390f, type: 3}
   firePoint: {fileID: 3626159716467641175}
   projectileSpeed: 6
+  stunDuration: 0.4
 --- !u!114 &-7711322977969156802
 MonoBehaviour:
   m_ObjectHideFlags: 0

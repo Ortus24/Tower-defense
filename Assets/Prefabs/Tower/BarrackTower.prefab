@@ -378,7 +378,7 @@ GameObject:
   - component: {fileID: -844663091066810370}
   m_Layer: 0
   m_Name: BarrackTower
-  m_TagString: Untagged
+  m_TagString: Tower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -417,6 +417,7 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: ddaed82685d1b0640b4dc9da9dea695e, type: 2}
   healthBarScript: {fileID: 5509692635625856843}
   centerOffset: {x: 0, y: 0}
+  occupiedSpot: {fileID: 0}
   spawnPoints:
   - {fileID: 7972672398378408465}
   - {fileID: 8713347550762218224}

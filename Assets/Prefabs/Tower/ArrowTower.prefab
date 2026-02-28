@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2530189626582329975
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 517204315373785528}
+  m_Layer: 0
+  m_Name: TagetPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &517204315373785528
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2530189626582329975}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 453568709333557258}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3036297411531711523
 GameObject:
   m_ObjectHideFlags: 0
@@ -211,9 +242,10 @@ GameObject:
   - component: {fileID: 2403125074757281017}
   - component: {fileID: 2359245718179853560}
   - component: {fileID: 6374024014564314320}
+  - component: {fileID: 3294688460066441312}
   m_Layer: 6
   m_Name: ArrowTower
-  m_TagString: Untagged
+  m_TagString: Tower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -231,6 +263,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 517204315373785528}
   - {fileID: 4892672417383526038}
   - {fileID: 3465194003642302190}
   - {fileID: 6039162990918321430}
@@ -252,6 +285,7 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: bd118edf85f9fc942b98875feaa57a15, type: 2}
   healthBarScript: {fileID: 3297622789453139827}
   centerOffset: {x: 0, y: 0}
+  occupiedSpot: {fileID: 0}
   arrowPrefab: {fileID: 8534650300951064589, guid: fc5a1a0de62dec44fbe6c21978aa5152, type: 3}
   firePoints:
   - {fileID: 4546260841476109582}
@@ -374,6 +408,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlacementVidual
   rangeCircleObject: {fileID: 3798978294672438591}
+--- !u!114 &3294688460066441312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4841701128293273707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3a80c0c696aa8444914d4c0e5219d96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TagetPoint
+  targetPoint: {fileID: 517204315373785528}
 --- !u!1 &4870767999569786272
 GameObject:
   m_ObjectHideFlags: 0

@@ -240,7 +240,7 @@ GameObject:
   - component: {fileID: 2359245718179853560}
   m_Layer: 6
   m_Name: ArrowTowerLv2
-  m_TagString: Untagged
+  m_TagString: TheKeep
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -278,6 +278,7 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: 527b44f6be7aa8e4281cc747ead11f8c, type: 2}
   healthBarScript: {fileID: 4202665113394535975}
   centerOffset: {x: 0, y: 0}
+  occupiedSpot: {fileID: 0}
   arrowPrefab: {fileID: 8534650300951064589, guid: fc5a1a0de62dec44fbe6c21978aa5152, type: 3}
   firePoints:
   - {fileID: 4546260841476109582}

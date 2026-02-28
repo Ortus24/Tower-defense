@@ -71,6 +71,14 @@ namespace Assets.Script.TowerBuilding
             // =================================================================
             else
             {
+                Vector3 originWorldPos = transform.position - new Vector3(data.towerSize.x * cellSize * 0.5f, data.towerSize.y * cellSize * 0.5f, 0);
+                int gridX, gridY;
+                GridManager.main.GetLevelGrid().GetXY(originWorldPos + new Vector3(0.1f, 0.1f), out gridX, out gridY);
+
+                if (!GridManager.main.IsAreaEmpty(new Vector2Int(gridX, gridY), data.towerSize))
+                {
+                    return false; // Lưới đã bị chiếm (có tháp hoặc mỏ khác rồi) -> KHÔNG ĐƯỢC XÂY
+                }
                 // Quét vùng rộng 3x3 để tìm mỏ
                 Vector2 scanAreaSize = new Vector2(cellSize * 3f, cellSize * 3f);
                 Collider2D[] hits = Physics2D.OverlapBoxAll(transform.position, scanAreaSize, 0f);
