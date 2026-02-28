@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.LowLevel;
 
 public class BarrackTower : BaseTower
 {
@@ -16,8 +17,9 @@ public class BarrackTower : BaseTower
     private List<KnightAI> activeSoldiers = new List<KnightAI>();
     private float respawnTimer = 0f;
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         // Setup UI (Banner & Range)
         if (bannerScript != null)
         {
@@ -105,12 +107,25 @@ public class BarrackTower : BaseTower
     {
         if (EventSystem.current.IsPointerOverGameObject()) return;
 
+        bool newState = false;
+
+        // Bật/Tắt Banner và Vòng tròn Range
         if (bannerScript != null)
         {
-            bool newState = !bannerScript.gameObject.activeSelf;
+            newState = !bannerScript.gameObject.activeSelf;
             bannerScript.gameObject.SetActive(newState);
 
             if (rangeVisual != null) rangeVisual.ToggleRange(newState);
+        }
+
+        // ĐỒNG BỘ THANH MÁU LUÔN
+        if (healthBarScript != null)
+        {
+            healthBarScript.Toggle(newState);
+            if (newState == true)
+            {
+                healthBarScript.UpdateHealthUI(currentHP, data.maxHP);
+            }
         }
     }
 

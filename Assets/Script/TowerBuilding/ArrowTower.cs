@@ -91,7 +91,6 @@ public class NewMonoBehaviourScript : BaseTower
                 healthBarScript.UpdateHealthUI(currentHP, data.maxHP);
             }
         }
-        TakeDamage(10);
     }
     void ShootMulti()
     {

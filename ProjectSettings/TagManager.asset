@@ -10,6 +10,7 @@ TagManager:
   - TheKeep
   - Mine
   - EnemyTarget
+  - Tower
   layers:
   - Default
   - TransparentFX
