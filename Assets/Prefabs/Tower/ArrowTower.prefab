@@ -161,7 +161,7 @@ MonoBehaviour:
   healthBarScript: {fileID: 3297622789453139827}
   centerOffset: {x: 0, y: 0}
   occupiedSpot: {fileID: 0}
-  arrowPrefab: {fileID: 8534650300951064589, guid: fc5a1a0de62dec44fbe6c21978aa5152, type: 3}
+  arrowPrefab: {fileID: 6239624330286525171, guid: 5869cbbcdc3e26649b5c8c79f67a66e7, type: 3}
   firePoints:
   - {fileID: 4546260841476109582}
   bannerScript: {fileID: 5281698278768315222}

@@ -110,9 +110,6 @@ namespace Assets.Script.TowerBuilding.EconomyTower
                     healthBarScript.UpdateHealthUI(currentHP, data.maxHP);
                 }
             }
-
-            //Test
-            TakeDamage(10);
         }
 
         void CollectGold()

@@ -114,7 +114,7 @@ public class NewMonoBehaviourScript : BaseTower
 
             if (arrow != null)
             {
-                arrow.Seek(target);
+                arrow.Seek(target, data.damage);
             }
         }
     }
