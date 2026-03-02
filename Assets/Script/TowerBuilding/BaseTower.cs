@@ -20,6 +20,9 @@ public abstract class BaseTower : MonoBehaviour
     // --- THÊM DÒNG NÀY ĐỂ NHỚ CÁI MỎ ---
     [HideInInspector] public ResourceSpot occupiedSpot;
 
+    [Header("Hiệu ứng UI")]
+    public GameObject damagePopupPrefab; // Kéo Prefab chữ của bạn vào đây trên Inspector
+
     protected bool isBuilt = true;
     protected Transform target;
 
@@ -103,6 +106,16 @@ public abstract class BaseTower : MonoBehaviour
         {
             Debug.Log($"[Chết] Máu còn {currentHP} (<=0) nên gọi hàm Die()!");
             Die();
+        }
+
+        if (damagePopupPrefab != null)
+        {
+            // Cho vị trí xuất hiện cao lên một chút so với chân quái vật
+            Vector3 spawnPos = transform.position + new Vector3(0, 0.5f, 0);
+            GameObject popup = Instantiate(damagePopupPrefab, spawnPos, Quaternion.identity);
+
+            // Gọi hàm Setup với isDamage = true
+            popup.GetComponent<Assets.Script.TowerBuilding.EconomyTower.DamagePopup>().Setup((int)amount, true);
         }
     }
 

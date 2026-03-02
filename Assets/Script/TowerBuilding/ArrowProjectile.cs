@@ -51,7 +51,6 @@ namespace Assets.Script.TowerBuilding
             transform.Translate(dir.normalized * distanceThisFrame, Space.World);
         }
 
-
         void HitTarget()
         {
             // Tìm component EnemyBase trên người con quái vật

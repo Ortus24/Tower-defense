@@ -418,6 +418,7 @@ MonoBehaviour:
   healthBarScript: {fileID: 5509692635625856843}
   centerOffset: {x: 0, y: 0}
   occupiedSpot: {fileID: 0}
+  damagePopupPrefab: {fileID: 4146299610257053289, guid: a9e6b43fbc9472940836b8f8498bbdf2, type: 3}
   spawnPoints:
   - {fileID: 7972672398378408465}
   - {fileID: 8713347550762218224}

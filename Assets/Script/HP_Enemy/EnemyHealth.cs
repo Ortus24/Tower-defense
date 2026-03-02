@@ -13,6 +13,8 @@ public class EnemyHealth : MonoBehaviour
 
     [SerializeField] private Animator animator;
     [SerializeField] private float destroyDelay = 0f;
+    [Header("Hiệu ứng UI")]
+    public GameObject damagePopupPrefab;
 
     private bool isDead;
 
@@ -45,6 +47,17 @@ public class EnemyHealth : MonoBehaviour
 
         if (CurrentHP <= 0)
             Die();
+
+        // --- GỌI HIỆN SỐ SÁT THƯƠNG ---
+        if (damagePopupPrefab != null)
+        {
+            // Cho vị trí xuất hiện cao lên một chút so với chân quái vật
+            Vector3 spawnPos = transform.position + new Vector3(0, 0.5f, 0);
+            GameObject popup = Instantiate(damagePopupPrefab, spawnPos, Quaternion.identity);
+
+            // Gọi hàm Setup với isDamage = true
+            popup.GetComponent<Assets.Script.TowerBuilding.EconomyTower.DamagePopup>().Setup((int)dmg, true);
+        }
     }
 
     void Die()

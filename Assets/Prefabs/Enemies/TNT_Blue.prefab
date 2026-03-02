@@ -18,7 +18,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8020862404047573962, guid: ab608c58a3e11f341bcf8dd426947e97, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.841
+      value: -0.018
       objectReference: {fileID: 0}
     - target: {fileID: 8020862404047573962, guid: ab608c58a3e11f341bcf8dd426947e97, type: 3}
       propertyPath: m_LocalPosition.z
@@ -80,11 +80,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3473802537189516968, guid: d5de88db94082b44c9fcbf9fe096d40e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.007
       objectReference: {fileID: 0}
     - target: {fileID: 3473802537189516968, guid: d5de88db94082b44c9fcbf9fe096d40e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.5
+      value: 0.78
       objectReference: {fileID: 0}
     - target: {fileID: 3473802537189516968, guid: d5de88db94082b44c9fcbf9fe096d40e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -159,6 +159,14 @@ PrefabInstance:
     - target: {fileID: 3626916397498700004, guid: a5db94273aa08894ca23132683cb7933, type: 3}
       propertyPath: m_SortingLayerID
       value: -1691816339
+      objectReference: {fileID: 0}
+    - target: {fileID: 7878350319992209165, guid: a5db94273aa08894ca23132683cb7933, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7878350319992209165, guid: a5db94273aa08894ca23132683cb7933, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 7878350319992209165, guid: a5db94273aa08894ca23132683cb7933, type: 3}
       propertyPath: m_LocalPosition.x
@@ -270,17 +278,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.0017428398, y: 0.915}
+  m_Offset: {x: -0.076897934, y: 0.06682116}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.44705883, y: -0.826087}
+    pivot: {x: 0.46134433, y: 0.42338645}
     oldSize: {x: 0.85, y: 0.69}
     newSize: {x: 0.85, y: 0.69}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.46270275, y: 0.68999994}
+  m_Size: {x: 0.670274, y: 0.72578824}
   m_EdgeRadius: 0
 --- !u!50 &8227519558832823453
 Rigidbody2D:
@@ -334,6 +342,7 @@ MonoBehaviour:
   projectilePrefab: {fileID: 6841314104178330219, guid: 083cba148be90724aa08152d3d2f390f, type: 3}
   firePoint: {fileID: 3626159716467641175}
   projectileSpeed: 6
+  damagePopupPrefab: {fileID: 0}
   stunDuration: 0.4
 --- !u!114 &-7711322977969156802
 MonoBehaviour:
@@ -350,6 +359,7 @@ MonoBehaviour:
   enemyData: {fileID: 11400000, guid: 29c5da0d67b3aa841af69c4ea6be4883, type: 2}
   animator: {fileID: 5700810611608762770}
   destroyDelay: 0
+  damagePopupPrefab: {fileID: 4146299610257053289, guid: a9e6b43fbc9472940836b8f8498bbdf2, type: 3}
 --- !u!114 &8718027745306257379
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -250,6 +250,7 @@ MonoBehaviour:
   healthBarScript: {fileID: 5508581836220414724}
   centerOffset: {x: 0, y: 0}
   occupiedSpot: {fileID: 0}
+  damagePopupPrefab: {fileID: 4146299610257053289, guid: a9e6b43fbc9472940836b8f8498bbdf2, type: 3}
   woodIcon: {fileID: 7748183261198500929}
   popupPrefab: {fileID: 6568632771950848837, guid: 7fdbfba47f559694f8a6fbe54b550d16, type: 3}
   bannerScript: {fileID: 307118719126436853}

@@ -26,6 +26,9 @@ public class EnemyBase : MonoBehaviour
     [SerializeField] private Transform firePoint;
     [SerializeField] private float projectileSpeed = 6f;
 
+    [Header("Hiệu ứng UI")]
+    public GameObject damagePopupPrefab;
+
     private Transform target;
     private Rigidbody2D rb;
     private Animator animator;
@@ -269,6 +272,17 @@ public class EnemyBase : MonoBehaviour
     {
         ResetAttackState();
         health?.TakeDamage(amount);
+
+        // --- GỌI HIỆN SỐ SÁT THƯƠNG ---
+        if (damagePopupPrefab != null)
+        {
+            // Cho vị trí xuất hiện cao lên một chút so với chân quái vật
+            Vector3 spawnPos = transform.position + new Vector3(0, 0.5f, 0);
+            GameObject popup = Instantiate(damagePopupPrefab, spawnPos, Quaternion.identity);
+
+            // Gọi hàm Setup với isDamage = true
+            popup.GetComponent<Assets.Script.TowerBuilding.EconomyTower.DamagePopup>().Setup((int)amount, true);
+        }
     }
 
     // Debug vẽ bán kính separation
