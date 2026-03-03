@@ -17,5 +17,11 @@ public class EnemyAttack : MonoBehaviour
 
             Destroy(gameObject); 
         }
+        else if (other.GetComponent<BaseTower>() != null)
+        {
+            BaseTower tower = other.GetComponent<BaseTower>();
+            tower.TakeDamage(damage); // Gọi hàm trừ máu của tháp
+            Destroy(gameObject);
+        }
     }
 }

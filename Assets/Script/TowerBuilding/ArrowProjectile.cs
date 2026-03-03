@@ -17,9 +17,10 @@ namespace Assets.Script.TowerBuilding
         public float damage = 10f;
         public float targetOffset = 0.5f;// Thêm biến này để dễ chỉnh độ lệch trong Inspector nếu cần
         // Hàm để Tháp truyền mục tiêu cho mũi tên
-        public void Seek(Transform _target)
+        public void Seek(Transform _target, float _towerDamage)
         {
             target = _target;
+            damage = _towerDamage; // Lấy sát thương chuẩn từ cục Data của Tháp
         }
 
         void Update()
@@ -52,11 +53,16 @@ namespace Assets.Script.TowerBuilding
 
         void HitTarget()
         {
-            // Gây sát thương cho Enemy tại đây (nếu bạn đã có script máu)
-            // target.GetComponent<EnemyHealth>().TakeDamage(damage);
+            // Tìm component EnemyBase trên người con quái vật
+            EnemyBase enemy = target.GetComponent<EnemyBase>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(damage); // Trừ máu dựa trên số damage vừa nhận từ Tháp!
+            }
 
-            Debug.Log("Mũi tên trúng: " + target.name);
-            Destroy(gameObject); // Hủy mũi tên sau khi trúng
+            Debug.Log("Mũi tên trúng: " + target.name + " - Gây ra: " + damage + " sát thương");
+            Destroy(gameObject); // Tự hủy mũi tên
         }
+
     }
 }

@@ -91,7 +91,6 @@ public class NewMonoBehaviourScript : BaseTower
                 healthBarScript.UpdateHealthUI(currentHP, data.maxHP);
             }
         }
-        TakeDamage(10);
     }
     void ShootMulti()
     {
@@ -115,7 +114,7 @@ public class NewMonoBehaviourScript : BaseTower
 
             if (arrow != null)
             {
-                arrow.Seek(target);
+                arrow.Seek(target, data.damage);
             }
         }
     }

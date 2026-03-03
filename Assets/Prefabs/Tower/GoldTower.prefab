@@ -154,8 +154,8 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: -461564047
+  m_SortingOrder: 100
   m_TargetDisplay: 0
 --- !u!114 &7644559963052130026
 MonoBehaviour:
@@ -369,6 +369,7 @@ MonoBehaviour:
   healthBarScript: {fileID: 6356942818889041327}
   centerOffset: {x: 0, y: 0}
   occupiedSpot: {fileID: 0}
+  damagePopupPrefab: {fileID: 4146299610257053289, guid: a9e6b43fbc9472940836b8f8498bbdf2, type: 3}
   coinIcon: {fileID: 4702024685478696125}
   popupPrefab: {fileID: 6568632771950848837, guid: 7fdbfba47f559694f8a6fbe54b550d16, type: 3}
   bannerScript: {fileID: 4473417089381165196}

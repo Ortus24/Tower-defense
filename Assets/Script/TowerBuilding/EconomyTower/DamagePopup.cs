@@ -1,10 +1,12 @@
 ﻿using System;
+using UnityEngine;
+using Random = UnityEngine.Random;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TMPro;
-using UnityEngine;
+
 
 namespace Assets.Script.TowerBuilding.EconomyTower
 {
@@ -20,14 +22,31 @@ namespace Assets.Script.TowerBuilding.EconomyTower
             textMesh = GetComponent<TextMeshPro>();
         }
 
-        public void Setup(int amount)
+        // --- NÂNG CẤP: Thêm tham số isDamage (mặc định false để không lỗi code cũ của Mỏ Vàng) ---
+        public void Setup(int amount, bool isDamage = false)
         {
-            textMesh.text = "+" + amount.ToString();
-            textColor = textMesh.color;
-            moveVector = new Vector3(0, 1f, 0) * 2f; // Bay lên với tốc độ 2
+            if (textMesh == null) textMesh = GetComponent<TextMeshPro>();
 
-            // Tự hủy sau 2 giây
-            Destroy(gameObject, 2f);
+            if (isDamage)
+            {
+                // Nếu là Sát thương -> Không có dấu +, màu Trắng (hoặc Đỏ tùy bạn chỉnh)
+                textMesh.text = amount.ToString();
+                textMesh.color = Color.red;
+            }
+            else
+            {
+                // Nếu là Thu hoạch mỏ -> Có dấu +, màu Vàng
+                textMesh.text = "+" + amount.ToString();
+                textMesh.color = Color.yellow;
+            }
+
+            textColor = textMesh.color;
+
+            // Bay lên với tốc độ x: random một chút để các số không đè chặt lên nhau, y: bay lên
+            moveVector = new Vector3(Random.Range(-1f, 1f), 2f, 0);
+
+            // Tự hủy sau 1.5 giây để dọn dẹp bộ nhớ
+            Destroy(gameObject, 1.5f);
         }
 
         private void Update()
