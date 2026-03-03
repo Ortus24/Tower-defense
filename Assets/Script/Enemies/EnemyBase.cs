@@ -9,7 +9,9 @@ public class EnemyBase : MonoBehaviour
     public System.Action OnDeath;
 
     [Header("Movement")]
-    [SerializeField] private float stopDistance = 4.5f;
+    [SerializeField] private float stopDistanceUp = 4.5f; // Quái từ dưới đi lên
+    [SerializeField] private float stopDistanceDown = 3.0f; // Quái từ trên đi xuống
+    [SerializeField] private float stopDistanceSide = 4.0f; // Quái đi từ 2 bên
     [SerializeField] private float stopBuffer = 0.2f;
 
     [Header("Separation")]
@@ -79,7 +81,9 @@ public class EnemyBase : MonoBehaviour
 
         FaceTarget(toTarget);
 
-        if (distance <= stopDistance + stopBuffer)
+        float currentStopDistance = GetDirectionalStopDistance(toTarget);
+
+        if (distance <= currentStopDistance + stopBuffer)
         {
             SetMoving(false);
 
@@ -297,6 +301,20 @@ public class EnemyBase : MonoBehaviour
         waitTimer = 0f;
         hasStartedAttack = false;
         attackTimer = 0f;
+    }
+
+    private float GetDirectionalStopDistance(Vector2 toTarget)
+    {
+        // Xét xem mục tiêu có nằm ngang hơn là dọc không
+        if (Mathf.Abs(toTarget.x) > Mathf.Abs(toTarget.y))
+            return stopDistanceSide; 
+        
+        // Mục tiêu nằm ở trên (y dương) → Quái vật đang đi từ dưới lên
+        if (toTarget.y > 0)
+            return stopDistanceUp; 
+        
+        // Mục tiêu nằm ở dưới (y âm) → Quái vật đang đi từ trên xuống
+        return stopDistanceDown; 
     }
 
     public void SpawnProjectile()

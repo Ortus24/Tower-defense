@@ -14,11 +14,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8020862404047573962, guid: ab608c58a3e11f341bcf8dd426947e97, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.271
+      value: -0.34
       objectReference: {fileID: 0}
     - target: {fileID: 8020862404047573962, guid: ab608c58a3e11f341bcf8dd426947e97, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.018
+      value: -0.583
       objectReference: {fileID: 0}
     - target: {fileID: 8020862404047573962, guid: ab608c58a3e11f341bcf8dd426947e97, type: 3}
       propertyPath: m_LocalPosition.z
@@ -330,7 +330,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBase
   data: {fileID: 11400000, guid: 29c5da0d67b3aa841af69c4ea6be4883, type: 2}
-  stopDistance: 1
+  stopDistanceUp: 1
+  stopDistanceDown: 2
+  stopDistanceSide: 2
   stopBuffer: 0.2
   separationRadius: 0.6
   separationForce: 2
@@ -340,7 +342,7 @@ MonoBehaviour:
   waitBeforeAttack: 0.7
   attackCooldown: 1.3
   projectilePrefab: {fileID: 6841314104178330219, guid: 083cba148be90724aa08152d3d2f390f, type: 3}
-  firePoint: {fileID: 3626159716467641175}
+  firePoint: {fileID: 5465229488374273708}
   projectileSpeed: 6
   damagePopupPrefab: {fileID: 0}
   stunDuration: 0.4

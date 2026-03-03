@@ -11,7 +11,7 @@ public class Throw_Taget : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
 
-        Vector2 targetPoint = (Vector2)target.position + Vector2.down * 0.8f;
+        Vector2 targetPoint = (Vector2)target.position + Vector2.down ;
         Vector2 dir = (targetPoint - (Vector2)transform.position).normalized;
 
         Debug.DrawLine(transform.position, target.position, Color.red, 1f);
