@@ -35,6 +35,6 @@ MonoBehaviour:
   maxWoodCapacity: 0
   description: 
   nextLevelData: {fileID: 11400000, guid: 4e323608f3697274692c56ee878fa258, type: 2}
-  nextLevelPrefab: {fileID: 2116730894098892117, guid: 460b421b339879746814cea063bca9ce, type: 3}
+  nextLevelPrefab: {fileID: 2116730894098892117, guid: cb213c315b0d2c54799e97fe376e6578, type: 3}
   goldCostUpgrade: 0
   woodCostUpgrade: 0
