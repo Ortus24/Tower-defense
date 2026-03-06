@@ -1,41 +1,19 @@
 fileFormatVersion: 2
-guid: 5e92e0fc16b8948c6bb70041214a2060
-AssetOrigin:
-  serializedVersion: 1
-  productId: 352566
-  packageName: Tiny Swords
-  packageVersion: 1.0
-  assetPath: Assets/Tiny Swords/UI Elements/Wood Table/WoodTable.png
-  uploadId: 844324
+guid: 9b9effaaace87a94abb7a5bacd856431
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1456634771012968291
-    second: WoodTable_0
+      213: -4560726334394733861
+    second: 20250422mouseSmall-Sheet_0
   - first:
-      213: -2984624457334693161
-    second: WoodTable_1
+      213: 2428558510465594981
+    second: 20250422mouseSmall-Sheet_1
   - first:
-      213: 7553826016581799804
-    second: WoodTable_2
+      213: 6493259452963587476
+    second: 20250422mouseSmall-Sheet_2
   - first:
-      213: -565612253562943241
-    second: WoodTable_3
-  - first:
-      213: 3108243940215872247
-    second: WoodTable_4
-  - first:
-      213: 3492093076585841537
-    second: WoodTable_5
-  - first:
-      213: -2246418273884473086
-    second: WoodTable_6
-  - first:
-      213: -5544660823759752318
-    second: WoodTable_7
-  - first:
-      213: 3887476063807763688
-    second: WoodTable_8
+      213: -7617859062710596354
+    second: 20250422mouseSmall-Sheet_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -68,7 +46,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -79,11 +57,11 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 0
+  spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 64
-  spriteBorder: {x: 128, y: 128, z: 128, w: 128}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -106,7 +84,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -132,7 +110,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -144,23 +122,89 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: WoodTable_3
+      name: 20250422mouseSmall-Sheet_0
       rect:
         serializedVersion: 2
-        x: 43
-        y: 40
-        width: 235
-        height: 239
+        x: 0
+        y: 0
+        width: 17
+        height: 17
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7f8c5c1f6aa8628f0800000000000000
-      internalID: -565612253562943241
+      spriteID: bdae1a8009b05b0c0800000000000000
+      internalID: -4560726334394733861
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 20250422mouseSmall-Sheet_1
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 566bd842919f3b120800000000000000
+      internalID: 2428558510465594981
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 20250422mouseSmall-Sheet_2
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 1
+        width: 17
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4958758d111bc1a50800000000000000
+      internalID: 6493259452963587476
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 20250422mouseSmall-Sheet_3
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 0
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: efc052a2b8de74690800000000000000
+      internalID: -7617859062710596354
       vertices: []
       indices: 
       edges: []
@@ -169,8 +213,8 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
-    internalID: 1537655665
+    spriteID: 
+    internalID: 0
     vertices: []
     indices: 
     edges: []
@@ -179,15 +223,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      WoodTable_0: 1456634771012968291
-      WoodTable_1: -2984624457334693161
-      WoodTable_2: 7553826016581799804
-      WoodTable_3: -565612253562943241
-      WoodTable_4: 3108243940215872247
-      WoodTable_5: 3492093076585841537
-      WoodTable_6: -2246418273884473086
-      WoodTable_7: -5544660823759752318
-      WoodTable_8: 3887476063807763688
+      20250422mouseSmall-Sheet_0: -4560726334394733861
+      20250422mouseSmall-Sheet_1: 2428558510465594981
+      20250422mouseSmall-Sheet_2: 6493259452963587476
+      20250422mouseSmall-Sheet_3: -7617859062710596354
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,13 +1,22 @@
 fileFormatVersion: 2
-guid: f87dd79ade378ad4aa9ed41a7699daa5
+guid: 5200bcb62252f7e4dace4a516d8cfd57
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4326499454269935931
-    second: Pressed_10_0
+      213: 898951677257286944
+    second: 20250423bootsFrame-Sheet_0
   - first:
-      213: -4054652506324527473
-    second: Pressed_10_1
+      213: 8443825361172281733
+    second: 20250423bootsFrame-Sheet_1
+  - first:
+      213: -408597526240070478
+    second: 20250423bootsFrame-Sheet_2
+  - first:
+      213: -345309338314350319
+    second: 20250423bootsFrame-Sheet_3
+  - first:
+      213: -2909159252311409833
+    second: 20250423bootsFrame-Sheet_4
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -40,7 +49,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -49,7 +58,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -78,7 +87,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -116,13 +125,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Pressed_10_0
+      name: 20250423bootsFrame-Sheet_0
       rect:
         serializedVersion: 2
-        x: 18
-        y: 20
-        width: 28
-        height: 17
+        x: 0
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -131,20 +140,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b315ea4b450da0c30800000000000000
-      internalID: 4326499454269935931
+      spriteID: 0258921a9c7b97c00800000000000000
+      internalID: 898951677257286944
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Pressed_10_1
+      name: 20250423bootsFrame-Sheet_1
       rect:
         serializedVersion: 2
-        x: 20
-        y: 36
-        width: 24
-        height: 15
+        x: 32
+        y: 0
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,8 +162,74 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f8611e8270bfab7c0800000000000000
-      internalID: -4054652506324527473
+      spriteID: 589bb1ebd6e7e2570800000000000000
+      internalID: 8443825361172281733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 20250423bootsFrame-Sheet_2
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b47b58f6be545af0800000000000000
+      internalID: -408597526240070478
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 20250423bootsFrame-Sheet_3
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 111e5208cf6353bf0800000000000000
+      internalID: -345309338314350319
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 20250423bootsFrame-Sheet_4
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 75bffeac21790a7d0800000000000000
+      internalID: -2909159252311409833
       vertices: []
       indices: 
       edges: []
@@ -163,7 +238,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -173,8 +248,11 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Pressed_10_0: 4326499454269935931
-      Pressed_10_1: -4054652506324527473
+      20250423bootsFrame-Sheet_0: 898951677257286944
+      20250423bootsFrame-Sheet_1: 8443825361172281733
+      20250423bootsFrame-Sheet_2: -408597526240070478
+      20250423bootsFrame-Sheet_3: -345309338314350319
+      20250423bootsFrame-Sheet_4: -2909159252311409833
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

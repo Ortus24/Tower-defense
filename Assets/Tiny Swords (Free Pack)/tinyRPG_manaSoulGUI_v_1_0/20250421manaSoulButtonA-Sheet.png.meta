@@ -1,41 +1,19 @@
 fileFormatVersion: 2
-guid: 5e92e0fc16b8948c6bb70041214a2060
-AssetOrigin:
-  serializedVersion: 1
-  productId: 352566
-  packageName: Tiny Swords
-  packageVersion: 1.0
-  assetPath: Assets/Tiny Swords/UI Elements/Wood Table/WoodTable.png
-  uploadId: 844324
+guid: 9d1302344abec6441820a32cbe53e639
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1456634771012968291
-    second: WoodTable_0
+      213: -4562563761693533985
+    second: 20250421manaSoulButtonA-Sheet_0
   - first:
-      213: -2984624457334693161
-    second: WoodTable_1
+      213: -7481973421534692894
+    second: 20250421manaSoulButtonA-Sheet_1
   - first:
-      213: 7553826016581799804
-    second: WoodTable_2
+      213: 6910414581435320376
+    second: 20250421manaSoulButtonA-Sheet_2
   - first:
-      213: -565612253562943241
-    second: WoodTable_3
-  - first:
-      213: 3108243940215872247
-    second: WoodTable_4
-  - first:
-      213: 3492093076585841537
-    second: WoodTable_5
-  - first:
-      213: -2246418273884473086
-    second: WoodTable_6
-  - first:
-      213: -5544660823759752318
-    second: WoodTable_7
-  - first:
-      213: 3887476063807763688
-    second: WoodTable_8
+      213: 4919708491683767864
+    second: 20250421manaSoulButtonA-Sheet_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -68,7 +46,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -79,11 +57,11 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 0
+  spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 64
-  spriteBorder: {x: 128, y: 128, z: 128, w: 128}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -106,7 +84,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -132,7 +110,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -144,23 +122,89 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: WoodTable_3
+      name: 20250421manaSoulButtonA-Sheet_0
       rect:
         serializedVersion: 2
-        x: 43
-        y: 40
-        width: 235
-        height: 239
+        x: 1
+        y: 0
+        width: 95
+        height: 22
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7f8c5c1f6aa8628f0800000000000000
-      internalID: -565612253562943241
+      spriteID: fd8df27ae648ea0c0800000000000000
+      internalID: -4562563761693533985
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 20250421manaSoulButtonA-Sheet_1
+      rect:
+        serializedVersion: 2
+        x: 95
+        y: 0
+        width: 98
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e9b28670d0ba2890800000000000000
+      internalID: -7481973421534692894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 20250421manaSoulButtonA-Sheet_2
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 1
+        width: 88
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 838c129e279b6ef50800000000000000
+      internalID: 6910414581435320376
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: 20250421manaSoulButtonA-Sheet_3
+      rect:
+        serializedVersion: 2
+        x: 294
+        y: 2
+        width: 84
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 836a845bec0564440800000000000000
+      internalID: 4919708491683767864
       vertices: []
       indices: 
       edges: []
@@ -169,8 +213,8 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
-    internalID: 1537655665
+    spriteID: 
+    internalID: 0
     vertices: []
     indices: 
     edges: []
@@ -179,15 +223,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      WoodTable_0: 1456634771012968291
-      WoodTable_1: -2984624457334693161
-      WoodTable_2: 7553826016581799804
-      WoodTable_3: -565612253562943241
-      WoodTable_4: 3108243940215872247
-      WoodTable_5: 3492093076585841537
-      WoodTable_6: -2246418273884473086
-      WoodTable_7: -5544660823759752318
-      WoodTable_8: 3887476063807763688
+      20250421manaSoulButtonA-Sheet_0: -4562563761693533985
+      20250421manaSoulButtonA-Sheet_1: -7481973421534692894
+      20250421manaSoulButtonA-Sheet_2: 6910414581435320376
+      20250421manaSoulButtonA-Sheet_3: 4919708491683767864
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
