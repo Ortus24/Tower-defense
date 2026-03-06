@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c50642b427da7c4ab5c5a1d3193aa68, type: 3}
   m_Name: Hoi chieu ky nang
   m_EditorClassIdentifier: Assembly-CSharp::SkillSO
-  skillName: 
-  skillDescription: 
-  maxLevel: 0
-  pointReq: 
-  amount: 
+  skillName: "H\u1ED3i chi\xEAu k\u1EF9 n\u0103ng"
+  skillDescription: "H\u1ED3i chi\xEAu"
+  maxLevel: 10
+  pointReq: 01000000010000000100000001000000010000000200000002000000020000000300000003000000
+  amount: 37000000360000003400000032000000300000002e0000002c0000002a00000028000000230000001e000000

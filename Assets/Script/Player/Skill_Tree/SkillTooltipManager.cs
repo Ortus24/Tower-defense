@@ -39,10 +39,15 @@ public class SkillTooltipManager : MonoBehaviour
         skillDescriptionText.text = skillData.skillDescription;
 
         currentLevelText.text = "Level: " + currentLevel + " / " + maxlevel;
-        dateCurrent.text = skillData.amount[currentLevel].ToString();
+        
+        // Sử dụng Mathf.Min để giới hạn index, không bao giờ vượt qua độ dài mảng
+        int safeAmountIdx = (skillData.amount != null && skillData.amount.Length > 0) ? Mathf.Min(currentLevel, skillData.amount.Length - 1) : 0;
+        dateCurrent.text = skillData.amount != null && skillData.amount.Length > 0 ? skillData.amount[safeAmountIdx].ToString() : "0";
+        
         if (currentLevel < maxlevel)
         {
-            dataNext.text = skillData.amount[currentLevel + 1].ToString();
+            int safeNextAmountIdx = (skillData.amount != null && skillData.amount.Length > 0) ? Mathf.Min(currentLevel + 1, skillData.amount.Length - 1) : 0;
+            dataNext.text = skillData.amount != null && skillData.amount.Length > 0 ? skillData.amount[safeNextAmountIdx].ToString() : "0";
             dataNext.fontSize = 30;
         }
         else
@@ -53,7 +58,16 @@ public class SkillTooltipManager : MonoBehaviour
 
         if (string.IsNullOrEmpty(requirements))
         {
-            requirementsText.text = "Điều kiện: " + skillData.pointReq[currentLevel-1];
+            int safeReqIdx = (skillData.pointReq != null && skillData.pointReq.Length > 0) ? Mathf.Min(currentLevel, skillData.pointReq.Length - 1) : 0;
+            
+            if (currentLevel >= maxlevel)
+            {
+                requirementsText.text = "Điều kiện: Đã Max";
+            }
+            else
+            {
+                requirementsText.text = "Điều kiện: " + (skillData.pointReq != null && skillData.pointReq.Length > 0 ? skillData.pointReq[safeReqIdx].ToString() : "0");
+            }
         }
         else
         {

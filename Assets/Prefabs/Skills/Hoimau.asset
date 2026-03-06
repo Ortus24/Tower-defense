@@ -15,4 +15,5 @@ MonoBehaviour:
   skillName: "T\u0103ng h\u1ED3i m\xE1u"
   skillDescription: "H\u1ED3i m\xE1u: "
   maxLevel: 5
+  pointReq: 0200000002000000020000000300000003000000
   amount: 000000000100000002000000030000000500000007000000

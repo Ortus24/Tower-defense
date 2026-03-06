@@ -47,7 +47,7 @@ public class SkillTreeManager : MonoBehaviour
     {
         if(availablePoint > 0)
         {
-            UpdateAbilityPoints(shillSlot.currentLevel);
+            UpdateAbilityPoints(-shillSlot.skillSO.pointReq[shillSlot.currentLevel-1]);
             shillSlot.RefreshTooltip();
         }
     }

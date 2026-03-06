@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c50642b427da7c4ab5c5a1d3193aa68, type: 3}
   m_Name: lam cham
   m_EditorClassIdentifier: Assembly-CSharp::SkillSO
-  skillName: "T\u1EAFng m\xE1u t\u1ED1i \u0111a"
-  skillDescription: "M\xE1u: "
-  maxLevel: 10
-  amount: 000000000100000002000000050000000a0000000f00000014000000280000004600000064000000
+  skillName: "L\xE0m ch\u1EADm"
+  skillDescription: "Gi\xE2y: "
+  maxLevel: 1
+  pointReq: 0a000000
+  amount: 0000000002000000
