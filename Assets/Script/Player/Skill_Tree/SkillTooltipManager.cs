@@ -53,7 +53,7 @@ public class SkillTooltipManager : MonoBehaviour
 
         if (string.IsNullOrEmpty(requirements))
         {
-            requirementsText.text = "Điều kiện: 3 Point.";
+            requirementsText.text = "Điều kiện: " + skillData.pointReq[currentLevel-1];
         }
         else
         {
