@@ -23,24 +23,13 @@ public class Loot : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
-        {
-            // Kiểm tra nếu là Đầu lâu thì cộng thẳng vào biến số tổng
-            if (isMonsterDrop)
-            {
-                if (InventoryManager.instance != null)
-                {
-                    // Gọi hàm bạn vừa thêm để cộng vào biến monsterDropTotal
-                    InventoryManager.instance.AddMonsterDrop(quantity);
-                }
-            }
-            else
-            {
-                // Nếu là đồ thường thì mới gửi sự kiện vào hàm AddItem
-                OnItemLooted?.Invoke(item, quantity);
-            }
+    {
+        // Gửi sự kiện để InventoryManager xử lý việc nhét vào ô túi đồ
+        // Không còn phân biệt isMonsterDrop ở đây nữa
+        OnItemLooted?.Invoke(item, quantity);
 
-            animator.Play("LootPickUp");
-            Destroy(gameObject, 1f);
-        }
+        if (animator != null) animator.Play("LootPickUp");
+        Destroy(gameObject, 1f);
+    }
     }
 }

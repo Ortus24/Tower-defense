@@ -1,4 +1,5 @@
 ﻿using Assets.Script.Inventory___Shop;
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -41,65 +42,54 @@ public class InventoryManager : MonoBehaviour
 
     public void AddItem(ItemSO newItem, int quantity)
     {
+        // 1. CỘNG TIỀN TRƯỚC (Để không bị lệnh return phía dưới chặn mất)
+        if (newItem != null && newItem.itemName.Equals("MonsterDrop", StringComparison.OrdinalIgnoreCase))
+        {
+            monsterDropTotal += quantity;
+            UpdateResourceUI();
+            Debug.Log("Đã cộng Monster Drop: " + quantity);
+        }
+
         // Tạo một biến lưu số lượng vật phẩm đang cần thêm vào túi
         int amountToAdd = quantity;
 
         // 2. Tìm các ô ĐÃ CÓ sẵn vật phẩm này và CÒN CHỖ TRỐNG
-        foreach (InventorySlot slot in itemSlots)
+        if (newItem.stackSize > 1)
         {
-            // Nếu vật phẩm trong ô giống với vật phẩm đang nhặt VÀ số lượng hiện tại chưa đạt mức Stack tối đa
-            if (slot.item == newItem && slot.quantity < newItem.stackSize)
+            foreach (InventorySlot slot in itemSlots)
             {
-                // Tính toán xem ô này còn chứa thêm được bao nhiêu cái nữa
-                int spaceLeft = newItem.stackSize - slot.quantity;
-
-                // Lấy số lượng nhỏ nhất giữa "số lượng cần thêm" và "chỗ trống còn lại"
-                int amountToAddNow = Mathf.Min(amountToAdd, spaceLeft);
-
-                // Cộng thêm vào slot và trừ đi số lượng còn phải thêm
-                slot.quantity += amountToAddNow;
-                amountToAdd -= amountToAddNow;
-
-                // Cập nhật lại UI của slot đó
-                slot.UpdateUI();
-
-                // Nếu đã xếp xong toàn bộ số lượng nhặt được thì thoát hàm
-                if (amountToAdd <= 0)
+                if (slot.item == newItem && slot.quantity < newItem.stackSize)
                 {
-                    return;
+                    int spaceLeft = newItem.stackSize - slot.quantity;
+                    int amountToAddNow = Mathf.Min(amountToAdd, spaceLeft);
+
+                    slot.quantity += amountToAddNow;
+                    amountToAdd -= amountToAddNow;
+                    slot.UpdateUI();
+
+                    if (amountToAdd <= 0) return;
                 }
             }
         }
 
-        // 3. Nếu các ô chứa vật phẩm đó đã ĐẦY STACK, ta tìm một Ô TRỐNG hoàn toàn
+        // 3. Tìm ô TRỐNG hoàn toàn (Dùng cho món mới hoặc món không cho cộng dồn)
         foreach (InventorySlot slot in itemSlots)
         {
             if (slot.item == null)
             {
-                // Tính xem có thể nhét bao nhiêu vào ô trống (tối đa bằng stackSize của vật phẩm)
                 int amountToAddNow = Mathf.Min(newItem.stackSize, amountToAdd);
 
-                // Gán dữ liệu cho ô trống
                 slot.item = newItem;
                 slot.quantity = amountToAddNow;
                 amountToAdd -= amountToAddNow;
-
-                // Cập nhật lại UI
                 slot.UpdateUI();
 
-                // Thoát nếu đã xếp hết đồ
-                if (amountToAdd <= 0)
-                {
-                    return;
-                }
+                if (amountToAdd <= 0) return;
             }
         }
 
-        // 4. TÚI ĐỒ ĐÃ ĐẦY HOÀN TOÀN
         if (amountToAdd > 0)
         {
-            // Lúc này túi đồ không còn chỗ, lượng vật phẩm thừa (amountToAdd) sẽ rơi ngược ra ngoài map
-            // DropLoot(newItem, amountToAdd); 
             Debug.Log("Túi đồ đã đầy! Số lượng dư: " + amountToAdd);
         }
     }
