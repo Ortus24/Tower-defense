@@ -6,7 +6,6 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
 {
     public StatUIController statUIController;
 
-    // Thay thế OnMouseDown bằng OnPointerClick
     public void OnPointerClick(PointerEventData eventData)
     {
         Debug.Log("UI Object was clicked!");

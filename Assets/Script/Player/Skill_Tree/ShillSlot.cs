@@ -44,7 +44,7 @@ public class ShillSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
             currentLevel++;
             OnAbilityPointSpent?.Invoke(this);
 
-            if(currentLevel >= skillSO.maxLevel)
+            if (currentLevel >= skillSO.maxLevel)
             {
                 OnSkillUnlocked?.Invoke(this);
             }

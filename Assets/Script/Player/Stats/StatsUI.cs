@@ -7,43 +7,55 @@ public class StatsUI : MonoBehaviour
 
     public void Start()
     {
-        statsSlots[0].GetComponentInChildren<TMP_Text>().text = "Máu: " + StatesManager.Instance.maxHp;
-        statsSlots[1].GetComponentInChildren<TMP_Text>().text = "Hồi máu : " + StatesManager.Instance.hoiMau;
-        statsSlots[2].GetComponentInChildren<TMP_Text>().text = "Năng lượng: " + StatesManager.Instance.maxMana;
-        statsSlots[3].GetComponentInChildren<TMP_Text>().text = "Hồi mana: " + StatesManager.Instance.hoiMana;
-        statsSlots[4].GetComponentInChildren<TMP_Text>().text = "Sát thương: " + StatesManager.Instance.damage;
-        statsSlots[5].GetComponentInChildren<TMP_Text>().text = "Tốc đánh: " + StatesManager.Instance.attackSpeed;
-        statsSlots[6].GetComponentInChildren<TMP_Text>().text = "Tốc chạy: " + StatesManager.Instance.speed;    
-        statsSlots[7].GetComponentInChildren<TMP_Text>().text = "Né: " + StatesManager.Instance.ne;
-        statsSlots[8].GetComponentInChildren<TMP_Text>().text = "Chí mạng: " + StatesManager.Instance.criticalChance;
+        UpdateHealth();
+        HealthHp();
+        UpdateMana();
+        UpdateHoiMana();
+        UpdateDamage();
+        UpdateAttackSpeed();
+        UpdateSpeed();
+        UpdateNe();
+        UpdateCriticalChance();
         statsSlots[9].GetComponentInChildren<TMP_Text>().text = "???????????";
     }
     
     public void UpdateHealth()
     {
-        statsSlots[0].GetComponentInChildren<TMP_Text>().text = "Health: " + StatesManager.Instance.maxHp;
+        statsSlots[0].GetComponentInChildren<TMP_Text>().text = "Máu: " + StatesManager.Instance.maxHp;
     }
 
-    public void HealthHp(int newHp)
+    public void HealthHp()
     {
-        statsSlots[0].GetComponentInChildren<TMP_Text>().text = "Health: " + newHp;
+        statsSlots[1].GetComponentInChildren<TMP_Text>().text = "Hồi máu : " + StatesManager.Instance.hoiMau;
     }
 
     public void UpdateMana()
     {
-        statsSlots[1].GetComponentInChildren<TMP_Text>().text = "Mana: " + StatesManager.Instance.maxMana ;
+        statsSlots[2].GetComponentInChildren<TMP_Text>().text = "Năng lượng: " + StatesManager.Instance.maxMana;
     }
 
-    public void UpdateDamage()
+    public void UpdateHoiMana()
     {
-        statsSlots[2].GetComponentInChildren<TMP_Text>().text = "Damage: " + StatesManager.Instance.damage;
+        statsSlots[3].GetComponentInChildren<TMP_Text>().text = "Hồi mana: " + StatesManager.Instance.hoiMana;
     }
-
-    
-    public void UpdateSpeed()
+     public void UpdateDamage()
     {
-        statsSlots[3].GetComponentInChildren<TMP_Text>().text = "Speed: " + StatesManager.Instance.speed ;
+        statsSlots[4].GetComponentInChildren<TMP_Text>().text = "Sát thương: " + StatesManager.Instance.damage;
     }
-
-
+     public void UpdateAttackSpeed()
+    {
+        statsSlots[5].GetComponentInChildren<TMP_Text>().text = "Tốc đánh: " + StatesManager.Instance.attackSpeed;
+    }
+     public void UpdateSpeed()
+    {
+        statsSlots[6].GetComponentInChildren<TMP_Text>().text = "Tốc chạy: " + StatesManager.Instance.speed;    
+    }
+     public void UpdateNe()
+    {
+        statsSlots[7].GetComponentInChildren<TMP_Text>().text = "Né: " + StatesManager.Instance.ne;
+    }
+     public void UpdateCriticalChance()
+    {
+        statsSlots[8].GetComponentInChildren<TMP_Text>().text = "Chí mạng: " + StatesManager.Instance.criticalChance;
+    }
 }
