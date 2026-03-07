@@ -31,6 +31,13 @@ namespace Assets.Script.Inventory___Shop
         public Sprite woodIcon;
         public Sprite monsterDropIcon;
 
+        public static ShopManager Instance;
+        private void Awake()
+        {
+            // Đảm bảo Instance được gán ngay khi game chạy
+            if (Instance == null) Instance = this;
+        }
+
         private void Start()
         {
             // Mở Tab đầu tiên khi game bắt đầu
@@ -67,6 +74,25 @@ namespace Assets.Script.Inventory___Shop
 
             // 2. Tắt các ô Slot dư thừa (Nếu tab này có ít đồ hơn tab khác)
             for (int i = currentItems.Count; i < shopSlots.Length; i++)
+            {
+                shopSlots[i].gameObject.SetActive(false);
+            }
+        }
+
+        public void PopulateShopItems(List<ShopItem> itemsToDisplay)
+        {
+            // Sử dụng danh sách itemsToDisplay được truyền vào thay vì lấy từ shopTabs
+            for (int i = 0; i < itemsToDisplay.Count; i++)
+            {
+                if (i >= shopSlots.Length) break;
+
+                ShopItem currentItem = itemsToDisplay[i];
+                shopSlots[i].gameObject.SetActive(true);
+                shopSlots[i].Initialize(currentItem);
+            }
+
+            // Tắt các ô trống dư thừa
+            for (int i = itemsToDisplay.Count; i < shopSlots.Length; i++)
             {
                 shopSlots[i].gameObject.SetActive(false);
             }

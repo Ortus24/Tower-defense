@@ -406,6 +406,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 386008214664944959, guid: ae02f6b0c84ba6d4c9705e2a011995bf, type: 3}
+      propertyPath: quantity
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 386008214664944959, guid: ae02f6b0c84ba6d4c9705e2a011995bf, type: 3}
       propertyPath: isMonsterDrop
       value: 0
       objectReference: {fileID: 0}
@@ -2994,7 +2998,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4129608907944102356, guid: 48e11e7b34c9b1a468a56c84ad25ea03, type: 3}
       propertyPath: m_TagString
-      value: Player
+      value: TheKeep
       objectReference: {fileID: 0}
     - target: {fileID: 4190458243319416702, guid: 48e11e7b34c9b1a468a56c84ad25ea03, type: 3}
       propertyPath: m_AnchorMax.y

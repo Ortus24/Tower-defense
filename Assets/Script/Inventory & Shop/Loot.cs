@@ -22,7 +22,7 @@ public class Loot : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("TheKeep"))
     {
         // Gửi sự kiện để InventoryManager xử lý việc nhét vào ô túi đồ
         // Không còn phân biệt isMonsterDrop ở đây nữa

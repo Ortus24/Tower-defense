@@ -16,8 +16,5 @@ MonoBehaviour:
   itemDescription: Health Hp of player.
   itemIcon: {fileID: -2480101461718692971, guid: 19ca6a5601bd6f24187604a280766485, type: 3}
   stackSize: 2147483647
-  currentHealth: 0
-  maxHealth: 0
-  speed: 0
-  damage: 0
-  duration: 0
+  healAmount: 50
+  manaAmount: 0

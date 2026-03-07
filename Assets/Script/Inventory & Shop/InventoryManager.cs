@@ -98,4 +98,48 @@ public class InventoryManager : MonoBehaviour
         monsterDropTotal += amount; // Đây là dòng cộng vào biến số thực tế
         UpdateResourceUI();        // Đây là dòng cập nhật con số lên màn hình
     }
+
+    public void UseItem(InventorySlot slot)
+    {
+        if (slot.item == null) return;
+
+        ItemSO itemToUse = slot.item;
+        bool used = false;
+
+        // 1. Logic hồi HP
+        if (itemToUse.healAmount > 0)
+        {
+            // Kiểm tra nếu máu chưa đầy mới cho dùng
+            if (PlayerController.Instance.GetCurrentHp() < PlayerController.Instance.GetMaxHp())
+            {
+                PlayerController.Instance.Heal(itemToUse.healAmount);
+                used = true;
+            }
+            else
+            {
+                Debug.Log("Máu đã đầy, không cần sử dụng!");
+                return; // Thoát hàm, không trừ vật phẩm
+            }
+        }
+
+        // 2. Logic hồi MP (Nếu bạn có hệ thống Mana tương tự)
+        if (itemToUse.manaAmount > 0)
+        {
+            // PlayerController.Instance.RestoreMana(itemToUse.manaAmount);
+            used = true;
+        }
+
+        // 3. Trừ số lượng nếu đã sử dụng thành công
+        if (used)
+        {
+            slot.quantity--;
+            if (slot.quantity <= 0)
+            {
+                slot.item = null;
+            }
+            slot.UpdateUI();
+        }
+    }
+
+
 }

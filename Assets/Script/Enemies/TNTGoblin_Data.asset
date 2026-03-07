@@ -16,5 +16,5 @@ MonoBehaviour:
   maxHP: 200
   moveSpeed: 3
   damage: 10
-  targetType: 1
+  targetType: 0
   enemyPrefab: {fileID: 4593477570353505074, guid: f247cd2bf5235ee48bf928c3f7ad9bfe, type: 3}

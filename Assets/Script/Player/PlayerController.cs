@@ -9,11 +9,18 @@ public class PlayerController : MonoBehaviour
     private int currentHp;
     [Header("Hiệu ứng UI")]
     public GameObject damagePopupPrefab;
-
+    public static PlayerController Instance;
     private void Start()
     {
         currentHp = maxHp;
         OnHPChanged?.Invoke(currentHp, maxHp);
+    }
+
+
+    private void Awake()
+    {
+        // Đảm bảo Instance được gán ngay khi game chạy
+        if (Instance == null) Instance = this;
     }
 
     public void TakeDamage(int damage)
@@ -42,9 +49,31 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void Heal(int amount)
+    {
+        if (currentHp >= maxHp) return;
+
+        currentHp += amount;
+        currentHp = Mathf.Clamp(currentHp, 0, maxHp);
+
+        Debug.Log($"Player healed {amount}. Current HP: {currentHp}");
+        OnHPChanged?.Invoke(currentHp, maxHp);
+
+        // Hiển thị Popup màu xanh lá cho hồi máu (tùy chọn)
+        if (damagePopupPrefab != null)
+        {
+            Vector3 spawnPos = transform.position + new Vector3(0, 0.5f, 0);
+            GameObject popup = Instantiate(damagePopupPrefab, spawnPos, Quaternion.identity);
+            // Giả sử setup có tham số màu sắc hoặc isDamage
+            popup.GetComponent<Assets.Script.TowerBuilding.EconomyTower.DamagePopup>().Setup(amount, false);
+        }
+    }
     private void Die()
     {
         Time.timeScale = 0f; // Đóng băng game
         GameManager.Instance.ShowGameOver();
     }
+
+    public int GetCurrentHp() => currentHp;
+    public int GetMaxHp() => maxHp;
 }

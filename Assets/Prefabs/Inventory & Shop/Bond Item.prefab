@@ -108,7 +108,7 @@ MonoBehaviour:
   item: {fileID: 11400000, guid: 8b775e9db716864438ceeb0fda1cda46, type: 2}
   spriteRenderer: {fileID: 7336138305776402017}
   animator: {fileID: 5770218469519363777}
-  quantity: 100
+  quantity: 2000
   isMonsterDrop: 1
 --- !u!1 &6654379198254348371
 GameObject:
