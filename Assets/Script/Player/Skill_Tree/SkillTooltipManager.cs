@@ -66,7 +66,7 @@ public class SkillTooltipManager : MonoBehaviour
             }
             else
             {
-                requirementsText.text = "Điều kiện: " + (skillData.pointReq != null && skillData.pointReq.Length > 0 ? skillData.pointReq[safeReqIdx].ToString() : "0");
+                requirementsText.text = "Điều kiện: " + (skillData.pointReq != null && skillData.pointReq.Length > 0 ? skillData.pointReq[safeReqIdx].ToString() : "0") + " exp";
             }
         }
         else
