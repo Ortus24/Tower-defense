@@ -18,6 +18,8 @@ namespace Assets.Script.Inventory___Shop
         private int price;
         private int quantity;
 
+
+
         [Header("UI References (Kéo từ Hierarchy vào)")]
         public Image itemImage;           // Kéo ImageIcon vào đây
         public TextMeshProUGUI quantityText; // Kéo Text (TMP) con của ImageIcon vào đây

@@ -174,7 +174,7 @@ namespace Assets.Script.Inventory___Shop
                 ResourceManager.main.AddResources(0, shopItem.quantity);
                 Debug.Log($"Quy đổi thành công: Nhận {shopItem.quantity} Gỗ");
             }
-            
+
         }
 
         // Hàm kiểm tra túi đồ còn chỗ không
