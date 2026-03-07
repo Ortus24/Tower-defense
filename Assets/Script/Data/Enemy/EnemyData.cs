@@ -11,6 +11,7 @@ public class EnemyData : ScriptableObject
     public float maxHP;
     public float moveSpeed;
     public float damage;
+    public float experienceReward;
 
     public EnemyTargetType targetType;
 

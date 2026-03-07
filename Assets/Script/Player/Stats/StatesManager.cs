@@ -31,6 +31,11 @@ public class StatesManager : MonoBehaviour
     [Header("Chí mạng")]
     public float criticalChance;
 
+    [Header("Level & Experience")]
+    public int level = 1;
+    public int currentExp = 0;
+    public int expToNextLevel = 10;
+
     public void Awake()
     {
         if (Instance == null)
@@ -49,10 +54,17 @@ public class StatesManager : MonoBehaviour
         maxHp += add;
 
         // Cập nhật lại hiển thị máu trên UI
-        StatsUI statsUI = FindObjectOfType<StatsUI>();
+        StatsUI statsUI = FindObjectOfType<StatsUI>(true);
         if (statsUI != null)
         {
             statsUI.UpdateHealth();
+        }
+
+        // Cập nhật cho PlayerController
+        PlayerController playerController = FindObjectOfType<PlayerController>();
+        if (playerController != null)
+        {
+            playerController.UpdateMaxHp(maxHp);
         }
     }
 
@@ -60,7 +72,7 @@ public class StatesManager : MonoBehaviour
     {
         hoiMau += add;
         // Cập nhật lại hiển thị hồi máu trên UI
-        StatsUI statsUI = FindObjectOfType<StatsUI>();
+        StatsUI statsUI = FindObjectOfType<StatsUI>(true);
         if (statsUI != null)
         {
             statsUI.HealthHp();
@@ -71,7 +83,7 @@ public class StatesManager : MonoBehaviour
     {
         maxMana += add;
         // Cập nhật lại hiển thị mana trên UI
-        StatsUI statsUI = FindObjectOfType<StatsUI>();
+        StatsUI statsUI = FindObjectOfType<StatsUI>(true);
         if (statsUI != null)
         {
             statsUI.UpdateMana();
@@ -82,27 +94,34 @@ public class StatesManager : MonoBehaviour
     {
         hoiMana += add;
         // Cập nhật lại hiển thị hồi mana trên UI
-        StatsUI statsUI = FindObjectOfType<StatsUI>();
+        StatsUI statsUI = FindObjectOfType<StatsUI>(true);
         if (statsUI != null)
         {
             statsUI.UpdateHoiMana();
         }
     }
+    
      public void IncreaseDamage(int add)
     {
         damage += add;
         // Cập nhật lại hiển thị sát thương trên UI
-        StatsUI statsUI = FindObjectOfType<StatsUI>();
+        StatsUI statsUI = FindObjectOfType<StatsUI>(true);
         if (statsUI != null)
         {
             statsUI.UpdateDamage();
+        }
+
+        PlayerAttack playerAttack = FindObjectOfType<PlayerAttack>();
+        if (playerAttack != null)
+        {
+            playerAttack.UpdateDamage(damage);
         }
     }
      public void IncreaseAttackSpeed(float add)
     {
         attackSpeed += add;
         // Cập nhật lại hiển thị tốc đánh trên UI
-        StatsUI statsUI = FindObjectOfType<StatsUI>();
+        StatsUI statsUI = FindObjectOfType<StatsUI>(true);
         if (statsUI != null)
         {
             statsUI.UpdateAttackSpeed();
@@ -112,17 +131,23 @@ public class StatesManager : MonoBehaviour
     {
         speed += add;
         // Cập nhật lại hiển thị tốc chạy trên UI
-        StatsUI statsUI = FindObjectOfType<StatsUI>();
+        StatsUI statsUI = FindObjectOfType<StatsUI>(true);
         if (statsUI != null)
         {
             statsUI.UpdateSpeed();
+        }
+
+        PlayerMovement playerMovement = FindObjectOfType<PlayerMovement>();
+        if (playerMovement != null)
+        {
+            playerMovement.UpdateSpeed(speed);
         }
     }
      public void IncreaseNe(float add)
     {
         ne += add;
         // Cập nhật lại hiển thị né trên UI
-        StatsUI statsUI = FindObjectOfType<StatsUI>();
+        StatsUI statsUI = FindObjectOfType<StatsUI>(true);
         if (statsUI != null)
         {
             statsUI.UpdateNe();
@@ -132,10 +157,38 @@ public class StatesManager : MonoBehaviour
     {
         criticalChance += add;
         // Cập nhật lại hiển thị chí mạng trên UI
-        StatsUI statsUI = FindObjectOfType<StatsUI>();
+        StatsUI statsUI = FindObjectOfType<StatsUI>(true);
         if (statsUI != null)
         {
             statsUI.UpdateCriticalChance();
+        }
+    }
+
+    public void AddExp(int amount)
+    {
+        currentExp += amount;
+        while (currentExp >= expToNextLevel)
+        {
+            currentExp -= expToNextLevel;
+            LevelUp();
+        }
+        
+        StatsUI statsUI = FindObjectOfType<StatsUI>(true);
+        if (statsUI != null)
+        {
+            statsUI.UpdateLevelExp();
+        }
+    }
+
+    private void LevelUp()
+    {
+        level++;
+        
+        // Tăng 1 điểm kĩ năng khi lên cấp
+        SkillTreeManager skillTree = FindObjectOfType<SkillTreeManager>(true);
+        if (skillTree != null)
+        {
+            skillTree.UpdateAbilityPoints(1);
         }
     }
 }

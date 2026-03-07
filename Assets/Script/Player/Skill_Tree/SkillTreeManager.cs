@@ -35,7 +35,8 @@ public class SkillTreeManager : MonoBehaviour
             slot.skillButton.onClick.AddListener(slot.TryUpgradeSkill);
         }
         skillSlotStatsUpdate();
-        UpdateAbilityPoints(100);
+        availablePoint = 20;
+        pointText.text = "Points: " + availablePoint;
     }
 
     private void skillSlotStatsUpdate()

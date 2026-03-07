@@ -81,4 +81,9 @@ public class PlayerMovement : MonoBehaviour
             );
         }
     }
+
+    public void UpdateSpeed(float speed)
+    {
+        moveSpeed = speed;
+    }
 }

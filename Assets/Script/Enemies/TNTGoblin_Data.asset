@@ -16,5 +16,6 @@ MonoBehaviour:
   maxHP: 20
   moveSpeed: 3
   damage: 3
+  experienceReward: 3
   targetType: 1
   enemyPrefab: {fileID: 4593477570353505074, guid: f247cd2bf5235ee48bf928c3f7ad9bfe, type: 3}

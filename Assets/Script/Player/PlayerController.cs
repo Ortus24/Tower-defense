@@ -18,6 +18,15 @@ public class PlayerController : MonoBehaviour
         OnHPChanged?.Invoke(currentHp, maxHp);
     }
 
+    public void UpdateMaxHp(int newMaxHp)
+    {
+        int difference = newMaxHp - maxHp;
+        maxHp = newMaxHp;
+        currentHp += difference; 
+        currentHp = Mathf.Clamp(currentHp, 0, maxHp);
+        OnHPChanged?.Invoke(currentHp, maxHp);
+    }
+
     public void TakeDamage(int damage)
     {
 

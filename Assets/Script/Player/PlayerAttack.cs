@@ -19,6 +19,11 @@ public class PlayerAttack : MonoBehaviour
         attackDamage = StatesManager.Instance.damage;
     }
 
+    public void UpdateDamage(float newDamage)
+    {
+        attackDamage = newDamage;
+    }
+
     void Update()
     {
         if (Input.GetMouseButtonDown(0))

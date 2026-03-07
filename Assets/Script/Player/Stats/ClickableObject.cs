@@ -8,7 +8,6 @@ public class ClickableObject : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log("UI Object was clicked!");
         if (statUIController != null)
         {
             statUIController.ToggleStatsUI();

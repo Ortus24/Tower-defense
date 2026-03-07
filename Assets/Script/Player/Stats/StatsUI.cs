@@ -16,7 +16,7 @@ public class StatsUI : MonoBehaviour
         UpdateSpeed();
         UpdateNe();
         UpdateCriticalChance();
-        statsSlots[9].GetComponentInChildren<TMP_Text>().text = "???????????";
+        UpdateLevelExp();
     }
     
     public void UpdateHealth()
@@ -54,8 +54,16 @@ public class StatsUI : MonoBehaviour
     {
         statsSlots[7].GetComponentInChildren<TMP_Text>().text = "Né: " + StatesManager.Instance.ne;
     }
-     public void UpdateCriticalChance()
+    public void UpdateCriticalChance()
     {
         statsSlots[8].GetComponentInChildren<TMP_Text>().text = "Chí mạng: " + StatesManager.Instance.criticalChance;
+    }
+
+    public void UpdateLevelExp()
+    {
+        if (statsSlots.Length > 9 && statsSlots[9] != null)
+        {
+            statsSlots[9].GetComponentInChildren<TMP_Text>().text = "Cấp: " + StatesManager.Instance.level + " (" + StatesManager.Instance.currentExp + "/" + StatesManager.Instance.expToNextLevel + ")";
+        }
     }
 }
