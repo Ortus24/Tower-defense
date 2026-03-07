@@ -64,6 +64,17 @@ public class EnemyHealth : MonoBehaviour
     {
         if (isDead) return;
         isDead = true;
+
+
+        if (StatesManager.Instance != null)
+        {
+            StatesManager.Instance.AddExp(1);
+        }
+        else
+        {
+            Debug.LogError("EnemyHealth: StatesManager.Instance is NULL!");
+        }
+
         Destroy(gameObject, destroyDelay);
         animator?.SetTrigger("Die");
         OnDead?.Invoke();

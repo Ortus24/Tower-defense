@@ -4,7 +4,7 @@ public class PlayerAttack : MonoBehaviour
 {
     [Header("Attack Settings")]
     [SerializeField] private float attackRange = 1.5f;
-    [SerializeField] private float attackDamage = 10f;
+    [SerializeField] private float attackDamage ;
     [SerializeField] private float attackCooldown = 0.5f;
     [SerializeField] private LayerMask enemyLayer;
 
@@ -13,6 +13,16 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private float effectOffset = 0.5f;
 
     private float lastAttackTime;
+
+    void Start()
+    {
+        attackDamage = StatesManager.Instance.damage;
+    }
+
+    public void UpdateDamage(float newDamage)
+    {
+        attackDamage = newDamage;
+    }
 
     void Update()
     {
@@ -46,6 +56,12 @@ public class PlayerAttack : MonoBehaviour
                 attackPos,
                 Quaternion.identity
             );
+
+            SlashDamage sd = effect.GetComponent<SlashDamage>();
+            if (sd != null)
+            {
+                sd.Setup(attackDamage, enemyLayer);
+            }
 
             Vector3 scale = effect.transform.localScale;
             scale.x *= facingDir;

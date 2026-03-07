@@ -5,22 +5,32 @@ public class PlayerController : MonoBehaviour
 {
     public Action<int, int> OnHPChanged;
 
-    [SerializeField] private int maxHp = 100;
+    private int maxHp;
     private int currentHp;
     [Header("Hiệu ứng UI")]
     public GameObject damagePopupPrefab;
     public static PlayerController Instance;
     private void Start()
     {
+
+        maxHp = StatesManager.Instance.maxHp;
         currentHp = maxHp;
         OnHPChanged?.Invoke(currentHp, maxHp);
     }
-
 
     private void Awake()
     {
         // Đảm bảo Instance được gán ngay khi game chạy
         if (Instance == null) Instance = this;
+    }
+
+    public void UpdateMaxHp(int newMaxHp)
+    {
+        int difference = newMaxHp - maxHp;
+        maxHp = newMaxHp;
+        currentHp += difference; 
+        currentHp = Mathf.Clamp(currentHp, 0, maxHp);
+        OnHPChanged?.Invoke(currentHp, maxHp);
     }
 
     public void TakeDamage(int damage)

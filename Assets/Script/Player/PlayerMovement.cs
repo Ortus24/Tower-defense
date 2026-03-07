@@ -3,7 +3,7 @@
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement")]
-    public float moveSpeed = 5f;
+    private float moveSpeed ;
     public Rigidbody2D rb;
 
     [Header("Animation")]
@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
+        moveSpeed = StatesManager.Instance.speed;
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
     }
@@ -79,5 +80,10 @@ public class PlayerMovement : MonoBehaviour
                 1
             );
         }
+    }
+
+    public void UpdateSpeed(float speed)
+    {
+        moveSpeed = speed;
     }
 }

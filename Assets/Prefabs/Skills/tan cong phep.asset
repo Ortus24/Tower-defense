@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c50642b427da7c4ab5c5a1d3193aa68, type: 3}
+  m_Name: tan cong phep
+  m_EditorClassIdentifier: Assembly-CSharp::SkillSO
+  skillName: "T\u1EA5n c\xF4ng ph\xE9p"
+  skillDescription: "T\u1EA5n c\xF4ng :"
+  maxLevel: 10
+  pointReq: 03000000030000000300000003000000030000000400000004000000040000000500000005000000
+  amount: 0500000007000000090000000c0000000f0000001100000015000000190000001d0000002300000028000000

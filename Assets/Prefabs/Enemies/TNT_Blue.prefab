@@ -14,7 +14,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8020862404047573962, guid: ab608c58a3e11f341bcf8dd426947e97, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.34
+      value: 0.29
       objectReference: {fileID: 0}
     - target: {fileID: 8020862404047573962, guid: ab608c58a3e11f341bcf8dd426947e97, type: 3}
       propertyPath: m_LocalPosition.y
@@ -330,9 +330,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyBase
   data: {fileID: 11400000, guid: 29c5da0d67b3aa841af69c4ea6be4883, type: 2}
-  stopDistanceUp: 1
-  stopDistanceDown: 2
-  stopDistanceSide: 2
+  stopDistanceUp: 0.3
+  stopDistanceDown: 1.7
+  stopDistanceSide: 1
   stopBuffer: 0.2
   separationRadius: 0.6
   separationForce: 2
