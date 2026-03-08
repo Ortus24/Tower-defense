@@ -16,6 +16,10 @@ public class SkillOne : MonoBehaviour
     [Header("Cooldown")]
     public float cooldownTime = 5f;
 
+    [Header("Damage")]
+    public int damage = 10;
+    public float damageDelay = 100f; // Thời gian delay trước khi quái bị mất máu
+
     private bool canUseSkill = true;
     private bool isSelectingPosition = false;
 
@@ -91,19 +95,59 @@ public class SkillOne : MonoBehaviour
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0f; // rất quan trọng trong 2D
 
-        //Instantiate(LightCircle, mousePos, Quaternion.identity);
-        magicCircleInstance = Instantiate(LightCircle,mousePos,Quaternion.identity);
+        magicCircleInstance = Instantiate(LightCircle, mousePos, Quaternion.identity);
 
-        for (int i = 0; i < lightningCount; i++)
+        float searchDuration = 5f;
+        float elapsedTimer = 0f;
+        int spawnedCount = 0;
+        System.Collections.Generic.HashSet<Transform> struckEnemies = new System.Collections.Generic.HashSet<Transform>();
+
+        // TÌM KIẾM TRONG KHOẢNG 5 GIÂY VÀ SPAWN TỐI ĐA SỐ SÉT CHO PHÉP
+        while (elapsedTimer < searchDuration && spawnedCount < lightningCount)
         {
-            // RANDOM VỊ TRÍ TRONG VÒNG TRÒN
-            Vector2 randomOffset = Random.insideUnitCircle * circleRadius;
-            Vector3 spawnPos = center + new Vector3(randomOffset.x, randomOffset.y, 0);
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(center, circleRadius);
+            System.Collections.Generic.List<Transform> enemies = new System.Collections.Generic.List<Transform>();
 
-            // SPAWN SÉT
-            Instantiate(lightningPrefab, spawnPos, Quaternion.identity);
+            foreach (Collider2D col in colliders)
+            {
+                if (col.CompareTag("Enemy") && !struckEnemies.Contains(col.transform))
+                {
+                    enemies.Add(col.transform);
+                }
+            }
 
-            yield return new WaitForSeconds(spawnInterval);
+            if (enemies.Count > 0)
+            {
+                // CHỌN NGẪU NHIÊN 1 ENEMY CHƯA BỊ ĐÁNH VÀ SPAWN GẮN LÊN ĐẦU
+                Transform target = enemies[Random.Range(0, enemies.Count)];
+                
+                // CỤ THỂ LÀ GÁN CHA CHO PREFAB NGAY KHI SPAWN:
+                GameObject lightning = Instantiate(lightningPrefab, target.position, Quaternion.identity, target);
+
+                // NẾU CẦN CHỈNH HIGHER HAY THẾ NÀO THÌ CÓ THỂ CHỈNH localPosition (MẶC ĐỊNH BẠN MUỐN SPAWN LÊN ĐẦU THÌ CÓ THỂ ĐỂ ZERO NGHĨA LÀ TRÙNG VỚI VỊ TRÍ)
+                lightning.transform.localPosition = new Vector3(0, 0.7f, 0); // Hoặc new Vector3(0, 1f, 0) nếu muốn cao hơn 1 chút so với tâm enemy.
+                
+                // GÂY SÁT THƯƠNG CHO ENEMY (Được xử lý dựa trên Coroutine để delay theo animation)
+                EnemyHealth enemyHealth = target.GetComponent<EnemyHealth>();
+                if (enemyHealth != null)
+                {
+                    StartCoroutine(ApplyDamageAfterDelay(enemyHealth, damageDelay));
+                }
+
+                // ĐÁNH DẤU ENEMY ĐÃ BỊ ĐÁNH THEO YÊU CẦU: MỖI CON 1 SÉT
+                struckEnemies.Add(target);
+
+                spawnedCount++;
+                
+                yield return new WaitForSeconds(spawnInterval);
+                elapsedTimer += spawnInterval;
+            }
+            else
+            {
+                // KHÔNG CÓ MỤC TIÊU THÌ KHÔNG SPAWN, CHUYỂN SANG FRAME KẾ TIẾP ĐỂ TÌM TIẾP
+                yield return null;
+                elapsedTimer += Time.deltaTime;
+            }
         }
 
         yield return new WaitForSeconds(cooldownTime);
@@ -111,13 +155,25 @@ public class SkillOne : MonoBehaviour
         if (cooldownUI != null)
         {
             cooldownUI.StartCooldown();
-            //LightCircle.GetComponent<DestroyWhenCall>().DestroyNow();
         }
         
         canUseSkill = true;
-        magicCircleInstance
-                .GetComponent<DestroyWhenCall>()
-                .DestroyNow();
+        if (magicCircleInstance != null)
+        {
+            magicCircleInstance.GetComponent<DestroyWhenCall>().DestroyNow();
+        }
+    }
+
+    // COROUTINE CHỜ CHO ĐẾN KHI ANIMATION SÉT ĐÁNH XUỐNG RỒI MỚI TRỪ MÁU
+    IEnumerator ApplyDamageAfterDelay(EnemyHealth enemyHealth, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        
+        // Kiểm tra xem quái có bị chết đi trong lúc chờ delay không
+        if (enemyHealth != null)
+        {
+            enemyHealth.TakeDamage(damage);
+        }
     }
 
     //------------------------
