@@ -80,7 +80,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1691816339
   m_SortingLayer: 3
-  m_SortingOrder: 2
+  m_SortingOrder: 5
   m_MaskInteraction: 0
   m_Sprite: {fileID: 2537277513418928699, guid: 49576748e9299c54cb74cef9eadda40e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -104,9 +104,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33dd4c5f4d15bc64bb5af70f87b7150e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  fadeInTime: 1.5
-  stayTime: 1.2
-  fadeOutTime: 1
+  fadeInTime: 0.5
+  stayTime: 0.2
+  fadeOutTime: 0.5
 --- !u!1 &2048727480201247668
 GameObject:
   m_ObjectHideFlags: 0
@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4993663df6e4ced4bbf47ec1ab3aa294, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AutoDestroy
-  delayAppear: 0
+  delayAppear: 1
   lifeTime: 3
 --- !u!1001 &1776630517063508961
 PrefabInstance:
@@ -207,13 +207,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7124479208337411387, guid: 67f58f14949aa4c4691194bf9bf1bc09, type: 3}
+      propertyPath: m_SortingOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7198568431848682708, guid: 67f58f14949aa4c4691194bf9bf1bc09, type: 3}
+      propertyPath: lifeTime
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 7198568431848682708, guid: 67f58f14949aa4c4691194bf9bf1bc09, type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7198568431848682708, guid: 67f58f14949aa4c4691194bf9bf1bc09, type: 3}
       propertyPath: delayAppear
-      value: 2
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

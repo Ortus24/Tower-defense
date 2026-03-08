@@ -28,16 +28,6 @@ AnimationClip:
       value: {fileID: -5167413608083449488, guid: 24e4c08d49133b14e9e6adc2ea87c4e4, type: 3}
     - time: 0.15
       value: {fileID: -8408763834710030297, guid: 24e4c08d49133b14e9e6adc2ea87c4e4, type: 3}
-    - time: 0.21666667
-      value: {fileID: 1144234645273286238, guid: 24e4c08d49133b14e9e6adc2ea87c4e4, type: 3}
-    - time: 0.26666668
-      value: {fileID: 4141612904334516676, guid: 24e4c08d49133b14e9e6adc2ea87c4e4, type: 3}
-    - time: 0.31666666
-      value: {fileID: -5589664403440696418, guid: 24e4c08d49133b14e9e6adc2ea87c4e4, type: 3}
-    - time: 0.38333333
-      value: {fileID: 992728304312703659, guid: 24e4c08d49133b14e9e6adc2ea87c4e4, type: 3}
-    - time: 0.43333334
-      value: {fileID: -2136464288153343608, guid: 24e4c08d49133b14e9e6adc2ea87c4e4, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -64,17 +54,12 @@ AnimationClip:
     - {fileID: 9180251791023625898, guid: 24e4c08d49133b14e9e6adc2ea87c4e4, type: 3}
     - {fileID: -5167413608083449488, guid: 24e4c08d49133b14e9e6adc2ea87c4e4, type: 3}
     - {fileID: -8408763834710030297, guid: 24e4c08d49133b14e9e6adc2ea87c4e4, type: 3}
-    - {fileID: 1144234645273286238, guid: 24e4c08d49133b14e9e6adc2ea87c4e4, type: 3}
-    - {fileID: 4141612904334516676, guid: 24e4c08d49133b14e9e6adc2ea87c4e4, type: 3}
-    - {fileID: -5589664403440696418, guid: 24e4c08d49133b14e9e6adc2ea87c4e4, type: 3}
-    - {fileID: 992728304312703659, guid: 24e4c08d49133b14e9e6adc2ea87c4e4, type: 3}
-    - {fileID: -2136464288153343608, guid: 24e4c08d49133b14e9e6adc2ea87c4e4, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.45000002
+    m_StopTime: 0.16666667
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -93,4 +78,11 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0.13333334
+    functionName: 
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

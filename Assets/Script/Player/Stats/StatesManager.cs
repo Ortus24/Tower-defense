@@ -42,6 +42,13 @@ public class StatesManager : MonoBehaviour
     public Image levelFill;
     public TMP_Text levelText;
 
+
+    [Header("Magic Skills")]
+    public int magicDamage;
+    public int reload;
+    public int circleRadius;
+    public int numberOfProjectiles;
+
     public void Awake()
     {
         if (Instance == null)
@@ -93,6 +100,12 @@ public class StatesManager : MonoBehaviour
         if (statsUI != null)
         {
             statsUI.UpdateMana();
+        }
+
+        PlayerController playerController = FindObjectOfType<PlayerController>();
+        if (playerController != null)
+        {
+            playerController.UpdateManaMax(maxMana);
         }
     }
 
@@ -195,6 +208,25 @@ public class StatesManager : MonoBehaviour
         if (skillTree != null)
         {
             skillTree.UpdateAbilityPoints(1);
+        }
+    }
+
+    public void TangDamageKiNang(int amount)
+    {
+        magicDamage += amount;
+        SkillOne skillOne = FindObjectOfType<SkillOne>(true);
+        if (skillOne != null)
+        {
+            skillOne.damage += amount;
+        }
+    }
+
+    public void ActiveSkills()
+    {
+        SkillOne skillOne = FindObjectOfType<SkillOne>(true);
+        if (skillOne != null)
+        {
+            skillOne.OpenSkill();
         }
     }
 }
