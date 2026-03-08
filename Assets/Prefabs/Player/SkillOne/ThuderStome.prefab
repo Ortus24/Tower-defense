@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4993663df6e4ced4bbf47ec1ab3aa294, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AutoDestroy
-  delayAppear: 0
+  delayAppear: 1
   lifeTime: 3
 --- !u!1001 &1776630517063508961
 PrefabInstance:

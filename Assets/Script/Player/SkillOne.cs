@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SkillOne : MonoBehaviour
 {
@@ -18,12 +19,20 @@ public class SkillOne : MonoBehaviour
 
     [Header("Damage")]
     public int damage = 10;
-    public float damageDelay = 100f; // Thời gian delay trước khi quái bị mất máu
+    public float damageDelay = 100f;
+    public int manaCost = 20;
+
+
+    [Header("LockSkill")]
+    public Image backgroundLock;
+    public Image backgroundIconlock;
 
     private bool canUseSkill = true;
     private bool isSelectingPosition = false;
 
     public SkillCooldownUI cooldownUI;
+
+    private bool isOnpenSkill = false;
 
     private GameObject magicCircleInstance;
 
@@ -36,9 +45,20 @@ public class SkillOne : MonoBehaviour
     void Update()
     {
         // ẤN E → BẬT CHẾ ĐỘ CHỌN VỊ TRÍ
-        if (Input.GetKeyDown(KeyCode.E) && canUseSkill)
+        if (Input.GetKeyDown(KeyCode.E) && canUseSkill && isOnpenSkill)
         {
-            ActivateSkill();
+            if (PlayerController.Instance != null && PlayerController.Instance.GetCurrentMana() >= manaCost)
+            {
+                ActivateSkill();
+            }
+            else if (PlayerController.Instance == null)
+            {
+                ActivateSkill();
+            }
+            else
+            {
+                Debug.Log("Không đủ mana!");
+            }
         }
 
         // ĐANG CHỌN VỊ TRÍ
@@ -58,6 +78,13 @@ public class SkillOne : MonoBehaviour
                 CancelSkill();
             }
         }
+    }
+
+    public void OpenSkill()
+    {
+        backgroundIconlock.color = new Color32(255, 255, 255, 0);
+        backgroundLock.color = new Color32(255, 255, 255, 0);
+        isOnpenSkill = true;
     }
 
     // =========================
@@ -86,6 +113,16 @@ public class SkillOne : MonoBehaviour
     // =========================
     IEnumerator RainLightning()
     {
+        if (PlayerController.Instance != null)
+        {
+            if (PlayerController.Instance.GetCurrentMana() < manaCost)
+            {
+                CancelSkill();
+                yield break;
+            }
+            PlayerController.Instance.TakeMana(manaCost);
+        }
+
         canUseSkill = false;
         isSelectingPosition = false;
 
@@ -185,5 +222,10 @@ public class SkillOne : MonoBehaviour
     {
         isSelectingPosition = false;
         rangeCircle.SetActive(false);
+    }
+
+    public void UpdateDamage(int amount)
+    {
+        damage += amount;
     }
 }

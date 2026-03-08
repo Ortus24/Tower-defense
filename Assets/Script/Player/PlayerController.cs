@@ -1,18 +1,25 @@
 ﻿using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public Action<int, int> OnManaChanged;
     public Action<int, int> OnHPChanged;
 
     private int maxHp;
     private int currentHp;
+   
+    private int manaMax;
+    private int currentMana;
+
     [Header("Hiệu ứng UI")]
     public GameObject damagePopupPrefab;
     public static PlayerController Instance;
     private void Start()
     {
-
+        manaMax = StatesManager.Instance.maxMana;
+        currentMana = manaMax;
         maxHp = StatesManager.Instance.maxHp;
         currentHp = maxHp;
         OnHPChanged?.Invoke(currentHp, maxHp);
@@ -23,6 +30,14 @@ public class PlayerController : MonoBehaviour
         // Đảm bảo Instance được gán ngay khi game chạy
         if (Instance == null) Instance = this;
     }
+    public void UpdateManaMax(int newManaMax)
+    {
+        int difference = newManaMax - manaMax;
+        manaMax = newManaMax;
+        currentMana += difference; 
+        currentMana = Mathf.Clamp(currentMana, 0, manaMax);
+        OnManaChanged?.Invoke(currentMana, manaMax);
+    }
 
     public void UpdateMaxHp(int newMaxHp)
     {
@@ -31,6 +46,14 @@ public class PlayerController : MonoBehaviour
         currentHp += difference; 
         currentHp = Mathf.Clamp(currentHp, 0, maxHp);
         OnHPChanged?.Invoke(currentHp, maxHp);
+    }
+
+    public void TakeMana(int amount)
+    {
+        currentMana -= amount;
+        currentMana = Mathf.Clamp(currentMana, 0, manaMax);
+        Debug.Log($"Player uses {amount} mana. Current Mana: {currentMana}");
+        OnManaChanged?.Invoke(currentMana, manaMax);
     }
 
     public void TakeDamage(int damage)
@@ -86,4 +109,6 @@ public class PlayerController : MonoBehaviour
 
     public int GetCurrentHp() => currentHp;
     public int GetMaxHp() => maxHp;
+
+    public int GetCurrentMana() => currentMana;
 }

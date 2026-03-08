@@ -139,6 +139,28 @@ public class SkillTreeManager : MonoBehaviour
                 lastAppliedCriticalChanceLevel = skillSlots[8].currentLevel;
             }
         });
+
+        int lastAppliedLevelSkillsLevel = skillSlots[12].currentLevel;
+        skillSlots[12].skillButton.onClick.AddListener(() => 
+        {
+            if (skillSlots[12].currentLevel > lastAppliedLevelSkillsLevel)
+            {
+                int levelSkillsToAdd = skillSlots[12].skillSO.amount[skillSlots[12].currentLevel] - skillSlots[12].skillSO.amount[lastAppliedLevelSkillsLevel];
+                StatesManager.Instance.ActiveSkills();
+                lastAppliedLevelSkillsLevel = skillSlots[12].currentLevel;
+            }
+        });
+
+        int lastAppliedLevelExpLevel = skillSlots[13].currentLevel;
+        skillSlots[13].skillButton.onClick.AddListener(() => 
+        {
+            if (skillSlots[13].currentLevel > lastAppliedLevelExpLevel)
+            {
+                int levelExpToAdd = skillSlots[13].skillSO.amount[skillSlots[13].currentLevel] - skillSlots[13].skillSO.amount[lastAppliedLevelExpLevel];
+                StatesManager.Instance.TangDamageKiNang(levelExpToAdd);
+                lastAppliedLevelExpLevel = skillSlots[13].currentLevel;
+            }
+        });
     }
 
     public void UpdateAbilityPoints(int points)
