@@ -8,6 +8,8 @@ public class EnemyHealth : MonoBehaviour
     public float maxHP { get; private set; }
     public float CurrentHP { get; private set; }
 
+    public GameObject itemDie;
+
     public event Action<float> OnHealthPercentChanged;
     public event Action OnDead;
 
@@ -78,6 +80,21 @@ public class EnemyHealth : MonoBehaviour
         Destroy(gameObject, destroyDelay);
         animator?.SetTrigger("Die");
         OnDead?.Invoke();
+
+        if (damagePopupPrefab != null)
+        {
+            // Cho vị trí xuất hiện cao lên một chút so với chân quái vật
+            Vector3 spawnPos = transform.position + new Vector3(0, 0, 0);
+            GameObject popup = Instantiate(damagePopupPrefab, spawnPos, Quaternion.identity);
+
+            // Gọi hàm Setup với isDamage = true
+            popup.GetComponent<Assets.Script.TowerBuilding.EconomyTower.DamagePopup>().SetUpExp((int)1, false);
+        }
+
+        if (itemDie != null)
+        {
+            Instantiate(itemDie, transform.position, Quaternion.identity);
+        }
     }
 
     public void OnHitFrame()

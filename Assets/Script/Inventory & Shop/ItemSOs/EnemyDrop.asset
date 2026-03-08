@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemSO
   itemName: MonsterDrop
   itemDescription: Used to change in shop
-  itemIcon: {fileID: 2881778980199032837, guid: b925dc149293f02428e7238b4164e656, type: 3}
+  itemIcon: {fileID: 7690500479702966033, guid: b925dc149293f02428e7238b4164e656, type: 3}
   stackSize: 2147483647
+  healAmount: 0
+  manaAmount: 0

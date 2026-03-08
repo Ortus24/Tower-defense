@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class StatesManager : MonoBehaviour
 {
@@ -35,6 +37,10 @@ public class StatesManager : MonoBehaviour
     public int level = 1;
     public int currentExp = 0;
     public int expToNextLevel = 10;
+
+    [Header("Level UI")]
+    public Image levelFill;
+    public TMP_Text levelText;
 
     public void Awake()
     {
@@ -172,7 +178,7 @@ public class StatesManager : MonoBehaviour
             currentExp -= expToNextLevel;
             LevelUp();
         }
-        
+        levelFill.fillAmount = (float)currentExp / expToNextLevel;
         StatsUI statsUI = FindObjectOfType<StatsUI>(true);
         if (statsUI != null)
         {
@@ -183,7 +189,7 @@ public class StatesManager : MonoBehaviour
     private void LevelUp()
     {
         level++;
-        
+        levelText.text = "" + level;
         // Tăng 1 điểm kĩ năng khi lên cấp
         SkillTreeManager skillTree = FindObjectOfType<SkillTreeManager>(true);
         if (skillTree != null)

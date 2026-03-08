@@ -359,6 +359,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
   enemyData: {fileID: 11400000, guid: 29c5da0d67b3aa841af69c4ea6be4883, type: 2}
+  itemDie: {fileID: 5084987424564009752, guid: ae02f6b0c84ba6d4c9705e2a011995bf, type: 3}
   animator: {fileID: 5700810611608762770}
   destroyDelay: 0
   damagePopupPrefab: {fileID: 4146299610257053289, guid: a9e6b43fbc9472940836b8f8498bbdf2, type: 3}

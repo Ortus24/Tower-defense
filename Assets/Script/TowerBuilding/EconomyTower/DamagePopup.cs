@@ -30,7 +30,7 @@ namespace Assets.Script.TowerBuilding.EconomyTower
             if (isDamage)
             {
                 // Nếu là Sát thương -> Không có dấu +, màu Trắng (hoặc Đỏ tùy bạn chỉnh)
-                textMesh.text = amount.ToString();
+                textMesh.text = "-" + amount.ToString();
                 textMesh.color = Color.red;
             }
             else
@@ -38,6 +38,32 @@ namespace Assets.Script.TowerBuilding.EconomyTower
                 // Nếu là Thu hoạch mỏ -> Có dấu +, màu Vàng
                 textMesh.text = "+" + amount.ToString();
                 textMesh.color = Color.yellow;
+            }
+
+            textColor = textMesh.color;
+
+            // Bay lên với tốc độ x: random một chút để các số không đè chặt lên nhau, y: bay lên
+            moveVector = new Vector3(Random.Range(-1f, 1f), 2f, 0);
+
+            // Tự hủy sau 1.5 giây để dọn dẹp bộ nhớ
+            Destroy(gameObject, 1.5f);
+        }
+
+        public void SetUpExp(int amount, bool isDamage = false)
+        {
+            if (textMesh == null) textMesh = GetComponent<TextMeshPro>();
+
+            if (isDamage)
+            {
+                // Nếu là Sát thương -> Không có dấu +, màu Trắng (hoặc Đỏ tùy bạn chỉnh)
+                textMesh.text = amount.ToString();
+                textMesh.color = Color.red;
+            }
+            else
+            {
+                // Nếu là Thu hoạch mỏ -> Có dấu +, màu Vàng
+                textMesh.text = "+" + amount.ToString() + " exp";
+                textMesh.color = Color.green;
             }
 
             textColor = textMesh.color;
