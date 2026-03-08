@@ -103,6 +103,31 @@ public class PlayerController : MonoBehaviour
             popup.GetComponent<Assets.Script.TowerBuilding.EconomyTower.DamagePopup>().Setup(amount, false);
         }
     }
+
+    public void RestoreMana(int amount)
+    {
+        // Kiểm tra nếu Mana đã đầy thì không thực hiện
+        if (currentMana >= manaMax) return;
+
+        currentMana += amount;
+        // Đảm bảo mana không vượt quá giới hạn tối đa
+        currentMana = Mathf.Clamp(currentMana, 0, manaMax);
+
+        Debug.Log($"Player restored {amount} mana. Current Mana: {currentMana}");
+
+        // Gọi Action để các thanh Mana Bar trên UI cập nhật theo
+        OnManaChanged?.Invoke(currentMana, manaMax);
+
+        // Hiển thị Popup màu xanh dương cho Mana (tương tự như Heal)
+        if (damagePopupPrefab != null)
+        {
+            Vector3 spawnPos = transform.position + new Vector3(0, 0.5f, 0);
+            GameObject popup = Instantiate(damagePopupPrefab, spawnPos, Quaternion.identity);
+
+            // Giả sử setup có logic phân biệt màu sắc, bạn có thể truyền màu xanh dương
+            popup.GetComponent<Assets.Script.TowerBuilding.EconomyTower.DamagePopup>().Setup(amount, false);
+        }
+    }
     private void Die()
     {
         GameManager.Instance.ShowGameOver();
@@ -121,4 +146,5 @@ public class PlayerController : MonoBehaviour
     public int GetMaxHp() => maxHp;
 
     public int GetCurrentMana() => currentMana;
+    public int GetMaxMana() => manaMax;
 }

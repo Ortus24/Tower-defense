@@ -121,12 +121,20 @@ public class InventoryManager : MonoBehaviour
                 return; // Thoát hàm, không trừ vật phẩm
             }
         }
-
-        // 2. Logic hồi MP (Nếu bạn có hệ thống Mana tương tự)
+        // 2. Logic hồi MP (Đã cập nhật)
         if (itemToUse.manaAmount > 0)
         {
-            // PlayerController.Instance.RestoreMana(itemToUse.manaAmount);
-            used = true;
+            // Kiểm tra nếu Mana chưa đầy mới cho dùng
+            if (PlayerController.Instance.GetCurrentMana() < PlayerController.Instance.GetMaxMana())
+            {
+                PlayerController.Instance.RestoreMana(itemToUse.manaAmount);
+                used = true;
+            }
+            else
+            {
+                Debug.Log("Mana đã đầy, không cần sử dụng!");
+                return; // Thoát hàm, không trừ vật phẩm
+            }
         }
 
         // 3. Trừ số lượng nếu đã sử dụng thành công
