@@ -1,15 +1,23 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MinimapFollow : MonoBehaviour
 {
-    public Transform playerTarget;
+    public Transform player;
 
     void LateUpdate()
     {
-        if (playerTarget != null)
+        // Kiểm tra xem đã kéo nhân vật vào chưa để tránh lỗi
+        if (player != null)
         {
-            // Keep the Minimap camera at the same Z depth, but follow X and Y
-            transform.position = new Vector3(playerTarget.position.x, playerTarget.position.y, transform.position.z);
+            // Lấy vị trí hiện tại của nhân vật
+            Vector3 newPosition = player.position;
+
+            // Giữ nguyên độ cao Z của Camera (để camera không bị chìm xuống đất hoặc bay mất)
+            // Camera của bạn đang ở Z = -10, dòng này giữ nó ở -10
+            newPosition.z = transform.position.z;
+
+            // Gán vị trí mới cho MiniCamera
+            transform.position = newPosition;
         }
     }
 }
