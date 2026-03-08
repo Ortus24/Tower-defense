@@ -15,6 +15,7 @@ public class StatUIController : MonoBehaviour
         if (StatsUI != null)
         {
             StatsUI.SetActive(!StatsUI.activeSelf);
+            Time.timeScale = StatsUI.activeSelf ? 0f : 1f; 
         }
     }
 
