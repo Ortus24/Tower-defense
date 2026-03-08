@@ -1,4 +1,6 @@
-﻿using UnityEditor.ShaderGraph.Internal;
+﻿#if UNITY_EDITOR
+using UnityEditor.ShaderGraph;
+#endif
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Item")]

@@ -1,5 +1,4 @@
 ﻿using System.Net.NetworkInformation;
-using Unity.AppUI.MVVM;
 using UnityEngine;
 using static Unity.Burst.Intrinsics.X86.Avx;
 
