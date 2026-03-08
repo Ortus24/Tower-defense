@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -80,10 +82,18 @@ public class PlayerController : MonoBehaviour
     }
     private void Die()
     {
-        Time.timeScale = 0f; // Đóng băng game
         GameManager.Instance.ShowGameOver();
+        Time.timeScale = 0f; // Tạm dừng game để
+        // Gọi hàm LoadMainScene sau 5 giây
+        
+        SceneManager.LoadScene("MainScrene");
+        Time.timeScale = 1f;
     }
 
+    void LoadMainScene()
+    {
+        
+    }
     public int GetCurrentHp() => currentHp;
     public int GetMaxHp() => maxHp;
 }
