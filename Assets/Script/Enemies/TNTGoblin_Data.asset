@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TNTGoblin_Data
   m_EditorClassIdentifier: Assembly-CSharp::EnemyData
   enemyName: TNT Goblin
-  maxHP: 20
+  maxHP: 50
   moveSpeed: 3
   damage: 3
   experienceReward: 3
