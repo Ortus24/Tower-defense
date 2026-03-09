@@ -43,6 +43,12 @@ public class EnemyBase : MonoBehaviour
     private float attackTimer = 0f;
     private bool hasStartedAttack = false;
 
+    private float searchTargetTimer = 0f;
+    private float searchTargetCooldown = 1f;
+
+    [Header("Targeting Priorities")]
+    public string[] targetPriorities = { "Mine", "Tower", "TheKeep" };
+
     private EnemyState currentState = EnemyState.Moving;
     [SerializeField] private float stunDuration = 0.4f;
 
@@ -64,12 +70,49 @@ public class EnemyBase : MonoBehaviour
 
     void Start()
     {
+        RandomizeTargetPriorities();
         FindTarget();
     }
 
+    void RandomizeTargetPriorities()
+    {
+        if (targetPriorities == null || targetPriorities.Length <= 1) return;
+
+        // Shuffle the array using Fisher-Yates
+        for (int i = 0; i < targetPriorities.Length; i++)
+        {
+            int randomIndex = UnityEngine.Random.Range(i, targetPriorities.Length);
+            string temp = targetPriorities[i];
+            targetPriorities[i] = targetPriorities[randomIndex];
+            targetPriorities[randomIndex] = temp;
+        }
+    }
+
+    private bool wasTargetValid = false;
+
     void FixedUpdate()
     {
-        if (target == null)
+        bool isTargetValid = target != null && target.gameObject.activeInHierarchy;
+
+        // Force an immediate search if the target just became invalid (e.g., destroyed)
+        if (!isTargetValid && wasTargetValid)
+        {
+            searchTargetTimer = 0f;
+        }
+
+        searchTargetTimer -= Time.fixedDeltaTime;
+
+        // Search for target on cooldown, allowing it to switch to higher priority targets or new targets
+        if (searchTargetTimer <= 0f)
+        {
+            FindTarget();
+            searchTargetTimer = searchTargetCooldown;
+            isTargetValid = target != null && target.gameObject.activeInHierarchy;
+        }
+
+        wasTargetValid = isTargetValid;
+
+        if (!isTargetValid)
         {
             SetMoving(false);
             return;
@@ -226,6 +269,20 @@ public class EnemyBase : MonoBehaviour
 
     void FindTarget()
     {
+        if (targetPriorities != null && targetPriorities.Length > 0)
+        {
+            foreach (string tag in targetPriorities)
+            {
+                Transform closest = FindClosestWithTag(tag);
+                if (closest != null)
+                {
+                    target = closest;
+                    return;
+                }
+            }
+        }
+        
+        // Fallback for old logic if priorities array is empty
         switch (data.targetType)
         {
             case EnemyTargetType.TheKeep:
@@ -239,15 +296,6 @@ public class EnemyBase : MonoBehaviour
 
             case EnemyTargetType.Towers:
                 target = FindClosestWithTag("Tower")
-                         ?? GameObject.FindWithTag("Player")?.transform;
-                break;
-
-            case EnemyTargetType.Hero:
-                target = GameObject.FindWithTag("Player")?.transform;
-                break;
-
-            case EnemyTargetType.Sweep:
-                target = FindClosestWithTag("EnemyTarget")
                          ?? GameObject.FindWithTag("Player")?.transform;
                 break;
         }

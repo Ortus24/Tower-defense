@@ -148,7 +148,8 @@ public class StatesManager : MonoBehaviour
     }
      public void IncreaseSpeed(float add)
     {
-        speed += add;
+        float balance = (float)(add * 0.2);
+        speed += balance;
         // Cập nhật lại hiển thị tốc chạy trên UI
         StatsUI statsUI = FindObjectOfType<StatsUI>(true);
         if (statsUI != null)
