@@ -37,4 +37,4 @@ MonoBehaviour:
   nextLevelData: {fileID: 0}
   nextLevelPrefab: {fileID: 0}
   goldCostUpgrade: 100
-  woodCostUpgrade: 50
+  woodCostUpgrade: 100

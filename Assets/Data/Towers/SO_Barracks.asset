@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: SO_Barracks
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
   towerName: Barrack Tower Lv1
-  woodCost: 80
-  goldCost: 0
+  woodCost: 100
+  goldCost: 50
   maxHP: 150
-  damage: 8
+  damage: 5
   range: 4
   attackSpeed: 0
   buildTime: 4

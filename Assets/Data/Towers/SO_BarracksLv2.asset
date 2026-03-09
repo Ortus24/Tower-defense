@@ -16,7 +16,7 @@ MonoBehaviour:
   woodCost: 0
   goldCost: 0
   maxHP: 300
-  damage: 8
+  damage: 6
   range: 4
   attackSpeed: 0
   buildTime: 4
@@ -36,5 +36,5 @@ MonoBehaviour:
   description: 
   nextLevelData: {fileID: 0}
   nextLevelPrefab: {fileID: 0}
-  goldCostUpgrade: 50
-  woodCostUpgrade: 100
+  goldCostUpgrade: 150
+  woodCostUpgrade: 250

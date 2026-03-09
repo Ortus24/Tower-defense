@@ -86,7 +86,7 @@ namespace Assets.Script.TowerBuilding.EconomyTower
 
         private void OnMouseDown()
         {
-            if (EventSystem.current.IsPointerOverGameObject()) return;
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
             bool newState = true;
             if (currentStoredGold > 0)
             {

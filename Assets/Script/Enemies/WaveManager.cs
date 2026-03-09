@@ -12,7 +12,7 @@ public class WaveManager : MonoBehaviour
     public EnemyData skeleton;
     [Header("Wave Settings")]
     public int currentWave = 1;
-    public float timeBetweenWaves = 5f;
+    public float timeBetweenWaves = 30f;
     [Header("Spawn Settings")]
     public Transform[] spawnPoints;
     public float spawnDelay = 1.5f;
@@ -21,27 +21,39 @@ public class WaveManager : MonoBehaviour
     public UnityEvent<int> OnWaveComplete;
     private bool waveInProgress = false;
     private int enemiesAlive = 0;
+    
+    // --- Biến đếm ngược ---
+    public float waveCountdown = 0f;
+    public bool isWaitingForNextWave = false;
 
     [Header("Boss Settings")]
     public BossData bossData;
     public int bossWaveInterval = 10; // Spawn boss mỗi 10 waves
     void Start()
     {
-        //StartNextWave();
-
-
-        Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
-
-        GameObject enemy = Instantiate(
-            tntGoblin.enemyPrefab,
-            spawnPoint.position,
-            Quaternion.identity
-        );
+        // Khởi động chờ 10s cho wave đầu tiên
+        waveCountdown = timeBetweenWaves;
+        isWaitingForNextWave = true;
     }
+
     void Update()
     {
+        // Nếu đang trong thời gian đếm ngược
+        if (isWaitingForNextWave)
+        {
+            waveCountdown -= Time.deltaTime;
+
+            // In số giây chẵn còn lại ra Console
+            Debug.Log($"Wave mới sẽ xuất hiện sau: {(int)waveCountdown} giây");
+
+            if (waveCountdown <= 0f)
+            {
+                isWaitingForNextWave = false;
+                StartNextWave();
+            }
+        }
         // Kiểm tra xem wave đã hoàn thành chưa
-        if (waveInProgress && enemiesAlive <= 0)
+        else if (waveInProgress && enemiesAlive <= 0)
         {
             CompleteWave();
         }
@@ -64,12 +76,12 @@ public class WaveManager : MonoBehaviour
 
         List<EnemyData> enemiesToSpawn = GetEnemiesForWave(currentWave);
         int enemyCount = GetEnemyCountForWave(currentWave);
-        enemiesAlive = enemyCount;
+        enemiesAlive += enemyCount; // Cần cộng dồn để an toàn nếu wave chạy đè
         for (int i = 0; i < enemyCount; i++)
         {
             // Chọn random enemy từ list available
             EnemyData randomEnemy = enemiesToSpawn[Random.Range(0, enemiesToSpawn.Count)];
-            SpawnEnemy(tntGoblin); ///tesst
+            SpawnEnemy(randomEnemy);
 
             yield return new WaitForSeconds(spawnDelay);
         }
@@ -81,10 +93,10 @@ public class WaveManager : MonoBehaviour
         // ===== FOR TESTING: ALL ENEMIES FROM WAVE 1 =====
         // Comment this out to restore original wave progression
         availableEnemies.Add(tntGoblin);
-        availableEnemies.Add(torchGoblin);
-        availableEnemies.Add(skeleton);
-        availableEnemies.Add(heavyOrc);
-        availableEnemies.Add(shadowAssassin);
+        // availableEnemies.Add(torchGoblin);
+        // availableEnemies.Add(skeleton);
+        // availableEnemies.Add(heavyOrc);
+        // availableEnemies.Add(shadowAssassin);
         return availableEnemies;
 
         /* ===== ORIGINAL WAVE SCALING (COMMENTED FOR TESTING) =====
@@ -167,10 +179,10 @@ public class WaveManager : MonoBehaviour
             Quaternion.identity
         );
         // Subscribe to enemy death
-        EnemyBase enemyBase = enemy.GetComponent<EnemyBase>();
-        if (enemyBase != null)
+        EnemyHealth enemyHealth = enemy.GetComponent<EnemyHealth>();
+        if (enemyHealth != null)
         {
-            enemyBase.OnDeath += OnEnemyDied;
+            enemyHealth.OnDead += OnEnemyDied;
         }
     }
     void OnEnemyDied()
@@ -186,8 +198,9 @@ public class WaveManager : MonoBehaviour
 
         currentWave++;
 
-        // Chờ trước khi bắt đầu wave mới
-        Invoke(nameof(StartNextWave), timeBetweenWaves);
+        // Bắt đầu đếm ngược 10s cho wave tiếp theo
+        waveCountdown = timeBetweenWaves;
+        isWaitingForNextWave = true;
     }
     bool IsBossWave(int wave)
     {

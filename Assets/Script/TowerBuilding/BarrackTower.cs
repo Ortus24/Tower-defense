@@ -105,7 +105,7 @@ public class BarrackTower : BaseTower
     // Xử lý Click chuột (Hiện Banner + Range)
     private void OnMouseDown()
     {
-        if (EventSystem.current.IsPointerOverGameObject()) return;
+        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
 
         bool newState = false;
 

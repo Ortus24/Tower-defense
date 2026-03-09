@@ -10,31 +10,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 96a17322f09f67643bf7cc3ffb80b917, type: 3}
-  m_Name: SO_ArrowTowerLv2
+  m_Name: Sweep
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
-  towerName: Arrow Tower Lv2
+  towerName: Sweep
   woodCost: 0
   goldCost: 0
-  maxHP: 150
-  damage: 10
-  range: 6
-  attackSpeed: 1.4
+  maxHP: 500
+  damage: 0
+  range: 0
+  attackSpeed: 0
   buildTime: 0
   splashRadius: 0
-  towerSize: {x: 2, y: 2}
-  towerIcon: {fileID: 21300000, guid: 9150ff9a3f88646ddaf1ed327afa1315, type: 3}
+  towerSize: {x: 0, y: 0}
+  towerIcon: {fileID: 0}
   soldierCount: 0
   respawnTime: 0
   soldierPrefab: {fileID: 0}
-  projectilesPerShot: 2
+  projectilesPerShot: 1
   burstDelay: 0.1
   resourceType: 0
-  goldPerSecond: 0
-  maxGoldCapacity: 0
-  woodPerSecond: 0
-  maxWoodCapacity: 0
+  goldPerSecond: 5
+  maxGoldCapacity: 50
+  woodPerSecond: 5
+  maxWoodCapacity: 50
   description: 
   nextLevelData: {fileID: 0}
   nextLevelPrefab: {fileID: 0}
-  goldCostUpgrade: 200
-  woodCostUpgrade: 150
+  goldCostUpgrade: 0
+  woodCostUpgrade: 0

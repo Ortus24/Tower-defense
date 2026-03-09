@@ -69,7 +69,7 @@ public class NewMonoBehaviourScript : BaseTower
     private void OnMouseDown()
     {
         // 1. Chặn nếu đang click vào nút UI (để không bị click xuyên)
-        if (EventSystem.current.IsPointerOverGameObject()) return;
+       // if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
         bool newState = true;
         // 2. Bật / Tắt Banner
         if (bannerScript != null)

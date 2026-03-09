@@ -82,7 +82,7 @@ namespace Assets.Script.TowerBuilding.EconomyTower
         private void OnMouseDown()
         {
             // Chặn click xuyên qua UI
-            if (EventSystem.current.IsPointerOverGameObject()) return;
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
 
             bool newState = true;
             // 1. Ưu tiên Thu hoạch

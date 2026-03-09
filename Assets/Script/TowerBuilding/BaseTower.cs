@@ -88,7 +88,7 @@ public abstract class BaseTower : MonoBehaviour
     }
 
     // --- [MỚI] HÀM NHẬN SÁT THƯƠNG ---
-    public void TakeDamage(float amount)
+    public virtual void TakeDamage(float amount)
     {
         if (data == null) return;
 

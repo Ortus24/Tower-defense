@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: SO_ArrowTower
   m_EditorClassIdentifier: Assembly-CSharp::TowerData
   towerName: Arrow Tower Lv1
-  woodCost: 10
-  goldCost: 10
+  woodCost: 60
+  goldCost: 20
   maxHP: 100
-  damage: 15
+  damage: 8
   range: 6
   attackSpeed: 1.2
   buildTime: 3
