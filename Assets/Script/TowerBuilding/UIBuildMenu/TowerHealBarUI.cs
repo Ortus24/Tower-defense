@@ -19,6 +19,9 @@ namespace Assets.Script.TowerBuilding.UIBuildMenu
         // Biến lưu trữ % máu mục tiêu cần chạy tới
         private float targetFillAmount = 1f;
 
+        [Header("Luôn hiển thị (Dành cho UI cố định)")]
+        public bool alwaysVisible = false;
+
         // Hàm khởi tạo lúc mới xây tháp xong
         public void Setup(float currentHP, float maxHP)
         {
@@ -29,7 +32,10 @@ namespace Assets.Script.TowerBuilding.UIBuildMenu
                 // Set độ dài đầy ngay lập tức lúc mới xây
                 if (fillImage != null) fillImage.fillAmount = targetFillAmount;
             }
-            gameObject.SetActive(false);
+            if (!alwaysVisible)
+            {
+                gameObject.SetActive(false);
+            }
         }
 
         // Hàm này giờ chỉ cập nhật "MỤC TIÊU" cần tụt tới

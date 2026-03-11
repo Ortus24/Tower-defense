@@ -163,7 +163,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::KnightAI
   moveSpeed: 2
   attackRange: 1
-  attackRate: 2
+  attackRate: 1
 --- !u!70 &4760658695824846779
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

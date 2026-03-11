@@ -76,10 +76,10 @@ namespace Assets.Script.TowerBuilding
             base.TakeDamage(amount);
 
             // Hiển thị log cảnh báo nếu máu dưới 20% và nhà chính chưa sập
-            if (currentHP > 0 && currentHP < data.maxHP * 0.2f)
-            {
-                Debug.LogError("CẢNH BÁO: Nhà chính sắp sập!");
-            }
+            //if (currentHP > 0 && currentHP < data.maxHP * 0.2f)
+            //{
+            //    Debug.LogError("CẢNH BÁO: Nhà chính sắp sập!");
+            //}
         }
     }
 }

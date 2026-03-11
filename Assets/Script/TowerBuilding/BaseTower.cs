@@ -11,6 +11,8 @@ public abstract class BaseTower : MonoBehaviour
 
     [Header("--- HỆ THỐNG MÁU (MỚI) ---")]
     public TowerHealthBarUI healthBarScript; // Kéo Prefab thanh máu đã kéo vào tháp vào đây
+    public TowerHealthBarUI healthBarUI;
+    
     protected float currentHP; // Máu hiện tại của tháp
 
     [Header("Căn chỉnh tâm")]
@@ -49,6 +51,10 @@ public abstract class BaseTower : MonoBehaviour
         if (healthBarScript != null && data != null)
         {
             healthBarScript.Setup(currentHP, data.maxHP);
+        }
+        if(healthBarUI != null && data != null)
+        {
+            healthBarUI.Setup(currentHP, data.maxHP);
         }
     }
 
@@ -100,6 +106,11 @@ public abstract class BaseTower : MonoBehaviour
         if (healthBarScript != null)
         {
             healthBarScript.UpdateHealthUI(currentHP, data.maxHP);
+        }
+
+        if (healthBarUI != null)
+        {
+            healthBarUI.UpdateHealthUI(currentHP, data.maxHP);
         }
 
         if (currentHP <= 0)
