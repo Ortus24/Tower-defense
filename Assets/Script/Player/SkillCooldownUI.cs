@@ -1,8 +1,8 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class SkillCooldownUI : MonoBehaviour
 {
-    public float cooldownTime = 3f;
+    private float cooldownTime;
 
     private float timer;
     private bool isCooling = false;
@@ -34,8 +34,9 @@ public class SkillCooldownUI : MonoBehaviour
         }
     }
 
-    public void StartCooldown()
+    public void StartCooldown(float duration)
     {
+        cooldownTime = duration;
         timer = cooldownTime;
         isCooling = true;
         transform.localScale = startScale;

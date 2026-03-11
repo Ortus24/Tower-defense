@@ -44,7 +44,7 @@ public class WaveManager : MonoBehaviour
             waveCountdown -= Time.deltaTime;
 
             // In số giây chẵn còn lại ra Console
-            Debug.Log($"Wave mới sẽ xuất hiện sau: {(int)waveCountdown} giây");
+            // Debug.Log($"Wave mới sẽ xuất hiện sau: {(int)waveCountdown} giây");
 
             if (waveCountdown <= 0f)
             {

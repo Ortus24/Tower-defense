@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +15,7 @@ public class SkillOne : MonoBehaviour
     public float circleRadius = 3f;       // bán kính vòng tròn
 
     [Header("Cooldown")]
-    public float cooldownTime = 5f;
+    public float cooldownTime = 70f;
 
     [Header("Damage")]
     public int damage = 10;
@@ -82,8 +82,8 @@ public class SkillOne : MonoBehaviour
 
     public void OpenSkill()
     {
-        backgroundIconlock.color = new Color32(255, 255, 255, 0);
-        backgroundLock.color = new Color32(255, 255, 255, 0);
+        backgroundIconlock.enabled = false;
+        backgroundLock.enabled = false;
         isOnpenSkill = true;
     }
 
@@ -128,6 +128,13 @@ public class SkillOne : MonoBehaviour
 
         Vector3 center = rangeCircle.transform.position;
         rangeCircle.SetActive(false);
+
+        // BẮT ĐẦU COOLDOWN NGAY KHI DÙNG SKILL
+        if (cooldownUI != null)
+        {
+            cooldownUI.StartCooldown(cooldownTime);
+        }
+        StartCoroutine(CooldownTimer());
 
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0f; // rất quan trọng trong 2D
@@ -181,20 +188,32 @@ public class SkillOne : MonoBehaviour
             }
             else
             {
-                // KHÔNG CÓ MỤC TIÊU THÌ KHÔNG SPAWN, CHUYỂN SANG FRAME KẾ TIẾP ĐỂ TÌM TIẾP
-                yield return null;
-                elapsedTimer += Time.deltaTime;
+                // KIỂM TRA XEM CÓ ENEMY TRONG VÙNG NHƯNG ĐỀU ĐÃ BỊ ĐÁNH CHƯA
+                bool hasEnemyInRange = false;
+                foreach (Collider2D col in colliders)
+                {
+                    if (col.CompareTag("Enemy"))
+                    {
+                        hasEnemyInRange = true;
+                        break;
+                    }
+                }
+
+                if (hasEnemyInRange && struckEnemies.Count > 0)
+                {
+                    // CÒN QUÁI TRONG VÙNG NHƯNG ĐỀU ĐÃ BỊ ĐÁNH → XÓA DANH SÁCH ĐỂ CÓ THỂ ĐÁNH LẠI
+                    struckEnemies.Clear();
+                }
+                else
+                {
+                    // KHÔNG CÓ MỤC TIÊU NÀO TRONG VÙNG → CHỜ FRAME KẾ TIẾP ĐỂ TÌM TIẾP
+                    yield return null;
+                    elapsedTimer += Time.deltaTime;
+                }
             }
         }
 
-        yield return new WaitForSeconds(cooldownTime);
-        
-        if (cooldownUI != null)
-        {
-            cooldownUI.StartCooldown();
-        }
-        
-        canUseSkill = true;
+        // HỦY VÒNG TRÒN PHÉP SAU KHI SÉT ĐÁNH XONG
         if (magicCircleInstance != null)
         {
             magicCircleInstance.GetComponent<DestroyWhenCall>().DestroyNow();
@@ -214,6 +233,15 @@ public class SkillOne : MonoBehaviour
     }
 
     //------------------------
+
+    // =========================
+    // COOLDOWN TIMER (CHẠY SONG SONG VỚI HIỆU ỨNG SÉT)
+    // =========================
+    IEnumerator CooldownTimer()
+    {
+        yield return new WaitForSeconds(cooldownTime);
+        canUseSkill = true;
+    }
 
     // =========================
     // HỦY CHỌN
