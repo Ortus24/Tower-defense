@@ -1527,6 +1527,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1604856603509575302, guid: 21587bb40756b284c8257194e997c5ff, type: 3}
+      propertyPath: cooldownUI
+      value: 
+      objectReference: {fileID: 1266275602}
     - target: {fileID: 1771709656607165593, guid: 21587bb40756b284c8257194e997c5ff, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -2089,6 +2093,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 937803087}
   m_CullTransparentMesh: 1
+--- !u!114 &1266275602 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 296718603775972620, guid: 21587bb40756b284c8257194e997c5ff, type: 3}
+  m_PrefabInstance: {fileID: 769573857}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3d6c0af14ee5cb459e1e6fd38f42501, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SkillCooldownUI
 --- !u!4 &1268039284 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7534737987397675929, guid: 21587bb40756b284c8257194e997c5ff, type: 3}
